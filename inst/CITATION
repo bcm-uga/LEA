@@ -1,0 +1,9 @@
+bibentry(bibtype = "Article",
+    title = "{LEA}: an {R} package for {L}andscape and {E}cological 
+    {A}ssociation studies",
+    author = c(person("Eric", "Frichot"),
+        person("Olivier", "Francois")),
+    year = 2014,
+    journal = "under review",
+    url = "http://membres-timc.imag.fr/Olivier.Francois/lea.html"
+)
