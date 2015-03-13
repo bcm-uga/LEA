@@ -1,0 +1,70 @@
+import(methods)
+
+useDynLib(LEA, .registration=TRUE, .fixes = "R_") 
+#.registration = TRUE, .fixes = "R_")
+#R_ancestrymap2geno, R_ancestrymap2lfmm, R_ped2lfmm, R_ped2geno,
+#R_vcf2geno, R_createDataSet, R_crossEntropy, R_sNMF, R_LFMM,
+#R_tracyWidom, R_lfmm2geno, R_geno2lfmm, R_pca)
+
+# read and write functions
+export(read.geno)
+export(write.geno)
+export(read.lfmm)
+export(write.lfmm)
+export(read.env)
+export(write.env)
+export(read.zscore)
+
+# conversion function
+export(geno2lfmm)
+export(lfmm2geno)
+export(ped2geno)
+export(ped2lfmm)
+export(vcf2geno)
+export(vcf2lfmm)
+export(ancestrymap2lfmm)
+export(ancestrymap2geno)
+
+# classes
+#exportClasses(#pcaProject,
+#snmfClass,
+#snmfProject,
+#lfmmClass,
+#lfmmProject)
+
+# main functions
+export(create.dataset)
+export(snmf)
+export(cross.entropy.estimation)
+export(pca)
+# export(tracyWidom) <-- added as a method in pcaProject
+export(lfmm)
+
+# method associated with the classes
+exportMethods(
+        show,        
+        summary,
+        load.snmfProject,
+        remove.snmfProject,
+        load.lfmmProject,
+        remove.lfmmProject,
+        load.pcaProject,
+        remove.pcaProject,
+        Q,
+        G,
+        plot,
+        z.scores,
+        p.values,
+        mlog10p.values,
+        cross.entropy,
+        #inflationFactorEstimation,
+        #cFDR,
+        tracy.widom
+)
+
+export(.DollarNames.pcaProject)
+#export(.DollarNames.snmfClass)
+#export(.DollarNames.snmfProject)
+#export(.DollarNames.lfmmClass)
+#export(.DollarNames.snmfProject)
+
