@@ -85,7 +85,7 @@ int nb_cols_geno(char *file)
 
         // count the number of elements until EOF or "\n"
         c = fgetc(fp);
-        while ((c != EOF) && (c != 10)) {
+        while ((c != EOF) && (c != 10) && (c != 13)) {
                 cols++;
                 c = fgetc(fp);
         }
@@ -106,7 +106,7 @@ int nb_cols_lfmm(char *file)
         char *token;
 
         c = fgetc(fp);
-        while ((c != EOF) && (c != 10)) {
+        while ((c != EOF) && (c != 10) && (c != 13)) {
                 // count only columns (no space or tab)
                 c = fgetc(fp);
                 cols++;

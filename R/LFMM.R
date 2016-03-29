@@ -121,13 +121,13 @@ lfmm <- function(input.file,
 
                 # find the number of the run
                 if (length(proj@K) > 0)
-                    re = length(which(proj@K == k & proj@all == all)) + 1
+                    re = length(which(proj@K == k)) + 1
                 else 
                     re = 1
 
                 # create a directory for the run
                 tmp  = setExtension(basename(proj@lfmmProject.file), ".lfmm/")
-                dir = paste(proj@directory, "K", k, "/run", re, "/", sep="")
+                dir = paste(proj@projDir, proj@lfmmDir, "K", k, "/run", re, "/", sep="")
                 dir.create(dir, showWarnings = FALSE, recursive = TRUE)
 
                 output.prefix = paste(dir, basename(output.file),"_r", re, 
@@ -163,11 +163,11 @@ lfmm <- function(input.file,
                 for (nd in 1:nD) { 
                     # creation of the res file
                     res = new("lfmmClass");
-                    res@directory = dir;
-                    res@zscore.file = normalizePath(paste(output.prefix,
-                        "_a",nd, ".",k,".zscore",sep=""));
-                    res@lfmmClass.file = paste(output.prefix, 
-                        "_a",nd,".",k,".lfmmClass",sep="");
+                    res@directory = paste("K", k, "/run", re, "/", sep="")
+                    res@zscore.file = basename(normalizePath(paste(output.prefix,
+                        "_a",nd, ".",k,".zscore",sep="")));
+                    res@lfmmClass.file = basename(paste(output.prefix, 
+                        "_a",nd,".",k,".lfmmClass",sep=""));
                     res@K = as.integer(k);
                     res@run = as.integer(re);
                     res@d = as.integer(nd);
@@ -185,7 +185,8 @@ lfmm <- function(input.file,
                     res@deviance = resC$dev;
                     res@DIC = resC$dic;
                     s = resC$s
-                    save.lfmmClass(res, res@lfmmClass.file)
+                    save.lfmmClass(res, paste(proj@projDir, proj@lfmmDir, res@directory, 
+                        res@lfmmClass.file, sep = ""));
 
                     proj@n = as.integer(resC$n);
                     proj@L = as.integer(resC$L);
@@ -201,15 +202,14 @@ lfmm <- function(input.file,
             
                     # find the number of the run
                     if (length(proj@K) > 0)
-                        re = length(which(proj@K == k & proj@d == nd 
-                            & proj@all == all)) + 1
+                        re = length(which(proj@K == k)) + 1
                     else 
                         re = 1
 
                     # create a directory for the run
                     tmp  = setExtension(basename(proj@lfmmProject.file), 
                         ".lfmm/")
-                    dir = paste(proj@directory, "K", k, "/run", re, "/", sep="")
+                    dir = paste(proj@projDir, proj@lfmmDir, "K", k, "/run", re, "/", sep="")
                     dir.create(dir, showWarnings = FALSE, recursive = TRUE)
 
                     output.prefix = paste(dir, basename(output.file),"_r", re, 
@@ -241,11 +241,11 @@ lfmm <- function(input.file,
 
                     # creation of the res file
                     res = new("lfmmClass");
-                    res@zscore.file = normalizePath(paste(output.prefix,
-                        "_s",nd,".",k,".zscore",sep=""));
-                    res@lfmmClass.file = paste(output.prefix, 
-                        "_s",nd,".",k,".lfmmClass",sep="");
-                    res@directory = getwd();
+                    res@zscore.file = basename(normalizePath(paste(output.prefix,
+                        "_s",nd,".",k,".zscore",sep="")));
+                    res@lfmmClass.file = basename(paste(output.prefix, 
+                        "_s",nd,".",k,".lfmmClass",sep=""));
+                    res@directory = paste("K", k, "/run", re, "/", sep="")
                     res@K = as.integer(k);
                     res@run = as.integer(re);
                     res@d = as.integer(nd);
@@ -263,7 +263,8 @@ lfmm <- function(input.file,
                     res@deviance = resC$dev;
                     res@DIC = resC$dic;
                     s = resC$s
-                    save.lfmmClass(res, res@lfmmClass.file);
+                    save.lfmmClass(res, paste(proj@projDir, proj@lfmmDir, res@directory, 
+                        res@lfmmClass.file, sep = ""));
 
                     proj@n = as.integer(resC$n);
                     proj@L = as.integer(resC$L);

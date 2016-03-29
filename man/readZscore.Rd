@@ -57,5 +57,4 @@ project = lfmm("genotypes.lfmm", "gradients.env", K = 3,
 res = read.zscore("./genotypes_gradients.lfmm/K3/run1/genotypes_r1_s1.3.zscore")
 }
 
-
 \keyword{read/write}

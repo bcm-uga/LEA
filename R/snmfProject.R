@@ -1,6 +1,6 @@
 #create Class sNMF Project
 setClass("snmfProject",
-    slots = c(snmfProject.file = "character", directory = "character", 
+    slots = c(snmfProject.file = "character", projDir = "character", snmfDir = "character", 
         input.file = "character", runs = "list", K="integer",
         snmfClass.files = "vector", n="integer", L="integer",
         creationTime = "POSIXct")
@@ -15,7 +15,7 @@ setMethod("addRun.snmfProject", signature(project="snmfProject",
     function(project, run) {
         project@runs[[length(project@runs) + 1]] = run
         project@K = c(project@K, run@K)
-        project@snmfClass.files = c(project@snmfClass.files, run@snmfClass.file)
+        project@snmfClass.files = c(project@snmfClass.files, paste(run@directory, run@snmfClass.file, sep=""))
 
         return(project)
     }
@@ -63,8 +63,8 @@ setMethod("plot", "snmfProject",
                 axe = c(axe, K[k])        
         }
 
-        plot(s$crossEntropy[1,], ylab="Minimal Cross-Entropy", 
-            xlab="Number of ancestral populations", ...)
+        plot(axe, s$crossEntropy[1,], ylab="Minimal Cross-Entropy", 
+                xlab="Number of ancestral populations",     ...)
     }
 )
 
@@ -112,7 +112,7 @@ setMethod("G", "snmfProject",
             }
         } 
             
-        R = Gvalues(object@runs[[r[run]]])
+        R = Gvalues(object@runs[[r[run]]], paste(object@projDir, object@snmfDir, sep = ""))
 
         return(R)
     }
@@ -158,7 +158,7 @@ setMethod("Q", "snmfProject",
             }
         } 
             
-        R = Qvalues(object@runs[[r[run]]])
+        R = Qvalues(object@runs[[r[run]]], paste(object@projDir, object@snmfDir, sep = ""))
 
         return(R)
     }
@@ -221,7 +221,8 @@ setMethod("show", "snmfProject",
     function(object) {
         cat("snmf Project\n\n")
         cat("snmfProject file:                ", object@snmfProject.file, "\n")
-        cat("directory:                       ", object@directory, "\n")
+        cat("project directory:               ", object@projDir, "\n")
+        cat("snmf results directory:          ", object@snmfDir, "\n")
         cat("date of creation:                ", object@creationTime, "\n")
         cat("input file:                      ", object@input.file, "\n")
         cat("number of individuals:           ", object@n, "\n")
@@ -285,7 +286,8 @@ setMethod("load.snmfProject", "character",
         res = dget(file);
         if (length(res@snmfClass.files) > 0) {
             for (r in 1:length(res@snmfClass.files)) {
-                res@runs[[r]] = load.snmfClass(res@snmfClass.files[r])
+                res@runs[[r]] = load.snmfClass(paste(res@projDir, res@snmfDir, 
+                    res@snmfClass.files[r], sep = ""))
             }
         }
         return(res);
@@ -298,20 +300,22 @@ setGeneric("save.snmfProject", function(object) character)
 setMethod("save.snmfProject", signature(object="snmfProject"),
     function(object) {
         file = object@snmfProject.file;
-            if (length(object@runs) > 0) {
+        if (length(object@runs) > 0) {
             for (r in 1:length(object@runs)) {
-                save.snmfClass(object@runs[[r]], object@snmfClass.files[r])
+                save.snmfClass(object@runs[[r]], paste(object@projDir, object@snmfDir,
+                    object@snmfClass.files[r], sep = ""))
             }
         }
         object@runs = list()
-        dput(object, file) 
-        cat("The project is saved into :\n",currentDir(file),"\n\n");
+        pathFile = paste(object@projDir, file, sep = "")
+        dput(object, pathFile) 
+        cat("The project is saved into :\n",currentDir(pathFile),"\n\n");
         cat("To load the project, use:\n project = load.snmfProject(\"",
-            currentDir(file),"\")\n\n",sep="");
+            currentDir(pathFile),"\")\n\n",sep="");
         cat("To remove the project, use:\n remove.snmfProject(\"",
-            currentDir(file),"\")\n\n",sep="");
+            currentDir(pathFile),"\")\n\n",sep="");
    
-        object@snmfProject.file;
+        pathFile
     }
 )
 
@@ -321,7 +325,140 @@ setGeneric("remove.snmfProject", function(file="character") NULL)
 setMethod("remove.snmfProject", "character",
     function(file) {
         res = dget(file);
-        unlink(res@directory, recursive = TRUE)
+        unlink(paste(res@projDir, res@snmfDir, sep = ""), recursive = TRUE)
         file.remove(file)
+    }
+)
+
+# export
+
+setGeneric("export.snmfProject", function(file, force) character)
+setMethod("export.snmfProject", "character",
+    function(file, force = FALSE) {
+        object = load.snmfProject(file)
+        # force
+        force = test_logical("force", force, FALSE)
+
+        pathFile = paste(object@projDir, object@snmfProject.file, sep = "")
+        zipFile = paste(setExtension(pathFile, ""), "_snmfProject.zip", sep = "")
+
+        if (force == FALSE && file.exists(zipFile)) {
+            stop("An export with the same name already exists.\n",
+                 "If you want to overwrite it, please use the ",
+                 "option 'force == TRUE'\n\n") 
+        } else {
+            if (file.exists(zipFile))
+                file.remove(zipFile)
+            curDir = getwd()
+            setwd(object@projDir)
+            zip(normalizePath(zipFile), c(object@snmfProject.file,
+                paste(object@snmfDir, sep = ""), object@input.file))
+            setwd(curDir)
+            cat("An export of the snmf project hase been created: ", currentDir(zipFile), "\n\n") 
+        } 
+        
+    }
+)
+
+# import
+
+setGeneric("import.snmfProject", function(zipFile, directory, force) attributes("snmfProject"))
+setMethod("import.snmfProject", "character",
+    function(zipFile, directory = getwd(), force = FALSE) {
+        # force
+        force = test_logical("force", force, FALSE)
+        # check that no file exists
+        tmp = basename(zipFile)
+        file = paste(normalizePath(directory), "/", substr(tmp, 1, 
+            nchar(tmp) - 16), ".snmfProject", sep = "")
+        if (!force && file.exists(file)) {
+            stop("A snmf project with same name exists in the directory: \n",
+                 directory, ".\n",
+                 "If you want to overwrite it, please use the ",
+                 "option 'force == TRUE'\n\n") 
+
+        }
+        # unzip
+        unzip(zipFile, exdir = directory)
+        cat("The project has been imported into directory, ", directory, "\n\n") 
+        # modify the project infos
+        res = dget(file);
+        res@projDir = paste(normalizePath(directory), "/", sep = "")
+        res@creationTime = Sys.time()
+        dput(res, file)
+        # load the project
+        load.snmfProject(file)
+    } 
+)
+
+# combine
+
+setGeneric("combine.snmfProject", function(combined.file, file.to.combine, force) attributes("snmfProject"))
+setMethod("combine.snmfProject", signature(combined.file = "character", file.to.combine = "character"),
+    function(combined.file, file.to.combine, force = FALSE) {
+        to.combine = load.snmfProject(file.to.combine)
+        combined = load.snmfProject(combined.file)
+        # force
+        force = test_logical("force", force, FALSE)
+
+        # check that the projects are compatible
+        # check n
+        if (to.combine@n != combined@n) {
+            stop("The number of individuals (",combined@n," and ",to.combine@n,") are\n",
+            "different in the two projects. The two following projects cannot be\n",
+            "combined:", combined.file, "\n", file.to.combine, "\n\n")
+        # check L    
+        } else if (to.combine@L != combined@L) {
+            stop("The number of loci (",combined@L," and ",to.combine@L,") are\n", 
+            "different in the two projects. The two following projects cannot be\n",
+            "combined:", combined.file, "\n", file.to.combine, "\n\n")
+        } 
+        # check input file name
+        if (!force && basename(to.combine@input.file) != basename(combined@input.file)) { 
+            stop("The names of the input file of the two projects are different \n",
+                 ": ", basename(to.combine@input.file), ", ", basename(combined@input.file), "\n",
+                 "Be cautious that only projects with the same input file can be\n",
+                 "combined. If you still want to combine them, please use the ",
+                 "option 'force == TRUE'\n\n") 
+        }
+
+        # let's go  
+        if (length(to.combine@runs) > 0) { 
+            for (r in 1:length(to.combine@runs)) {
+                to.combine.run = to.combine@runs[[r]]
+                combined.run = to.combine@runs[[r]]
+                k = combined.run@K
+                re = as.integer(length(which(combined@K == k)) + 1)
+                # combine  
+                # create file directory
+                tmp  = basename(setExtension(basename(combined@input.file), ""))
+                combined.run@directory = paste("K", k, "/run", re, "/", sep="") 
+                dir.create(paste(combined@projDir, combined@snmfDir, combined.run@directory, 
+                    sep = ""), showWarnings = FALSE, recursive = TRUE)
+                # snmfClass.file
+                combined.run@snmfClass.file = paste(tmp, "_r", re ,".",k, 
+                    ".snmfClass", sep = "")
+                # run
+                combined.run@run = re
+                # Q
+                combined.run@Q.output.file = paste(tmp, "_r", re ,".",k, ".Q", sep="")
+                file.copy(paste(to.combine@projDir, to.combine@snmfDir, to.combine.run@directory, 
+                    to.combine.run@Q.output.file, sep = ""), 
+                    paste(combined@projDir, combined@snmfDir, combined.run@directory, 
+                    combined.run@Q.output.file, sep = "")) 
+                # G
+                combined.run@G.output.file = paste(tmp, "_r", re ,".",k, ".G", sep="")
+                file.copy(paste(to.combine@projDir, to.combine@snmfDir, to.combine.run@directory, 
+                    to.combine.run@G.output.file, sep = ""), 
+                    paste(combined@projDir, combined@snmfDir, combined.run@directory, 
+                    combined.run@G.output.file, sep = "")) 
+                # save run
+                save.snmfClass(combined.run, paste(combined@projDir, combined@snmfDir,
+                    combined.run@directory, combined.run@snmfClass.file, sep = ""))
+                # save project
+                combined = addRun.snmfProject(combined, combined.run)
+            }
+        }
+        save.snmfProject(combined)
     }
 )

@@ -1,19 +1,30 @@
-\name{p.values}
-\alias{p.values}
+\name{adjusted.pvalues}
+\alias{adjusted.pvalues}
 
-\title{p-values from a lfmm run}
+\title{adjusted p-values from a lfmm run}
 \description{
-Return the \code{lfmm} output matrix of p-values for the chosen runs with K
-latent factors, the d-th variable and the all option. For an example, see
+Return the \code{lfmm} output vector of adjusted p-values and the genomic
+inflation factor using the genomic control method or the lambda inflation 
+factor parameter for the chosen runs with K fatent factors, the d-th 
+variable and the all option. For an example, see
 \code{\link{lfmm}}.
 }
 \usage{
-p.values (object, K, d, all, run)
+adjusted.pvalues (object, genomic.control, lambda, K, d, all, run)
 }
 
 \arguments{
 \item{object}{
 A lfmmProject object.
+}
+\item{genomic.control}{
+A boolean option. If true, the p-values are automatically calibrated
+using the genomic control method. If false, the p-values are calculated
+using the \code{lambda} inflation factor parameter.
+}
+\item{lambda}{
+the lambda inflation factor used to calibrate the p-value if 
+\code{genomic.control} = FALSE (default: 1.0).
 }
 \item{K}{
 The number of latent factors.
@@ -40,9 +51,8 @@ A matrix containing a vector of p.values for the chosen runs per column.
 \seealso{
 \code{\link{lfmm.data}}
 \code{\link{lfmm}}
+\code{\link{p.values}}
 \code{\link{mlog10p.values}}
-\code{\link{adjusted.pvalues}}
-\code{\link{z.scores}}
 }
 \examples{
 ### Example of analyses using lfmm ###
@@ -68,11 +78,17 @@ project = NULL
 project = lfmm("genotypes.lfmm", "gradients.env", K = 3, repetitions = 2,
     iterations = 6000, burnin = 3000, project = "new")
 
-# get the p-values for all runs for K = 3
-p = p.values(project, K = 3)
+# get the adjusted p-values using the genomic control method
+res = adjusted.pvalues(project, K = 3)
 
-# get the p-values for the 2nd run for K = 3
-p = p.values(project, K = 3, run = 2)
+hist(res$p.values, col = "yellow3")
+
+# get the adjusted p-values with the genomic inflatino factor
+res = adjusted.pvalues(project, genomic.control = FALSE, 
+    lambda = res$genomic.inflation.factor, K = 3)
+
+hist(res$p.values, col = "yellow3")
+
 }
 
 

@@ -159,7 +159,7 @@ void fill_line_ped(int *data, char *szbuff, int M, int i, char *input_file,
         token1 = strtok(NULL, SEP);
         token2 = strtok(NULL, SEP);
         while (token1 && token2 && token1[0] != EOF && token2[0] != EOF &&
-               token1[0] != 10 && token2[0] != 10 && j < M) {
+               token1[0] != 10 && token1[0] != 13 && token2[0] != 10 && token2[0] != 13 && j < M) {
 
                 // test if a token is 0,1,2,3,4, A, C, T, G
                 test_token_ped(token1[0], j + 1, i + 1, input_file);

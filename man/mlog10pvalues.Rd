@@ -42,6 +42,7 @@ column.
 \code{\link{lfmm.data}}
 \code{\link{lfmm}}
 \code{\link{p.values}}
+\code{\link{adjusted.pvalues}}
 \code{\link{z.scores}}
 }
 \examples{

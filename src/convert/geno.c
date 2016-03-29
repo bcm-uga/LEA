@@ -67,7 +67,7 @@ void fill_line_geno(int *data, int M, int N, int j, char *file_data,
         token = szbuff[i];
 
         // for all token
-        while (token != EOF && token != 10 && i < N) {
+        while (token != EOF && token != 10 && token != 13 && i < N) {
 
                 // fill current column
                 data[i * M + j] = (int)(token - 48);

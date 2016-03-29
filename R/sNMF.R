@@ -99,7 +99,7 @@ snmf <- function(input.file,
 
         # create.dataset 
         if (entropy) {
-            masked.file = setExtension((paste(proj@directory, "masked/", 
+            masked.file = setExtension((paste(proj@projDir, proj@snmfDir, "masked/", 
             basename(input.file), sep="")), "_I.geno")
             masked.file = create.dataset(input.file, masked.file, s, 
                 percentage); 
@@ -116,7 +116,7 @@ snmf <- function(input.file,
 
             # create a directory for the run
             tmp  = basename(setExtension(basename(input.file), ""))
-            dir = paste(proj@directory, "K", k, "/run", re, "/", sep="")
+            dir = paste(proj@projDir, proj@snmfDir, "K", k, "/run", re, "/", sep="")
             dir.create(dir, showWarnings = FALSE, recursive = TRUE)        
 
             # Q file
@@ -163,10 +163,10 @@ snmf <- function(input.file,
         
             # creation of the res file
             res = new("snmfClass")
-            res@directory = dir
+            res@directory = paste("K", k, "/run", re, "/", sep="")
 
             # file snmfClass
-            res@snmfClass.file  = snmfClass.file;
+            res@snmfClass.file  = basename(snmfClass.file);
             res@K = as.integer(k);
             res@run = as.integer(re);
             res@CPU = as.integer(CPU);
@@ -180,9 +180,10 @@ snmf <- function(input.file,
             res@crossEntropy = masked.ce;
             res@ploidy = as.integer(ploidy);
             res@Q.input.file = Q.input.file;
-            res@Q.output.file = normalizePath(Q.output.file);
-            res@G.output.file = normalizePath(G.output.file);
-            save.snmfClass(res, res@snmfClass.file)
+            res@Q.output.file = basename(Q.output.file);
+            res@G.output.file = basename(G.output.file);
+            save.snmfClass(res, paste(proj@projDir, proj@snmfDir, res@directory, 
+                res@snmfClass.file, sep = ""))
 
             proj@n = resC$n;
             proj@L = resC$L;

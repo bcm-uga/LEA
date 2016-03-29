@@ -53,30 +53,33 @@ setClass("lfmmClass",
 
 # pvalues
 
-setGeneric("pvalues", function(object) matrix);
+setGeneric("pvalues", function(object, directory) matrix);
 setMethod("pvalues", "lfmmClass",
-    function(object) {
-        R = read.zscore(object@zscore.file);    
+    function(object, directory) {
+        R = read.zscore(paste(directory, object@directory, object@zscore.file, 
+            sep = ""));    
         res = R$pvalues;
     }
 )
 
 # mlog10pvalues
 
-setGeneric("mlog10pvalues", function(object) matrix);
+setGeneric("mlog10pvalues", function(object, directory) matrix);
 setMethod("mlog10pvalues", "lfmmClass",
-    function(object) {
-        R = read.zscore(object@zscore.file);    
+    function(object, directory) {
+        R = read.zscore(paste(directory, object@directory, object@zscore.file, 
+            sep = ""));    
         res = R$mlog10pvalues;
     }
 )
 
 # zscores
 
-setGeneric("zscores", function(object) matrix);
+setGeneric("zscores", function(object, directory) matrix);
 setMethod("zscores", "lfmmClass",
-    function(object) {
-        R = read.zscore(object@zscore.file);    
+    function(object, directory) {
+        R = read.zscore(paste(directory, object@directory, object@zscore.file, 
+            sep = ""));    
         res = R$zscores;
     }
 )
@@ -134,10 +137,8 @@ setMethod("show", "lfmmClass",
     function(object) {
         cat("* lfmm class *\n\n")
         cat("file directory:                 ", object@directory, "\n")
-        cat("lfmmClass file:                 ", 
-            basename(object@lfmmClass.file), "\n")
-        cat("zscore file:                    ", basename(object@zscore.file),
-            "\n")
+        cat("lfmmClass file:                 ", object@lfmmClass.file, "\n")
+        cat("zscore file:                    ", object@zscore.file,"\n")
         cat("number of latent factors:       ", object@K, "\n")
         cat("run number:                     ", object@run, "\n")
         cat("number of total iterations:     ", object@Niter, "\n")
@@ -192,11 +193,11 @@ setMethod("save.lfmmClass", signature(x="lfmmClass", file="character"),
 
 # remove
 
-setGeneric("remove.lfmmClass", function(file="character")NULL)
-setMethod("remove.lfmmClass", signature(file="character"),
-    function(file) {
-        cl = load.lfmmClass(file)
-        file.remove(cl@zscore.file)
+setGeneric("remove.lfmmClass", function(dir="character", file="character")NULL)
+setMethod("remove.lfmmClass", signature(dir="character", file="character"),
+    function(dir, file) {
+        cl = load.lfmmClass(paste(dir, file, sep = ""))
+        file.remove(paste(dir, cl@directory, cl@zscore.file, sep = ""))
         file.remove(file)
     }
 )

@@ -1,5 +1,8 @@
 import(methods)
 
+importFrom("stats", "median", "pchisq", "qchisq", "runif")
+importFrom("utils", "read.table", "unzip", "write.table", "zip")
+
 useDynLib(LEA, .registration=TRUE, .fixes = "R_") 
 #.registration = TRUE, .fixes = "R_")
 #R_ancestrymap2geno, R_ancestrymap2lfmm, R_ped2lfmm, R_ped2geno,
@@ -46,15 +49,24 @@ exportMethods(
         summary,
         load.snmfProject,
         remove.snmfProject,
+        import.snmfProject,
+        export.snmfProject,
+        combine.snmfProject,
         load.lfmmProject,
         remove.lfmmProject,
+        import.lfmmProject,
+        export.lfmmProject,
+        combine.lfmmProject,
         load.pcaProject,
         remove.pcaProject,
+        import.pcaProject,
+        export.pcaProject,
         Q,
         G,
         plot,
         z.scores,
         p.values,
+        adjusted.pvalues,
         mlog10p.values,
         cross.entropy,
         #inflationFactorEstimation,
