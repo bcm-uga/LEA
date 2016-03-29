@@ -1,7 +1,8 @@
 
 # create cl PCA
 setClass("pcaProject",
-    slots = c(directory="character", 
+    slots = c(projDir="character",
+        pcaDir = "character", 
         n="integer", L="integer", K="integer", 
         center="logical", scale="logical", 
         pcaProject.file ="character",
@@ -72,7 +73,8 @@ setMethod("$", "pcaProject",
 setGeneric("eigenvalues", function(object) matrix);
 setMethod("eigenvalues", "pcaProject",
     function (object) {
-        as.matrix(read.table(object@eigenvalue.file,sep="/"));
+        as.matrix(read.table(paste(object@projDir, object@pcaDir,
+            object@eigenvalue.file, sep="")));
     }
 )
 
@@ -81,7 +83,8 @@ setMethod("eigenvalues", "pcaProject",
 setGeneric("eigenvectors", function(object) matrix);
 setMethod("eigenvectors", "pcaProject",
     function (object) {
-        as.matrix(read.table(object@eigenvector.file));
+        as.matrix(read.table(paste(object@projDir, object@pcaDir, 
+            object@eigenvector.file, sep = "")));
     }
 )
 
@@ -90,7 +93,8 @@ setMethod("eigenvectors", "pcaProject",
 setGeneric("sdev", function(object) matrix);
 setMethod("sdev", "pcaProject",
     function (object) {
-        as.matrix(read.table(object@sdev.file));
+        as.matrix(read.table(paste(object@projDir, object@pcaDir, 
+            object@sdev.file, sep = "")));
     }
 )
 
@@ -99,7 +103,8 @@ setMethod("sdev", "pcaProject",
 setGeneric("projections", function(object) matrix);
 setMethod("projections", "pcaProject",
     function (object) {
-        as.matrix(read.table(object@projection.file));
+        as.matrix(read.table(paste(object@projDir, object@pcaDir, 
+            object@projection.file, sep = "")));
     }
 )
 
@@ -116,18 +121,14 @@ setMethod("plot", "pcaProject",
 setMethod("show", "pcaProject",
     function(object) {
         cat("* pca class *\n\n")
-        cat("file directory:                 ", object@directory, "\n")
+        cat("project directory:              ", object@projDir, "\n")
+        cat("pca result directory:           ", object@pcaDir, "\n")
         cat("input file:                     ", object@input.file, "\n")
-        cat("eigenvalue file:                ", 
-            basename(object@eigenvalue.file), "\n")
-        cat("eigenvector file:               ", 
-            basename(object@eigenvector.file), "\n")
-        cat("standard deviation file:        ", 
-            basename(object@sdev.file), "\n")
-        cat("projection file:                ", 
-            basename(object@projection.file), "\n")
-        cat("pcaProject file:                  ", 
-            basename(object@pcaProject.file), "\n")
+        cat("eigenvalue file:                ", object@eigenvalue.file, "\n")
+        cat("eigenvector file:               ", object@eigenvector.file, "\n")
+        cat("standard deviation file:        ", object@sdev.file, "\n")
+        cat("projection file:                ", object@projection.file, "\n")
+        cat("pcaProject file:                  ", object@pcaProject.file, "\n")
         cat("number of individuals:          ", object@n, "\n")
         cat("number of loci:                 ", object@L, "\n")
         cat("number of principal components: ", object@K, "\n")
@@ -182,22 +183,9 @@ setMethod("save.pcaProject", signature(x="pcaProject", file="character"),
 setGeneric("remove.pcaProject", function(file="character")NULL)
 setMethod("remove.pcaProject", signature(file="character"),
     function(file) {
-        cl = load.pcaProject(file)
-        # remove eigenvalues
-        file.remove(cl@eigenvalue.file)
-        # remove eigenvectors
-        file.remove(cl@eigenvector.file)
-        # remove standard deviations
-        file.remove(cl@sdev.file)
-        # remove projections
-        file.remove(cl@projection.file)
-        # remove tracyWidom file if it exists
-        tracywidom.file = setExtension(cl@eigenvalue.file, "tracywidom")
-        if (file.exists(tracywidom.file)) {
-            file.remove(tracywidom.file)
-        }
+        res = dget(file)
         # remove directory
-        unlink(cl@directory, recursive = TRUE)
+        unlink(paste(res@projDir, res@pcaDir, sep = ""), recursive = TRUE)
         # remove pcaProject file
         file.remove(file)
     }
@@ -209,7 +197,7 @@ setGeneric("tracy.widom", function(object) matrix)
 setMethod("tracy.widom", "pcaProject",
     function(object) {
 
-    eigenvalue.input.file = object@eigenvalue.file;
+    eigenvalue.input.file = paste(object@projDir, object@pcaDir, object@eigenvalue.file, sep = "");
 
     # output file 
     tracywidom.output.file = setExtension(eigenvalue.input.file, "tracywidom")
@@ -239,3 +227,62 @@ setMethod("tracy.widom", "pcaProject",
         
     }
 )
+
+# export
+
+setGeneric("export.pcaProject", function(file, force) character)
+setMethod("export.pcaProject", "character",
+    function(file, force = FALSE) {
+        object = load.pcaProject(file)
+        # entropy
+        force = test_logical("force", force, FALSE)
+
+        pathFile = paste(object@projDir, object@pcaProject.file, sep = "")
+        zipFile = paste(setExtension(pathFile, ""), "_pcaProject.zip", sep = "")
+
+        if (force == FALSE && file.exists(zipFile)) {
+            stop("An export with the same name already exists.\n",
+                 "If you want to overwrite it, please use the ",
+                 "option 'force == TRUE'\n\n") 
+        } else {
+            if (file.exists(zipFile))
+                file.remove(zipFile)
+            curDir = getwd()
+            setwd(object@projDir)
+            zip(normalizePath(zipFile), c(object@pcaProject.file,
+                paste(object@pcaDir, sep = ""), object@input.file))
+            setwd(curDir)
+            cat("An export of the pca project hase been created: ", currentDir(zipFile), "\n\n") 
+        } 
+        
+    }
+)
+
+# import
+
+setGeneric("import.pcaProject", function(zipFile, directory, force) attributes("pcaProject"))
+setMethod("import.pcaProject", "character",
+    function(zipFile, directory = getwd(), force = FALSE) {
+        # force
+        force = test_logical("force", force, FALSE)
+        # check that no file exists
+        tmp = basename(zipFile)
+        file = paste(normalizePath(directory), "/", substr(tmp, 1, 
+            nchar(tmp) - 15), ".pcaProject", sep = "")
+        if (!force && file.exists(file)) {
+            stop("A pca project with same name exists in the directory: \n",
+                 directory, ".\n",
+                 "If you want to overwrite it, please use the ",
+                 "option 'force == TRUE'\n\n") 
+        }
+        # unzip
+        unzip(zipFile, exdir = directory)
+        cat("The project has been imported into directory, ", directory, "\n\n") 
+        res = dget(file);
+        res@projDir = paste(normalizePath(directory), "/", sep = "")
+        dput(res, file)
+        # load the project
+        load.pcaProject(file)
+    } 
+)
+

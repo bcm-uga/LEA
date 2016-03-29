@@ -6,6 +6,12 @@
 \alias{load.snmfProject,character-method}
 \alias{remove.snmfProject}
 \alias{remove.snmfProject,character-method}
+\alias{import.snmfProject}
+\alias{import.snmfProject,character-method}
+\alias{export.snmfProject}
+\alias{export.snmfProject,character-method}
+\alias{combine.snmfProject}
+\alias{combine.snmfProject,character,character-method}
 \alias{show,snmfProject-method}
 \alias{show,snmfClass-method}
 \alias{summary,snmfProject-method}
@@ -132,6 +138,22 @@ The following methods can be applied to the object of class {snmfProject}:
     Erase a \code{snmfProject} object. Caution: All the files associated with 
     the object will be removed.
 }
+\item{export.snmfProject(file.snmfProject)}{
+    Create a zip file containing the full \code{snmfProject} object. It allows to move
+    the project to a new directory or a new computer (using import). If you want
+    to overwrite an existing export, use the option \code{force == TRUE}.
+}
+\item{import.snmfProject(file.snmfProject)}{
+    Import and load an \code{snmfProject} object from a zip file (made with the export 
+    function) into the chosen directory. If you want to overwrite an existing project,
+    use the option \code{force == TRUE}.
+}
+\item{combine.snmfProject(file.snmfProject, toCombine.snmfProject)}{
+    Combine \code{to.Combine.snmfProject} into \code{file.snmfProject}.
+    Caution: Only projects with runs coming from the same input file can be combined.
+    If the same input file has different names in the two projects, use the option
+    \code{force == TRUE}.
+}
 }
 \author{
     Eric Frichot
@@ -244,9 +266,21 @@ project = snmf("genotypes.geno", K = 4, tolerance = 0.0001)
 # An snmfProject can be load in a different session.
 project = load.snmfProject("genotypes.snmfProject") 
 
+# An snmfProject can be exported to be imported in another directory
+# or in another computer
+export.snmfProject("genotypes.snmfProject")
+dir.create("test/")
+#import
+newProject = import.snmfProject("genotypes_snmfProject.zip", "test/")
+# combine projects
+combinedProject = combine.snmfProject("genotypes.snmfProject", "test/genotypes.snmfProject")
+# remove
+remove.snmfProject("test/genotypes.snmfProject")
+
 # An snmfProject can be erased.
 # Caution: All the files associated with the project will be removed.
 remove.snmfProject("genotypes.snmfProject")
+
 }
 
 

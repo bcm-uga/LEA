@@ -4,11 +4,18 @@
 \alias{remove.lfmmProject}
 \alias{load.lfmmProject,character-method}
 \alias{remove.lfmmProject,character-method}
+\alias{import.lfmmProject}
+\alias{import.lfmmProject,character-method}
+\alias{export.lfmmProject}
+\alias{export.lfmmProject,character-method}
+\alias{combine.lfmmProject}
+\alias{combine.lfmmProject,character,character-method}
 \alias{show,lfmmProject-method}
 \alias{show,lfmmClass-method}
 \alias{summary,lfmmProject-method}
 \alias{z.scores,lfmmProject-method}
 \alias{p.values,lfmmProject-method}
+\alias{adjusted.pvalues,lfmmProject-method}
 \alias{mlog10p.values,lfmmProject-method}
 \alias{plot,lfmmProject-method}
 
@@ -123,6 +130,11 @@ The following methods can be applied to the object of class \code{lfmmProject}:
     Return the \code{lfmm} output vector of p-values for the chosen runs with K
     latent factors, the d-th variable and the all option.
 }
+\item{\code{\link{adjusted.pvalues}}}{
+    Return the output vector of adjusted p-values using the genomic control method
+    or the provided lambda inflation factor for the chosen runs with K
+    latent factors, the d-th variable and the all option.
+}
 \item{\code{\link{mlog10p.values}}}{
     Return the \code{lfmm} output vector of -log10(p-values) for the chosen 
     runs with K latent factors, the d-th variable and the all option.
@@ -135,6 +147,22 @@ The following methods can be applied to the object of class \code{lfmmProject}:
     Erase a \code{lfmmProject} object. Caution: All the files associated with 
     the object will be removed.
 }
+\item{export.lfmmProject(file.lfmmProject)}{
+    Create a zip file containing the full \code{lfmmProject} object. It allows to move
+    the project to a new directory or a new computer (using import). If you want
+    to overwrite an existing export, use the option \code{force == TRUE}.
+}
+\item{import.lfmmProject(file.lfmmProject)}{
+    Import and load an \code{lfmmProject} object from a zip file (made with the export 
+    function) into the chosen directory. If you want to overwrite an existing project,
+    use the option \code{force == TRUE}.
+}
+\item{combine.lfmmProject(file.lfmmProject, toCombine.lfmmProject)}{
+    Combine \code{to.Combine.lfmmProject} into \code{file.lfmmProject}.
+    Caution: Only projects with runs coming from the same input file can be combined.
+    If the same input file has different names in the two projects, use the option
+    \code{force == TRUE}.
+}
 }
 \author{
     Eric Frichot
@@ -143,9 +171,10 @@ The following methods can be applied to the object of class \code{lfmmProject}:
 \code{\link{lfmm.data}}
 \code{\link{z.scores}}
 \code{\link{p.values}}
+\code{\link{adjusted.pvalues}}
 \code{\link{mlog10p.values}}
 \code{\link{pca}}
-\code{\link{snmf}}
+\code{\link{lfmm}}
 \link{tutorial}
 }
 \references{
@@ -179,25 +208,16 @@ project = NULL
 project = lfmm("genotypes.lfmm", "gradients.env", K = 6, repetitions = 5, 
         project = "new")
 
-# get the zscores of each run for K = 6
-zs = z.scores(project, K = 6)
-
-# Combine the z-scores using the Stouffer method
-zs.stouffer = apply(zs, MARGIN = 1, median)
-
-# calculate the inflation factor
-lambda = median(zs.stouffer^2)/.456
-
-# calculate adjusted p-values
-cp.values = pchisq(zs.stouffer^2/lambda, df = 1, lower = FALSE)
+# get the adjusted p-values using the genomic control method
+res = adjusted.pvalues(project, K = 6)
 
 for (alpha in c(.05,.1,.15,.2)) {
     # expected FDR
     print(paste("expected FDR:", alpha))
-    L = length(cp.values)
+    L = length(res$p.values)
     # return a list of candidates with an expected FDR of alpha.
-    w = which(sort(cp.values) < alpha * (1:L) / L)
-    candidates = order(cp.values)[w]
+    w = which(sort(res$p.values) < alpha * (1:L) / L)
+    candidates = order(res$p.values)[w]
 
     # estimated FDR and True Positif
     estimated.FDR = length(which(candidates <= 350))/length(candidates)
@@ -221,6 +241,9 @@ z = z.scores(project, K = 6, run = 2)
 # get the p-values for the 2nd run for K = 6
 p = p.values(project, K = 6, run = 2)
 
+# get the adjusted p-values for for K = 6
+res = adjusted.pvalues(project, K = 6)
+
 # get the -log10(p-values) for the 2nd run for K = 6
 mp = mlog10p.values(project, K = 6, run = 2)
 
@@ -239,6 +262,17 @@ mp = mlog10p.values(project, K = 6, run = 2)
 
 # An lfmmProject can be load in a different session.
 project = load.lfmmProject("genotypes_gradients.lfmmProject")
+
+# An lfmmProject can be exported to be imported in another directory
+# or in another computer
+export.lfmmProject("genotypes_gradients.lfmmProject")
+dir.create("test/")
+#import
+newProject = import.lfmmProject("genotypes_gradients_lfmmProject.zip", "test/")
+# combine projects
+combinedProject = combine.lfmmProject("genotypes_gradients.lfmmProject", "test/genotypes_gradients.lfmmProject")
+# remove
+remove.lfmmProject("test/genotypes_gradients.lfmmProject")
 
 # An lfmmProject can be erased.
 # Caution: All the files associated with the project will be removed.

@@ -7,6 +7,10 @@
 \alias{load.pcaProject}
 \alias{eigenvalues,pcaProject-method}
 \alias{eigenvectors,pcaProject-method}
+\alias{import.pcaProject}
+\alias{import.pcaProject,character-method}
+\alias{export.pcaProject}
+\alias{export.pcaProject,character-method}
 \alias{projections,pcaProject-method}
 \alias{sdev,pcaProject-method}
 \alias{load.pcaProject,character-method}
@@ -86,6 +90,17 @@ by \code{pca}:
     Erase a \code{pcaProject} object. Caution: All the files associated with 
     the object will be removed.
 }
+\item{export.pcaProject(file.pcaProject)}{
+    Create a zip file containing the full \code{pcaProject} object. It allows to move
+    the project to a new directory or a new computer (using import). If you want
+    to overwrite an existing export, use the option \code{force == TRUE}.
+}
+\item{import.pcaProject(file.pcaProject)}{
+    Import and load an \code{pcaProject} object from a zip file (made with the export 
+    function) into the chosen directory. If you want to overwrite an existing project,
+    use the option \code{force == TRUE}.
+
+}
 }
 \author{
     Eric Frichot
@@ -159,6 +174,35 @@ plot(tw$percentage)
 
 # Display the p-values for the Tracy-Widom tests. 
 tw$pvalues
+
+##########################
+# Manage an pca project #
+##########################
+
+# All the file of pca for a given file are 
+# automatically saved into a pca project directory and a file.
+# The name of the pcaProject file is the same name as 
+# the name of the input file with a .pcaProject extension 
+# ("genotypes.pcaProject").
+# The name of the pcaProject directory is the same name as
+# the name of the input file with a .pca extension ("genotypes.pca/")
+# There is only one pca Project for each input file including all the runs.
+
+# An pcaProject can be load in a different session.
+project = load.pcaProject("genotypes.pcaProject") 
+
+# An pcaProject can be exported to be imported in another directory
+# or in another computer
+export.pcaProject("genotypes.pcaProject")
+dir.create("test/")
+#import
+newProject = import.pcaProject("genotypes_pcaProject.zip", "test/")
+# remove
+remove.pcaProject("test/genotypes.pcaProject")
+
+# An pcaProject can be erased.
+# Caution: All the files associated with the project will be removed.
+remove.pcaProject("genotypes.pcaProject")
 }
 
 

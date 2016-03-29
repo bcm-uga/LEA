@@ -99,10 +99,13 @@ project = snmf("genotypes_I.geno", K = 3, project = "new")
 
 # calculate the cross-entropy
 res = cross.entropy.estimation("genotypes.geno", K = 3, "genotypes_I.geno",
-    "./genotypes.snmf/K3/run1/genotypes_r1.3.Q", 
-    "./genotypes.snmf/K3/run1/genotypes_r1.3.G")
+    "./genotypes_I.snmf/K3/run1/genotypes_I_r1.3.Q", 
+    "./genotypes_I.snmf/K3/run1/genotypes_I_r1.3.G")
 
 # get the result
 res$masked.ce
 res$all.ce
+
+#remove project
+# remove.snmfProject("genotype_I.snmfProject")
 }

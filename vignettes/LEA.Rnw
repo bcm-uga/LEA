@@ -209,26 +209,16 @@ The inflation factor usually decreases with increasing values of $K$. To compute
 Testing all $K$ values in a large range, from 1 to 20 for example,  is generally useless. A careful analysis of population structure and estimates of the number of ancestral populations contributing to the genetic data indicates the range of values to be explored. If for example the {\tt snmf} or {\tt ADMIXTURE} programs estimate 5 ancestral populations, then running {\tt lfmm} $K = 4-7$ often provides inflation factors close to 1.0.
 
 
-\paragraph{Combining $z$-scores obtained from multiple runs.}  We suggest using the Fisher-Stouffer or a similar method to combine $z$-scores from multiple runs. In practice, we found that using the median $z$-scores of 5-10 runs and re-adjusting the $p$-values afterwards increase the power of {\tt lfmm} tests. This can be done by using the following sequence of {\tt R} commands. We can compute ajusted $p$-values using the the following commands. 
-
-Using a standard {\tt R} command, $z$-scores were combined using the median value.
-<<>>=
-# get the zscores of each run for K = 6
-zs = z.scores(project, K = 6)
-
-# Combine the z-scores using the Stouffer method
-zs.stouffer = apply(zs, MARGIN = 1, median)
-@
-
-A genomic inflation factor was computed.
-<<>>=
- lambda = median(zs^2)/.456
-@
+\paragraph{Combining $z$-scores obtained from multiple runs.}  We suggest using the Fisher-Stouffer or a similar method to combine $z$-scores from multiple runs. In practice, we found that using the median $z$-scores of 5-10 runs and re-adjusting the $p$-values afterwards increase the power of {\tt lfmm} tests. This can be done by using the {\tt LEA} function, {\tt adjusted.pvalues}.
 
 $p$-values were adjusted as follows
 <<>>=
 # calculate adjusted p-values
-cp.values = pchisq(zs.stouffer^2/lambda, df = 1, lower = FALSE)
+res = adjusted.pvalues(project, K = 6)
+
+cp.values = res$p.values
+
+gif = res$genomic.inflation.factor
 @
 
 \noindent

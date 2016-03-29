@@ -11,7 +11,7 @@
 #define READ_H
 
 // separator between elements
-#define SEP " \t\n"
+#define SEP " \t\r\n"
 
 // max size of an element (in char)
 #define MAX_LENGTH_NB_DOUBLE 23

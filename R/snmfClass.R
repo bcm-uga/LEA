@@ -52,19 +52,21 @@ setClass("snmfClass",
 
 # Qvalues
 
-setGeneric("Qvalues", function(object) matrix);
+setGeneric("Qvalues", function(object, directory) matrix);
 setMethod("Qvalues", "snmfClass",
-    function(object) {
-        R = as.matrix(read.table(object@Q.output.file));
+    function(object, directory) {
+        R = as.matrix(read.table(paste(directory, object@directory, 
+            object@Q.output.file, sep = "")));
     }
 )
 
 # Gvalues
 
-setGeneric("Gvalues", function(object) matrix);
+setGeneric("Gvalues", function(object, directory) matrix);
 setMethod("Gvalues", "snmfClass",
-    function(object) {
-        R = as.matrix(read.table(object@G.output.file));
+    function(object, directory) {
+        R = as.matrix(read.table(paste(directory, object@directory, 
+            object@G.output.file, sep = "")));
     }
 )
 
@@ -93,12 +95,9 @@ setMethod("show", "snmfClass",
     function(object) {
         cat("snmf class\n\n")
         cat("file directory:                  ", object@directory, "\n")
-        cat("Q output file:                   ", 
-            basename(object@Q.output.file), "\n")
-        cat("G output file:                   ", 
-            basename(object@G.output.file), "\n")
-        cat("snmfClass file:                  ", 
-            basename(object@snmfClass.file), "\n")
+        cat("Q output file:                   ", object@Q.output.file, "\n")
+        cat("G output file:                   ", object@G.output.file, "\n")
+        cat("snmfClass file:                  ", object@snmfClass.file, "\n")
         cat("number of ancestral populations: ", object@K, "\n")
         cat("run number:                      ", object@run, "\n")
         cat("regularization parameter:        ", object@alpha, "\n")
@@ -143,13 +142,13 @@ setMethod("save.snmfClass", signature(x="snmfClass", file="character"),
 
 # remove
 
-setGeneric("remove.snmfClass", function(file="character")NULL)
-setMethod("remove.snmfClass", signature(file="character"),
-    function(file) {
-        cl = load.snmfClass(file)
-        file.remove(cl@G.output.file)        
-        file.remove(cl@Q.output.file)        
-        file.remove(file)
+setGeneric("remove.snmfClass", function(dir="character", file="character")NULL)
+setMethod("remove.snmfClass", signature(dir="character", file="character"),
+    function(dir, file) {
+        cl = load.snmfClass(paste(dir, file, sep=""))
+        file.remove(paste(dir, cl@directory, cl@G.output.file, sep=""))        
+        file.remove(paste(dir, cl@directory, cl@Q.output.file, sep=""))        
+        file.remove(paste(dir, file, sep=""))
     }
 )
 

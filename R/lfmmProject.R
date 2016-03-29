@@ -1,6 +1,6 @@
 # create Class LFMM Project
 setClass("lfmmProject",
-    slots = c(lfmmProject.file = "character", directory="character", 
+    slots = c(lfmmProject.file = "character", projDir="character", lfmmDir = "character",
         input.file = "character", environment.file = "character", 
         runs = "list", K="integer", d="integer", all = "logical",
         lfmmClass.files = "vector", n="integer", L = "integer",
@@ -18,9 +18,41 @@ setMethod("addRun.lfmmProject", signature(project="lfmmProject",
         project@d = c(project@d, run@d)
         project@all = c(project@all, run@all)
         project@lfmmClass.files = c(project@lfmmClass.files, 
-            run@lfmmClass.file);
+            paste(run@directory, run@lfmmClass.file, sep = ""));
 
         return(project)
+    }
+)
+
+# adjusted-pvalues
+
+setGeneric("adjusted.pvalues", function(object, genomic.control, lambda, K, d, all, run) vector)
+setMethod("adjusted.pvalues", "lfmmProject",
+    function(object, genomic.control, lambda, K, d, all, run) {
+
+        # check for genomic control
+        if (missing(genomic.control)) {
+            genomic.control = TRUE
+        }
+
+        # check for lambda
+        if (missing(lambda)) {
+            lambda = 1.0
+        }
+
+        # calculate the z-scores
+        res = z.scores(object, K, d, all, run)
+
+        zs.median <- apply(res, MARGIN = 1, median)
+    
+        if (genomic.control)
+            gif <- median(zs.median^2)/qchisq(0.5, df=1)
+        else
+            gif <- lambda
+
+        adjusted.pvalues = pchisq(zs.median^2/gif, df = 1, lower.tail = FALSE)
+
+        return(list(p.values = adjusted.pvalues, genomic.inflation.factor = gif))
     }
 )
 
@@ -35,7 +67,7 @@ setMethod("addRun.lfmmProject", signature(project="lfmmProject",
 
 #listSlots_lfmmProject <- function()
 #{
-#c(    "snmfProject_file", "input_file", "runs", "K", "d", "all", 
+#c(    "lfmmProject_file", "input_file", "runs", "K", "d", "all", 
 # "lfmmClass_files")
 #}
 
@@ -112,7 +144,8 @@ setMethod("show", "lfmmProject",
         cat("lfmm Project\n\n")
         cat("lfmmProject file:                     ", object@lfmmProject.file,
             "\n")
-        cat("directory:                            ", object@directory, "\n")
+        cat("project directory:                    ", object@projDir, "\n")
+        cat("lfmm result directory:                ", object@lfmmDir, "\n")
         cat("date of creation:                     ", object@creationTime,
             "\n")
         cat("input file:                           ", object@input.file, "\n")
@@ -333,7 +366,8 @@ setMethod("mlog10p.values", "lfmmProject",
                 stop(paste("You chose run number ", run[i],". But only ",
                     length(r)," run(s) have been performed.", sep=""))
             }
-            res[,i] = mlog10pvalues(object@runs[[r[run[i]]]])        
+            res[,i] = mlog10pvalues(object@runs[[r[run[i]]]], 
+                paste(object@projDir, object@lfmmDir, sep = ""))        
         }
 
         return(res)
@@ -399,7 +433,8 @@ setMethod("p.values", "lfmmProject",
                 stop(paste("You chose run number ", run[i],". But only ",
                     length(r)," run(s) have been performed.", sep=""))
             }
-            res[,i] = pvalues(object@runs[[r[run[i]]]])        
+            res[,i] = pvalues(object@runs[[r[run[i]]]], 
+                paste(object@projDir, object@lfmmDir, sep = ""))        
         }
 
         return(res)
@@ -464,7 +499,8 @@ setMethod("z.scores", "lfmmProject",
                 stop(paste("You chose run number ", run[i],". But only ",
                     length(r)," run(s) have been performed.", sep=""))
             }
-            res[,i] = zscores(object@runs[[r[run[i]]]])        
+            res[,i] = zscores(object@runs[[r[run[i]]]], 
+                paste(object@projDir, object@lfmmDir, sep = ""))        
         }
 
         return(res)
@@ -483,7 +519,8 @@ setMethod("load.lfmmProject", "character",
         res = dget(file);
         if (length(res@lfmmClass.files) > 0) {
             for (r in 1:length(res@lfmmClass.files)) {
-                res@runs[[r]] = load.lfmmClass(res@lfmmClass.files[r])
+                res@runs[[r]] = load.lfmmClass(paste(res@projDir, res@lfmmDir,
+                    res@lfmmClass.files[r], sep = ""))
             }
         }
         return(res);
@@ -497,18 +534,20 @@ setMethod("save.lfmmProject", signature(object="lfmmProject"),
         file = object@lfmmProject.file;
         if (length(object@runs) > 0) {
             for (r in 1:length(object@runs)) {
-                save.lfmmClass(object@runs[[r]], object@lfmmClass.files[r])
+                save.lfmmClass(object@runs[[r]], paste(object@projDir, 
+                    object@lfmmDir, object@lfmmClass.files[r], sep = ""))
             }
         }
         object@runs = list()
-        dput(object, file) 
-        cat("The project is saved into :\n",currentDir(file),"\n\n");
+        pathFile = paste(object@projDir, file, sep = "")
+        dput(object, pathFile) 
+        cat("The project is saved into :\n",currentDir(pathFile),"\n\n");
         cat("To load the project, use:\n project = load.lfmmProject(\"",
-            currentDir(file),"\")\n\n",sep="");
+            currentDir(pathFile),"\")\n\n",sep="");
         cat("To remove the project, use:\n remove.lfmmProject(\"",
-            currentDir(file), "\")\n\n", sep="")
+            currentDir(pathFile), "\")\n\n", sep="")
 
-        object@lfmmProject.file;
+        pathFile
     }
 )
 
@@ -522,7 +561,7 @@ setMethod("remove.lfmmProject", "character",
 
         # load and remove
         res = dget(file);
-        unlink(res@directory, recursive = TRUE)
+        unlink(paste(res@projDir, res@lfmmDir, sep = ""), recursive = TRUE)
         file.remove(file)
     }
 )
@@ -532,3 +571,158 @@ setMethod("remove.lfmmProject", "character",
 #        function(object, K, run, d, all , type) {
 #    }
 #)
+
+# export
+
+setGeneric("export.lfmmProject", function(file, force) character)
+setMethod("export.lfmmProject", "character",
+    function(file, force = FALSE) {
+        object = load.lfmmProject(file)
+        # entropy
+        force = test_logical("force", force, FALSE)
+
+        pathFile = paste(object@projDir, object@lfmmProject.file, sep = "")
+        zipFile = paste(setExtension(pathFile, ""), "_lfmmProject.zip", sep = "")
+
+        if (force == FALSE && file.exists(zipFile)) {
+            stop("An export with the same name already exists.\n",
+                 "If you want to overwrite it, please use the ",
+                 "option 'force = TRUE'\n\n") 
+        } else {
+            if (file.exists(zipFile))
+                file.remove(zipFile)
+            curDir = getwd()
+            setwd(object@projDir)
+            zip(normalizePath(zipFile), c(object@lfmmProject.file,
+                paste(object@lfmmDir, sep = ""), object@input.file, object@environment.file))
+            setwd(curDir)
+            cat("An export of the lfmm project hase been created: ", currentDir(zipFile), "\n\n") 
+        } 
+        
+    }
+)
+
+# import
+
+setGeneric("import.lfmmProject", function(zipFile, directory, force) attributes("lfmmProject"))
+setMethod("import.lfmmProject", "character",
+    function(zipFile, directory = getwd(), force = FALSE) {
+        # force
+        force = test_logical("force", force, FALSE)
+        # check that no file exists
+        tmp = basename(zipFile)
+        file = paste(normalizePath(directory), "/", substr(tmp, 1, 
+            nchar(tmp) - 16), ".lfmmProject", sep = "")
+        if (!force && file.exists(file)) {
+            stop("A lfmm project with same name exists in the directory: \n",
+                 directory, ".\n",
+                 "If you want to overwrite it, please use the ",
+                 "option 'force == TRUE'\n\n") 
+        }
+        # unzip
+        unzip(zipFile, exdir = directory)
+        cat("The project has been imported into directory, ", directory, "\n\n") 
+        # modify the project directory
+        res = dget(file);
+        res@projDir = paste(normalizePath(directory), "/", sep = "")
+        res@creationTime = Sys.time()
+        dput(res, file)
+        # load the project
+        load.lfmmProject(file)
+    } 
+)
+
+# combine
+
+setGeneric("combine.lfmmProject", function(combined.file, file.to.combine, force) attributes("lfmmProject"))
+setMethod("combine.lfmmProject", signature(combined.file = "character", file.to.combine = "character"),
+    function(combined.file, file.to.combine, force = FALSE) {
+        to.combine = load.lfmmProject(file.to.combine)
+        combined = load.lfmmProject(combined.file)
+        # force
+        force = test_logical("force", force, FALSE)
+
+        # check that the projects are compatible
+        # check n
+        if (to.combine@n != combined@n) {
+            stop("The number of individuals (",combined@n," and ",to.combine@n,") are\n",
+            "different in the two projects. The two following projects cannot be\n",
+            "combined:", combined.file, "\n", file.to.combine, "\n\n")
+        # check L    
+        } else if (to.combine@L != combined@L) {
+            stop("The number of loci (",combined@L," and ",to.combine@L,") are\n", 
+            "different in the two projects. The two following projects cannot be\n",
+            "combined:", combined.file, "\n", file.to.combine, "\n\n")
+        # check D 
+        } else if (to.combine@D != combined@D) {
+            stop("The number of environmental variables (",combined@D," and ",to.combine@D,") are\n", 
+            "different in the two projects. The two following projects cannot be\n",
+            "combined:", combined.file, "\n", file.to.combine, "\n\n")
+        } 
+        # check input file name
+        if (!force && basename(to.combine@input.file) != basename(combined@input.file)) { 
+            stop("The names of the input file of the two projects are different:\n", 
+                 basename(to.combine@input.file), "\n, ", basename(combined@input.file), "\n",
+                 "Be cautious that only projects with the same input file can be\n",
+                 "combined. If you still want to combine them, please use the ",
+                 "option 'force == TRUE'\n\n") 
+        }
+        # check environment file
+        to.combine.C = read.env(paste(to.combine@projDir, to.combine@environment.file, sep = ""))
+        combined.C = read.env(paste(combined@projDir, to.combine@environment.file, sep = ""))
+        diff = sum(abs(to.combine.C - combined.C)/combined.C)/length(combined.C)
+        if (!force && diff > 0.01) {
+            stop("The two environment files seem to be different:\n",
+                 basename(to.combine@input.file), "\n, ", basename(combined@input.file), "\n",
+                 "Be cautious that only projects with the same input file can be\n",
+                 "combined. If you still want to combine them, please use the ",
+                 "option 'force == TRUE'\n\n") 
+        }
+        # let's go  
+        if (length(to.combine@runs) > 0) { 
+
+            list.re = NULL
+            for (r in 1:length(to.combine@runs)) {
+                list.re = c(list.re, length(combined@K) + to.combine@runs[[r]]@run)
+            }
+
+            for (r in 1:length(to.combine@runs)) {
+                to.combine.run = to.combine@runs[[r]]
+                combined.run = to.combine@runs[[r]]
+                k = combined.run@K
+                re = list.re[r]
+                # combine  
+                # create file directory
+                tmp  = basename(setExtension(basename(combined@input.file), ""))
+                combined.run@directory = paste("K", k, "/run", re, "/", sep="") 
+                dir.create(paste(combined@projDir, combined@lfmmDir, combined.run@directory, 
+                    sep = ""), showWarnings = FALSE, recursive = TRUE)
+                # lfmmClass.file
+                if (to.combine.run@all) {
+                    combined.run@lfmmClass.file = paste(tmp, "_r", re ,"_a", to.combine.run@d,".",k, 
+                        ".lfmmClass", sep = "")
+                } else {
+                    combined.run@lfmmClass.file = paste(tmp, "_r", re ,"_s", to.combine.run@d,".",k, 
+                        ".lfmmClass", sep = "")
+                }
+                # run
+                combined.run@run = re
+                # zscore
+                if (to.combine.run@all)
+                    combined.run@zscore.file = paste(tmp, "_r", re , "_a", to.combine.run@d, ".",k, ".zscore", sep="")
+                else     
+                    combined.run@zscore.file = paste(tmp, "_r", re , "_s", to.combine.run@d, ".",k, ".zscore", sep="")
+                file.copy(paste(to.combine@projDir, to.combine@lfmmDir, to.combine.run@directory, 
+                    to.combine.run@zscore.file, sep = ""), 
+                    paste(combined@projDir, combined@lfmmDir, combined.run@directory, 
+                    combined.run@zscore.file, sep = "")) 
+                # save run
+                save.lfmmClass(combined.run, paste(combined@projDir, combined@lfmmDir,
+                    combined.run@directory, combined.run@lfmmClass.file, sep = ""))
+                # save project
+                combined = addRun.lfmmProject(combined, combined.run)
+            }
+        }
+        save.lfmmProject(combined)
+    }
+)

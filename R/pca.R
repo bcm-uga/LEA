@@ -54,20 +54,21 @@ pca <- function(input.file,
 
     # save res 
     res = new("pcaProject");
-    res@directory = dir;
+    res@projDir = paste(dirname(normalizePath(input.file)), "/", sep = "")
+    res@pcaDir = paste(basename(setExtension(basename(input.file), ".pca/")), 
+        "/", sep = "")
     res@n = as.integer(resC$n);
     res@L = as.integer(resC$L);
     res@K = as.integer(resC$K);
     res@center = center;
     res@scale = scale;
-    res@input.file = input.file;
-    res@eigenvalue.file = normalizePath(eigenvalue.file);
-    res@eigenvector.file = normalizePath(eigenvector.file);
-    res@sdev.file = normalizePath(sdev.file);
-    res@projection.file = normalizePath(projection.file);
+    res@input.file = basename(input.file);
+    res@eigenvalue.file = basename(eigenvalue.file);
+    res@eigenvector.file = basename(eigenvector.file);
+    res@sdev.file = basename(sdev.file);
+    res@projection.file = basename(projection.file);
 
-    res@pcaProject.file = setExtension(paste(dirname(normalizePath(input.file)),
-        "/", basename(input.file), sep=""), ".pcaProject")
+    res@pcaProject.file = basename(setExtension(basename(input.file), ".pcaProject"))
     save.pcaProject(res, res@pcaProject.file); 
 
     res

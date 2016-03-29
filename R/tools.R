@@ -62,16 +62,23 @@ projectLfmmLoad <- function(input.file, environment.file, project)
         proj = new("lfmmProject")
         proj@creationTime = Sys.time()
         #files 
-        proj@input.file = normalizePath(input.file)
-        proj@environment.file = normalizePath(environment.file)
-        # directory
-        proj@directory = setExtension(projectName, ".lfmm/")
-        unlink(proj@directory, recursive = TRUE)
-        dir.create(proj@directory, showWarnings = FALSE)
-        # lfmmProject Files
-        proj@lfmmProject.file = projectName
-        save.lfmmProject(proj)
+        proj@input.file = basename(input.file)
+        proj@environment.file = basename(environment.file)
+        # projectDir
+        proj@projDir = paste(dirname(normalizePath(input.file)), "/", sep="") 
+        #lfmmDir
+        proj@lfmmDir = paste(basename(setExtension(paste(inp, "_", var, sep = ""), 
+            ".lfmm/")), "/", sep = "")
+        #lfmmDir
+        proj@lfmmProject.file = basename(setExtension(paste(basename(inp), "_", var, 
+            sep = ""), ".lfmmProject"))
 
+        # directory
+        directory = paste(proj@projDir, proj@lfmmDir, sep="")
+        unlink(directory, recursive = TRUE)
+        dir.create(directory, showWarnings = FALSE)
+
+        save.lfmmProject(proj)
     }
     return(proj)
 }
@@ -104,16 +111,21 @@ projectSnmfLoad <- function(input.file, project)
         proj = new("snmfProject")
         proj@creationTime = Sys.time()
         # files
-        proj@input.file = normalizePath(input.file)
-        # directory    
-        proj@directory = setExtension(paste(dirname(normalizePath(input.file)), 
-            "/", basename(input.file), sep=""), ".snmf/")
-        unlink(proj@directory, recursive = TRUE)
-        dir.create(proj@directory, showWarnings = FALSE)
+        proj@input.file = basename(input.file)
+        # projectDir
+        proj@projDir = paste(dirname(normalizePath(input.file)), "/", sep="") 
+        #snmfDir
+        proj@snmfDir = paste(basename(setExtension(basename(input.file), 
+            ".snmf/")), "/", sep = "")
         # snmfProject.file
-        proj@snmfProject.file = projectName
+        proj@snmfProject.file = basename(projectName)
+
+        # directory
+        directory = paste(proj@projDir, proj@snmfDir, sep="")
+        unlink(directory, recursive = TRUE)
+        dir.create(directory, showWarnings = FALSE)
         # masked
-        dir.create(paste(proj@directory, "masked/", sep=""), 
+        dir.create(paste(directory, "masked/", sep=""), 
             showWarnings = FALSE) 
         save.snmfProject(proj)
 
