@@ -194,11 +194,22 @@ project = load.pcaProject("genotypes.pcaProject")
 # An pcaProject can be exported to be imported in another directory
 # or in another computer
 export.pcaProject("genotypes.pcaProject")
-dir.create("test/")
+
+#ifndef windows
+dir.create("test", showWarnings = TRUE)
 #import
-newProject = import.pcaProject("genotypes_pcaProject.zip", "test/")
+newProject = import.pcaProject("genotypes_pcaProject.zip", "test")
 # remove
 remove.pcaProject("test/genotypes.pcaProject")
+#endif
+
+#ifdef windows
+# remove
+remove.pcaProject("genotypes.pcaProject")
+
+#import
+newProject = import.pcaProject("genotypes_pcaProject.zip")
+#endif
 
 # An pcaProject can be erased.
 # Caution: All the files associated with the project will be removed.

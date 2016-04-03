@@ -266,13 +266,27 @@ project = load.lfmmProject("genotypes_gradients.lfmmProject")
 # An lfmmProject can be exported to be imported in another directory
 # or in another computer
 export.lfmmProject("genotypes_gradients.lfmmProject")
-dir.create("test/")
+
+#ifndef windows
+dir.create("test", showWarnings = TRUE)
 #import
-newProject = import.lfmmProject("genotypes_gradients_lfmmProject.zip", "test/")
+newProject = import.lfmmProject("genotypes_gradients_lfmmProject.zip", "test")
+
 # combine projects
 combinedProject = combine.lfmmProject("genotypes_gradients.lfmmProject", "test/genotypes_gradients.lfmmProject")
+
 # remove
 remove.lfmmProject("test/genotypes_gradients.lfmmProject")
+#endif
+
+#ifdef windows
+# remove
+remove.lfmmProject("genotypes_gradients.lfmmProject")
+
+#import
+newProject = import.lfmmProject("genotypes_gradients_lfmmProject.zip")
+#endif
+
 
 # An lfmmProject can be erased.
 # Caution: All the files associated with the project will be removed.

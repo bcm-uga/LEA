@@ -269,13 +269,24 @@ project = load.snmfProject("genotypes.snmfProject")
 # An snmfProject can be exported to be imported in another directory
 # or in another computer
 export.snmfProject("genotypes.snmfProject")
-dir.create("test/")
+
+#ifndef windows
+dir.create("test", showWarnings = TRUE)
 #import
-newProject = import.snmfProject("genotypes_snmfProject.zip", "test/")
+newProject = import.snmfProject("genotypes_snmfProject.zip", "test")
 # combine projects
 combinedProject = combine.snmfProject("genotypes.snmfProject", "test/genotypes.snmfProject")
 # remove
 remove.snmfProject("test/genotypes.snmfProject")
+#endif
+
+#ifdef windows
+# remove
+remove.snmfProject("genotypes.snmfProject")
+
+#import
+newProject = import.snmfProject("genotypes_snmfProject.zip")
+#endif
 
 # An snmfProject can be erased.
 # Caution: All the files associated with the project will be removed.

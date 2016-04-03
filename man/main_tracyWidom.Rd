@@ -85,6 +85,9 @@ plot(tw$percentage)
 
 # Display the p-values for the Tracy-Widom tests. 
 tw$pvalues
+
+# remove pca Project
+remove.pcaProject("genotypes.pcaProject")
 }
 
 
