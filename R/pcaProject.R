@@ -232,10 +232,13 @@ setMethod("tracy.widom", "pcaProject",
 
 setGeneric("export.pcaProject", function(file, force) character)
 setMethod("export.pcaProject", "character",
-    function(file, force = FALSE) {
-        object = load.pcaProject(file)
+    function(file, force) {
+        # file 
+        test_character("file", file, NULL);
         # entropy
         force = test_logical("force", force, FALSE)
+
+        object = load.pcaProject(file)
 
         pathFile = paste(object@projDir, object@pcaProject.file, sep = "")
         zipFile = paste(setExtension(pathFile, ""), "_pcaProject.zip", sep = "")
@@ -249,7 +252,7 @@ setMethod("export.pcaProject", "character",
                 file.remove(zipFile)
             curDir = getwd()
             setwd(object@projDir)
-            zip(normalizePath(zipFile), c(object@pcaProject.file,
+            zip(zipFile, c(object@pcaProject.file,
                 paste(object@pcaDir, sep = ""), object@input.file))
             setwd(curDir)
             cat("An export of the pca project hase been created: ", currentDir(zipFile), "\n\n") 
@@ -262,9 +265,14 @@ setMethod("export.pcaProject", "character",
 
 setGeneric("import.pcaProject", function(zipFile, directory, force) attributes("pcaProject"))
 setMethod("import.pcaProject", "character",
-    function(zipFile, directory = getwd(), force = FALSE) {
+    function(zipFile, directory, force) {
+        # file 
+        zipFile = test_character("zipfile", zipFile, NULL);
+        # directory
+        directory = test_character("directory", directory, getwd())
         # force
         force = test_logical("force", force, FALSE)
+
         # check that no file exists
         tmp = basename(zipFile)
         file = paste(normalizePath(directory), "/", substr(tmp, 1, 

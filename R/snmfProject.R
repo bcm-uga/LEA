@@ -324,6 +324,9 @@ setMethod("save.snmfProject", signature(object="snmfProject"),
 setGeneric("remove.snmfProject", function(file="character") NULL)
 setMethod("remove.snmfProject", "character",
     function(file) {
+        # file
+        test_character("file", file, NULL);
+
         res = dget(file);
         unlink(paste(res@projDir, res@snmfDir, sep = ""), recursive = TRUE)
         file.remove(file)
@@ -334,10 +337,13 @@ setMethod("remove.snmfProject", "character",
 
 setGeneric("export.snmfProject", function(file, force) character)
 setMethod("export.snmfProject", "character",
-    function(file, force = FALSE) {
-        object = load.snmfProject(file)
+    function(file, force) {
+        # file 
+        test_character("file", file, NULL);
         # force
         force = test_logical("force", force, FALSE)
+
+        object = load.snmfProject(file)
 
         pathFile = paste(object@projDir, object@snmfProject.file, sep = "")
         zipFile = paste(setExtension(pathFile, ""), "_snmfProject.zip", sep = "")
@@ -351,7 +357,7 @@ setMethod("export.snmfProject", "character",
                 file.remove(zipFile)
             curDir = getwd()
             setwd(object@projDir)
-            zip(normalizePath(zipFile), c(object@snmfProject.file,
+            zip(zipFile, c(object@snmfProject.file,
                 paste(object@snmfDir, sep = ""), object@input.file))
             setwd(curDir)
             cat("An export of the snmf project hase been created: ", currentDir(zipFile), "\n\n") 
@@ -364,9 +370,14 @@ setMethod("export.snmfProject", "character",
 
 setGeneric("import.snmfProject", function(zipFile, directory, force) attributes("snmfProject"))
 setMethod("import.snmfProject", "character",
-    function(zipFile, directory = getwd(), force = FALSE) {
+    function(zipFile, directory, force) {
+        #file 
+        zipFile = test_character("zipfile", zipFile, NULL);
+        # directory
+        directory = test_character("directory", directory, getwd())
         # force
         force = test_logical("force", force, FALSE)
+
         # check that no file exists
         tmp = basename(zipFile)
         file = paste(normalizePath(directory), "/", substr(tmp, 1, 
@@ -395,11 +406,16 @@ setMethod("import.snmfProject", "character",
 
 setGeneric("combine.snmfProject", function(combined.file, file.to.combine, force) attributes("snmfProject"))
 setMethod("combine.snmfProject", signature(combined.file = "character", file.to.combine = "character"),
-    function(combined.file, file.to.combine, force = FALSE) {
-        to.combine = load.snmfProject(file.to.combine)
-        combined = load.snmfProject(combined.file)
+    function(combined.file, file.to.combine, force) {
+        # file 
+        test_character("combined.file", combined.file, NULL);
+        # file 
+        test_character("file.to.combine", file.to.combine, NULL);
         # force
         force = test_logical("force", force, FALSE)
+
+        to.combine = load.snmfProject(file.to.combine)
+        combined = load.snmfProject(combined.file)
 
         # check that the projects are compatible
         # check n

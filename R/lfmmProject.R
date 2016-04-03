@@ -515,6 +515,7 @@ setMethod("load.lfmmProject", "character",
     function(file) {
         # file 
         test_character("file", file, NULL);
+
         # load the project
         res = dget(file);
         if (length(res@lfmmClass.files) > 0) {
@@ -566,20 +567,17 @@ setMethod("remove.lfmmProject", "character",
     }
 )
 
-#setGeneric("inflationFactorEstimation", function(object, ...) vector)
-#setMethod("inflationFactorEstimation", "lfmmProject",
-#        function(object, K, run, d, all , type) {
-#    }
-#)
-
 # export
 
 setGeneric("export.lfmmProject", function(file, force) character)
 setMethod("export.lfmmProject", "character",
-    function(file, force = FALSE) {
-        object = load.lfmmProject(file)
+    function(file, force) {
+        # file 
+        test_character("file", file, NULL);
         # entropy
         force = test_logical("force", force, FALSE)
+
+        object = load.lfmmProject(file)
 
         pathFile = paste(object@projDir, object@lfmmProject.file, sep = "")
         zipFile = paste(setExtension(pathFile, ""), "_lfmmProject.zip", sep = "")
@@ -593,7 +591,7 @@ setMethod("export.lfmmProject", "character",
                 file.remove(zipFile)
             curDir = getwd()
             setwd(object@projDir)
-            zip(normalizePath(zipFile), c(object@lfmmProject.file,
+            zip(zipFile, c(object@lfmmProject.file,
                 paste(object@lfmmDir, sep = ""), object@input.file, object@environment.file))
             setwd(curDir)
             cat("An export of the lfmm project hase been created: ", currentDir(zipFile), "\n\n") 
@@ -606,9 +604,14 @@ setMethod("export.lfmmProject", "character",
 
 setGeneric("import.lfmmProject", function(zipFile, directory, force) attributes("lfmmProject"))
 setMethod("import.lfmmProject", "character",
-    function(zipFile, directory = getwd(), force = FALSE) {
+    function(zipFile, directory, force) {
+        # file 
+        zipFile = test_character("zipfile", zipFile, NULL);
+        # directory
+        directory = test_character("directory", directory, getwd())
         # force
         force = test_logical("force", force, FALSE)
+
         # check that no file exists
         tmp = basename(zipFile)
         file = paste(normalizePath(directory), "/", substr(tmp, 1, 
@@ -636,12 +639,16 @@ setMethod("import.lfmmProject", "character",
 
 setGeneric("combine.lfmmProject", function(combined.file, file.to.combine, force) attributes("lfmmProject"))
 setMethod("combine.lfmmProject", signature(combined.file = "character", file.to.combine = "character"),
-    function(combined.file, file.to.combine, force = FALSE) {
-        to.combine = load.lfmmProject(file.to.combine)
-        combined = load.lfmmProject(combined.file)
+    function(combined.file, file.to.combine, force) {
+        # file 
+        test_character("combined.file", combined.file, NULL);
+        # file 
+        test_character("file.to.combine", file.to.combine, NULL);
         # force
         force = test_logical("force", force, FALSE)
 
+        to.combine = load.lfmmProject(file.to.combine)
+        combined = load.lfmmProject(combined.file)
         # check that the projects are compatible
         # check n
         if (to.combine@n != combined@n) {

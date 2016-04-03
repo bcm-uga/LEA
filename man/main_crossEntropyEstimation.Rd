@@ -107,5 +107,5 @@ res$masked.ce
 res$all.ce
 
 #remove project
-# remove.snmfProject("genotype_I.snmfProject")
+remove.snmfProject("genotypes_I.snmfProject")
 }

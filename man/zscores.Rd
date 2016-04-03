@@ -70,6 +70,9 @@ z = z.scores(project, K = 3)
 
 # get the z-scores for the 2nd run for K =3
 z = z.scores(project, K = 3, run = 2)
+
+# remove
+remove.lfmmProject("genotypes_gradients.lfmmProject")
 }
 
 
