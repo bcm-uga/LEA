@@ -1,0 +1,37 @@
+OBJECTS.main = R_LFMM.o R_crossEntropy.o R_createDataSet.o R_sNMF.o R_ancestrymap2geno.o R_ancestrymap2lfmm.o R_geno2lfmm.o R_lfmm2geno.o R_pca.o R_ped2geno.o R_ped2lfmm.o R_vcf2geno.o R_tracyWidom.o R_init_LEA.o
+
+OBJECTS.bituint = bituint/bituint.o bituint/calc_bituint.o bituint/io_geno_bituint.o bituint/slice_bituint.o bituint/thread_bituint.o
+
+OBJECTS.convert = convert/ancestrymap.o convert/geno.o convert/ped.o convert/vcf2geno.o convert/geno2lfmm.o convert/lfmm2geno.o convert/register_convert.o
+
+OBJECTS.createDataSet = createDataSet/createDataSet.o createDataSet/error_cds.o createDataSet/print_cds.o createDataSet/register_cds.o
+
+OBJECTS.crossEntropy = crossEntropy/crossEntropy.o crossEntropy/error_ce.o crossEntropy/print_ce.o crossEntropy/register_ce.o
+
+OBJECTS.io = io/io_data_double.o io/io_data_float.o io/io_data_int.o io/io_error.o io/io_tools.o io/print_bar.o
+
+OBJECTS.LFMM = LFMM/beta.o LFMM/error_lfmm.o LFMM/lfmm_k0.o LFMM/slice_lfmm.o LFMM/U.o LFMM/beta_k0.o LFMM/lfmm_algo.o LFMM/print_lfmm.o LFMM/thread_lfmm.o LFMM/V.o LFMM/data_lfmm.o LFMM/LFMM.o LFMM/register_lfmm.o LFMM/thread_var.o
+
+OBJECTS.matrix = matrix/cholesky.o matrix/error_matrix.o matrix/normalize.o matrix/slice_matrix.o matrix/data.o matrix/inverse.o matrix/rand.o matrix/sylvester.o matrix/diagonalize.o matrix/matrix.o matrix/random_projection.o matrix/thread_matrix.o
+
+OBJECTS.nnlsm = nnlsm/blockpivot.o nnlsm/nnlsm.o nnlsm/solvenormaleqcomb.o nnlsm/sort.o
+
+OBJECTS.pca = pca/calc_cov.o pca/error_pca.o pca/pca.o pca/print_pca.o pca/register_pca.o
+
+OBJECTS.sNMF = sNMF/als.o sNMF/als_k1.o sNMF/criteria.o sNMF/print_snmf.o sNMF/sNMF.o sNMF/thread_Q.o sNMF/als_F.o sNMF/als_Q.o sNMF/error_snmf.o sNMF/register_snmf.o sNMF/thread_F.o sNMF/thread_snmf.o
+
+OBJECTS.stats = stats/beta_distribution.o stats/gamma_density.o stats/ln_beta_function.o stats/beta_function.o stats/gamma_distribution.o stats/ln_gamma_function.o stats/entire_incomplete_gamma_function.o stats/gamma_dist_tables.o stats/student_t_distribution.o stats/factorial.o stats/gamma_function.o
+
+OBJECTS.tracyWidom = tracyWidom/error_tracyWidom.o tracyWidom/register_tracyWidom.o tracyWidom/print_tracyWidom.o tracyWidom/tracyWidom.o
+
+OBJECTS = $(OBJECTS.main) $(OBJECTS.bituint) $(OBJECTS.convert) $(OBJECTS.createDataSet) $(OBJECTS.crossEntropy) $(OBJECTS.io) $(OBJECTS.LFMM) $(OBJECTS.matrix) $(OBJECTS.nnlsm) $(OBJECTS.pca) $(OBJECTS.sNMF) $(OBJECTS.stats) $(OBJECTS.tracyWidom) 
+
+PKG_CPPFLAGS=-I.
+
+PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
+
+all: $(SHLIB)
+
+clean:
+	@rm -f $(OBJECTS)
+
