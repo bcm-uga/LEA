@@ -1,0 +1,267 @@
+%\VignetteIndexEntry{LEA: An R Package for Landscape and Ecological Association Studies}
+
+\documentclass[11pt,a4paper,oneside]{article}
+
+\usepackage{natbib}
+
+\begin{document}
+
+\title{{\tt LEA}: An {\tt R} Package for Landscape and Ecological Association Studies}
+\author{Eric Frichot and Olivier Fran\c{c}ois \\ 
+Universit\'e Joseph Fourier Grenoble 1,\\Centre National de la Recherche Scientifique, \\
+TIMC-IMAG UMR 5525, Grenoble, 38042, France.
+}
+\date{}
+\maketitle
+\tableofcontents
+
+\section{Overview}
+{\tt LEA} \citep{Frichot_2015} is an {\tt R} package dedicated to landscape genomics and
+    ecological association tests. {\tt LEA} can run analyses of population structure
+    and genome scans for local adaptation. It includes statistical methods for
+    estimating ancestry coefficients from large genotypic matrices and
+    evaluating the number of ancestral populations ({\tt snmf}, pca); and identifying
+    genetic polymorphisms that exhibit high correlation with some environmental
+    gradient or with the variables used as proxies for ecological pressures
+    ({\tt lfmm}), and controlling the false discovery rate. {\tt LEA} is mainly based on
+    optimized C programs that can scale with the dimension of very large data
+    sets.
+
+\section{Introduction} 
+The goal of this tutorial is to give an overview of {\tt LEA} functionalities.
+\newline
+\newline
+One specifity of the {\tt LEA} package is to be able to handle very large population 
+genetic data sets. Genomic data are never loaded into the {\tt R} memory, and they 
+are processed using fast C codes wrapped into the {\tt R} code. For this reason, most
+of the {\tt LEA} functions use character strings containing paths to input files as 
+arguments.
+\newline
+\newline
+As some functions may take several hours for very large datasets, nobody wants 
+to erase their results when quitting R. That is why output files are written 
+into text files that can be read by {\tt LEA} after each run. We advise creating a 
+working directory containing your data when you start using {\tt LEA}. It is assumed
+that two files with the same name and a different extension in the same 
+directory contain the same data matrix in different formats.
+
+<<results=hide>>=
+# creation of a directory for the LEA analyses
+dir.create("LEA_analyses")
+
+# set this new directory as the working directory
+setwd("LEA_analyses")
+@
+
+\subsection{Preparing the data}
+The {\tt R} package {\tt LEA} can handle several classical formats for input files of genotypic matrices. More specifically, the package uses the {\tt lfmm} and {\tt geno} formats, and provides functions  to convert from {\tt ped}, {\tt vcf}, and {\tt ancestrymap} formats. While the {\tt lfmm} and {\tt geno} formats usually encode SNP data, those formats can also be used for coding amplification fragment length polymorphisms and microsatellite markers. In addition to genotypic matrices, {\tt LEA} can also process allele frequency data when they are encoded in the {\tt lfmm} formats. Ecological variables must be formatted in the {\tt env} format used by the computer program {\tt lfmm} \citep{Frichot_2013}.
+\newline
+\newline
+The {\tt LEA} package can handle missing data, but the algorithm used 
+for genotype imputation is basic. We encourage users having more than 10 
+missing genotypes in their data to input the missing data issue by using matrix
+completion or genotype imputation programs such as IMPUTE2 or MENDEL-IMPUTE
+before starting their analyses with {\tt LEA}. Ecological data must be prepared 
+using the env format. To decide which variables should be used among a large 
+number of ecological indicators (eg, climatic variables), we suggest that users
+summarize their data using linear combinations of those indicators. Considering
+principal component analysis (or similar approaches) and using the first 
+components as new ecological variables is one of these approaches.
+\newline
+\newline
+The tutorial data set  is composed of a genotypic matrix called tutorial.R with
+50 individuals for 400 SNPs. The last 50 SNPs are correlated with an 
+environmental variable called tutorial.C. This dataset is a subset of the 
+dataset displayed in the note associated with the package \citep{Frichot_2015}. 
+
+<<results=hide>>=
+library(LEA)
+# Creation of the genotypic file "genotypes.lfmm"
+# with 400 SNPs for 50 individuals.
+data("tutorial")
+# in the lfmm format
+write.lfmm(tutorial.R, "genotypes.lfmm")
+# in the geno format
+write.geno(tutorial.R, "genotypes.geno")
+# creation of the environment file, gradient.env.
+# It contains 1 environmental variable for 50 individuals.
+write.env(tutorial.C, "gradients.env")
+@
+
+\section{Analysis of population structure}
+
+The {\tt R} package {\tt LEA} implements two classical approaches for the estimation of population genetic structure: principal component analysis (pca) and admixture analysis \citep{Patterson_2006, Pritchard_2000a}. The algorithms programmed in {\tt LEA} are improved versions of pca and admixture analysis able to process very large genotypic matrices efficiently.
+
+\subsection{Principal Component Analysis}
+
+The {\tt LEA} function {\tt pca} computes the scores of a pca for a genotypic matrix, and returns a scree-plot for the eigenvalues of the sample covariance matrix. Using {\tt pca}, an object of class {\tt pcaProject} is created. This object contains a path to the files storing eigenvectors, eigenvalues and projections. 
+
+<<results=hide>>=
+# run of pca
+# Available options, K (the number of PCs calculated), 
+#                    center and scale. 
+# Creation of   genotypes.pcaProject - the pcaProject object.
+#               a directory genotypes.pca containing:
+# Create files: genotypes.eigenvalues - eigenvalues,        
+#               genotypes.eigenvectors - eigenvectors,
+#               genotypes.sdev - standard deviations,
+#               genotypes.projections - projections,
+# Create a pcaProject object: pc.
+pc = pca("genotypes.lfmm", scale = TRUE)
+@
+\noindent
+The number of significant components can be evaluated using graphical methods based on the scree-plot (Figure 1) or computing Tracy-Widom tests with the {\tt LEA} function {\tt tracy.widom} \citep{Patterson_2006}.
+
+<<results=hide>>=
+# Perfom Tracy-Widom tests on all eigenvalues.
+# create file: tuto.tracyWidom - tracy-widom test information.  
+tw = tracy.widom(pc)
+@
+
+<<>>=
+# display the p-values for the Tracy-Widom tests. 
+tw$pvalues[1:10]
+@
+
+\begin{figure}[h!]
+    \centering
+<<fig=true, width=4, height=4, echo=true>>=
+# plot the percentage of variance explained by each component
+plot(tw$percentage)
+@
+\caption{plot of the percentage of variance explained by each component}
+\end{figure}
+
+
+\newpage
+
+\subsection{Inference of individual admixture coefficients using {\tt snmf}}
+
+Similar to Bayesian clustering programs, {\tt LEA} includes an {\tt R} function to estimate individual admixture coefficients from the genotypic matrix \citep{Pritchard_2000a, Francois_2010}. Assuming $K$ ancestral populations, the {\tt R} function {\tt snmf} provides least-squares estimates of ancestry proportions \citep{Frichot_2014}. 
+
+<<results=hide>>=
+# main options, K: (the number of ancestral populations), 
+#        entropy: calculate the cross-entropy criterion, 
+#        CPU: the number of CPUs.
+
+# Runs with K between 1 and 10 with cross-entropy and 10 repetitions.
+project = NULL
+project = snmf("genotypes.geno", K=1:10, entropy = TRUE, repetitions = 10,
+    project = "new")
+@
+\noindent
+The {\tt snmf} function also estimates an entropy criterion that evaluates the quality of fit of the statistical model to the data using a cross-validation technique (Figure 2). The entropy criterion can help choosing the number of ancestral populations that best explains the genotypic data \citep{Alexander_2011, Frichot_2014}. 
+
+\begin{figure}[h!]
+    \centering
+<<fig=true, width=4, height=4, echo=true>>=
+# plot cross-entropy criterion of all runs of the project
+plot(project, lwd = 5, col = "red", pch=1)
+@
+\caption{Value of the cross-entropy criterion as a function
+of the number of factors in {\tt snmf}}
+\end{figure}
+
+<<>>=
+# get the cross-entropy of each run for K = 4
+ce = cross.entropy(project, K = 4)
+
+# select the run with the lowest cross-entropy
+best = which.min(ce)
+@
+
+\noindent
+The number of ancestral population is closely linked to the number of principal components that explain variation in the genomic data. Both numbers can help determining the number of latent factors when correcting for confounding effects due to population structure in ecological association tests.
+
+\section{Ecological associations tests using lfmm}
+
+The {\tt R} package {\tt LEA} performs ecological association tests based on latent factor mixed models ({\tt LFMM}, \citealt{Frichot_2013}). Let $G$ denote the genotypic matrix, storing allele frequencies for each individual at each locus, and let $X$ denote a set of $d$ ecological variables. LFMMs consider genotypic matrix entries as response variables in a linear regression model
+\begin{equation}
+ G_{i\ell} = \mu_\ell + \beta_{\ell}^TX_{i} + U_i^TV_\ell + \epsilon_{i\ell} \, ,
+ \end{equation}
+where $\mu_\ell$ is a locus specific effect, $\beta_\ell$ is a $d$-dimensional vector of regression coefficients, $U_i$ contains $K$ latent factors, and $V_\ell$ contains their corresponding loadings ($i$ stands for an individual and $\ell$ for a locus). The residual terms, $\epsilon_{i\ell}$, are statistically independent Gaussian variables with mean zero and variance $\sigma^2$.
+ In latent factor models, associations between ecological variables and allele frequencies can be tested while estimating unobserved latent factors that model confounding effects. In principle, the latent factors include levels of population structure due to shared demographic history or background genetic variation. After correction for confounding effects, significant association between allele frequencies and an observed ecological variable is often interpreted as evidence for selection at a particular locus.
+
+
+\paragraph{The run.}  The {\tt lfmm} program is based on a stochastic algorithm (MCMC) which cannot provide exact results. We recommend using large number of cycles (e.g., {\tt -i 10000}) and the burn-in period should set at least to one-half of the total number of cycles ({\tt -b 5000}). We have noticed that the program results are sensitive to the run-length parameter when data sets have relatively small sizes (eg, a few hundreds of individuals, a few thousands of loci). We recommend increasing  the burn-in period and the total number of cycles in this situation.
+
+
+<<results=hide>>=
+# main options, K: (the number of latent factors), 
+#           CPU: the number of CPUs.
+
+# Runs with K = 6 and 5 repetitions.
+# The runs are composed of 6000 iterations including 3000 iterations
+# for burnin.
+# around 20 seconds per run.
+project = NULL
+project = lfmm("genotypes.lfmm", "gradients.env", K = 6, repetitions = 5, 
+        project = "new")
+@
+
+\paragraph{Deciding the number of latent factors.} Deciding an appropriate value for the number of latent factors in {\tt lfmm} can be based on the analysis of histograms of test $p$-values. Here, the objective is to control the false discovery rate while keeping reasonable power to reject the null hypothesis.  To choose the number of factors, we suggest using the genomic inflation factor. According to Devlin and Roeder (1999), this quantity is defined  as
+$$
+\lambda = {\rm median}( z^2 ) /0.456 \, . 
+$$
+The inflation factor usually decreases with increasing values of $K$. To compute the genomic inflation factor, we recommend using several runs for each value of $K$ and taking the median or the mean of the  $\lambda$ values obtained from the above formula (use 5 to 10 runs, see our script below).  Choosing values of $K$ for which the estimate of $\lambda$ is close to (or slightly below) 1.0 warrants that the FDR can be controlled efficiently.\\
+\\
+\noindent
+Testing all $K$ values in a large range, from 1 to 20 for example,  is generally useless. A careful analysis of population structure and estimates of the number of ancestral populations contributing to the genetic data indicates the range of values to be explored. If for example the {\tt snmf} or {\tt ADMIXTURE} programs estimate 5 ancestral populations, then running {\tt lfmm} $K = 4-7$ often provides inflation factors close to 1.0.
+
+
+\paragraph{Combining $z$-scores obtained from multiple runs.}  We suggest using the Fisher-Stouffer or a similar method to combine $z$-scores from multiple runs. In practice, we found that using the median $z$-scores of 5-10 runs and re-adjusting the $p$-values afterwards increase the power of {\tt lfmm} tests. This can be done by using the {\tt LEA} function, {\tt adjusted.pvalues}.
+
+$p$-values were adjusted as follows
+<<>>=
+# calculate adjusted p-values
+res = adjusted.pvalues(project, K = 6)
+
+cp.values = res$p.values
+
+gif = res$genomic.inflation.factor
+@
+
+\noindent
+To adjust $p$-values for multiple testing issues, we used the 
+Benjamini-Hochberg procedure with expected levels of FDR equal to 
+$q = 5 \%$, $10 \%$, $15 \%$ and $20 \%$ respectively \citep{Benjamini_1995}.
+The lists of candidate loci is given by
+<<>>=
+for (alpha in c(.05,.1,.15,.2)) {
+    # expected FDR
+    print(paste("expected FDR:", alpha))
+    L = length(cp.values)
+    # return a list of candidates with an expected FDR of alpha.
+    w = which(sort(cp.values) < alpha * (1:L) / L)
+    candidates = order(cp.values)[w]
+
+    # estimated FDR and True Positif
+    estimated.FDR = length(which(candidates <= 350))/length(candidates)
+    estimated.TP = length(which(candidates > 350))/50
+    print(paste("FDR:", estimated.FDR, "True Positive:", estimated.TP))
+}
+@
+
+
+<<echo=false, results=hide>>=
+# Copy of the pdf figures in the previous directory 
+# for the creation of the vignette.
+file.copy(list.files(".", pattern = ".pdf"), "..")
+@
+
+\section{Session info}
+Here is the output of sessionInfo on the system on which this document was compiled:
+
+\begin{itemize}\raggedright
+\item R version 3.1.2 (2014-10-31), \verb|x86_64-pc-linux-gnu|
+\item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=en_US.UTF-8|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
+\item Base packages: base, datasets, graphics, grDevices, methods,
+stats, utils
+\item Loaded via a namespace (and not attached): tools~3.1.2
+\end{itemize}
+
+
+\bibliographystyle{cse}
+\bibliography{biblio}
+
+\end{document}
