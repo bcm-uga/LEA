@@ -44,27 +44,24 @@ data("tutorial")
 dat = as.numeric(tutorial.R)
 dat[sample(1:length(dat), 100)] <-  9
 dat <- matrix(dat, nrow = 50, ncol = 400 )
-write.geno(dat, "genotypes.geno")
+write.lfmm(dat, "genotypes.lfmm")
 
 ################
 # running snmf #
 ################
 
-project = snmf("genotypes.geno", K = 4, 
+project = snmf("genotypes.lfmm", K = 4, 
         entropy = TRUE, repetitions = 10,
         project = "new")
-
-# get the cross-entropy value for each run 
-ce = cross.entropy(project, K = 4)
-
+        
 # select the run with the lowest cross-entropy value
-best = which.min(ce)
+best = which.min(cross.entropy(project, K = 4)
 
 # Impute the missing genotypes
 impute(project, "genotypes.lfmm", method = 'mode', K = 4, run = best)
 
 # Compare with truth: proportion of correct imputation results
-mean( tutorial.R[dat == 9]   == read.lfmm("genotypes.lfmm_imputed.lfmm")[dat == 9] )
+mean( tutorial.R[dat == 9] == read.lfmm("genotypes.lfmm_imputed.lfmm")[dat == 9] )
 
 }
 
