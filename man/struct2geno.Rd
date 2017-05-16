@@ -25,7 +25,7 @@ by rescaling the chi-squared test statistics using the \code{lambda} parameter.
 }
 }
 \value{
-NULL. Output files in the 'geno' and the 'lfmm' format recording individual genotypes for each allele at each marker.
+NULL. Output files in the 'geno' and the 'lfmm' format record individual genotypes for each allele at each marker.
 }
 \author{
     Olivier François
@@ -43,14 +43,17 @@ NULL. Output files in the 'geno' and the 'lfmm' format recording individual geno
 
 library(LEA)
 dat.str  <- matrix(sample(c(100:120,-9), 200, replace = TRUE), 
-            nrow = 10, ncol = 20)
-write.table(dat.str, file = "dat.str", 
-            col.names = FALSE, row.names = FALSE, quote = FALSE)
+                   nrow = 10, ncol = 20)
+write.table(dat.str, 
+            file = "dat.str", 
+            col.names = FALSE, 
+            row.names = FALSE, 
+            quote = FALSE)
 
 ### Conversion 
 struct2geno("dat.str", ploidy = 2, FORMAT = 1)
 
 ### snmf run and barplot
 s  <- snmf("dat.str.geno", K = 2, project = "new")
-barplot(as.qmatrix(Q(s)))
+barplot(as.qmatrix(Q(s)), xlab = "Individuals")
 }
