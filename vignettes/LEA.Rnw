@@ -111,7 +111,7 @@ pc = pca("genotypes.lfmm", scale = TRUE)
 @
 \noindent
 The number of "significant" components can be evaluated using graphical methods based on the screeplot (Figure 1). The knee in the screeplot indicates that there
-are around $K = 4$ major components in the data ($\approx 5$ genetic clusters). 
+are around $K = 5$ major components in the data ($\approx 6$ genetic clusters). 
 Following  \citep{Patterson_2006}, the {\tt tracy.widom} function computes Tracy-Widom tests for each eigenvalue as follows.
 
 <<results='hide'>>=
@@ -131,7 +131,7 @@ tw$pvalues[1:5]
 # plot the percentage of variance explained by each component
 plot(tw$percentage)
 @
-\caption{Screeplot for the percentage of variance explained by each component in a PCA of the genetic data. The knee at $K = 4$ indicates that there are 5 major genetic clusters in the data.}
+\caption{Screeplot for the percentage of variance explained by each component in a PCA of the genetic data. The knee at $K = 5$ indicates that there are around 6 major genetic clusters in the data.}
 \end{figure}
 
 \newpage
@@ -154,7 +154,7 @@ project = snmf("genotypes.geno",
 @
 
 
-The {\tt snmf} function estimates an entropy criterion that evaluates the quality of fit of the statistical model to the data using a cross-validation technique (Figure 2). The entropy criterion can help choosing the number of ancestral populations that best explains the genotypic data \citep{Alexander_2011, Frichot_2014}. Here we have a clear minimum at $K = 4$, suggesting 4 genetic clusters. Often, the plot shows a less clear pattern, and choosing the "knee" is a generally good approach. The number of ancestral populations is closely linked to the number of principal components that explain variation in the genomic data. Both numbers can help determining the number of latent factors when correcting for confounding effects due to population structure in ecological association tests. 
+The {\tt snmf} function estimates an entropy criterion that evaluates the quality of fit of the statistical model to the data using a cross-validation technique (Figure 2). The entropy criterion can help choosing the number of ancestral populations that best explains the genotypic data \citep{Alexander_2011, Frichot_2014}. Here we have a minimum at $K = 3$ or $K = 4$, suggesting 3-4 genetic clusters. If the plot shows a less clear pattern, choosing the "knee" value is a generally good approach. The number of ancestral populations is closely linked to the number of principal components. Both numbers can help determining the number of latent factors when correcting for confounding effects due to population structure in ecological association tests. 
 
 \begin{figure}[h!]
     \centering
@@ -216,9 +216,7 @@ plot(-log10(pvalues), pch = 19, col = "blue", cex = .7)
 \subsection{Missing genotype imputation using {\tt snmf}}
 
 Missing genotypes are critical to genomewide association studies. 
-Before running an association study, an important step is to replace the missing data, represented as '9' 
-in the {\tt geno} and {\tt lfmm}) files, by better values. To provide an example of missing data imputation, let's start by removing 100 genotypes from the original data.
-The resulting matrix is saved in the file {\tt genotypeM.geno}.
+Before running an association study, an important step is to replace the missing data, represented as '9' in the {\tt geno} and {\tt lfmm}) files, by better values. To provide an example of missing data imputation, let's start by removing 100 genotypes from the original data. The resulting matrix is saved in the file {\tt genotypeM.geno}.
 <<>>=
 # creation of a genotypic matrix  with missing genotypes
 dat = as.numeric(tutorial.R)
@@ -278,13 +276,13 @@ project = lfmm("genotypes.lfmm",
                 repetitions = 5, 
                 project = "new")
 @
-\paragraph{Deciding the number of latent factors.} Deciding an appropriate value for the number of latent factors in the {\tt lfmm} call can be based on the analysis of histograms of test significance values. Ideally, histograms should be flat, with a peak close to zero.
+\paragraph{Deciding the number of latent factors.} Deciding an appropriate value for the number of latent factors in the {\tt lfmm()} call can be based on the analysis of histograms of test significance values. Ideally, histograms should be flat, with a peak close to zero.
 \newline
 \newline
 Since the objective is to control the false discovery rate (FDR) while keeping reasonable power to reject the null hypothesis, we recommend using several runs for each value of $K$ and combine $p$-values (use 5 to 10 runs, see our script below).  Choosing values of $K$ for which the histograms show their correct shape warrants that the FDR can be controlled efficiently.
 \newline
 \newline
-Testing all $K$ values in a large range, from 1 to 20 for example, is generally useless. A careful analysis of population structure and estimates of the number of ancestral populations contributing to the genetic data indicates the range of values to be explored. For example the {\tt snmf} program estimates 4 ancestral populations, then running {\tt lfmm} for $K = 3-6$ often provides good results.
+Testing all $K$ values in a large range, from 1 to 20 for example, is generally useless. A careful analysis of population structure and estimates of the number of ancestral populations contributing to the genetic data indicates the range of values to be explored. For example the {\tt snmf} program estimates 4 ancestral populations, then running {\tt lfmm} for $K = 3-7$ often provides good results.
 
 
 \paragraph{Combining $z$-scores obtained from multiple runs.}  We use the Fisher-Stouffer method to combine $z$-scores from multiple runs. In practice, we found that using the median $z$-scores of 5-10 runs and re-adjusting the $p$-values afterwards can increase the power of {\tt lfmm} tests. This procedure is implemented in {\tt LEA} function {\tt lfmm.pvalues()}.
