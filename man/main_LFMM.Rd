@@ -166,7 +166,7 @@ associations between loci and environmental gradients using latent factor mixed
 models}. Molecular biology and evolution, 30(7), 1687-1699.
 }
 \examples{
-### Example of analyses using lfmm ###
+### Example of analysis using lfmm ###
 
 data("tutorial")
 # creation of a genotype file: genotypes.lfmm.

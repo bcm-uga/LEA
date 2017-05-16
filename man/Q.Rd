@@ -37,30 +37,36 @@ ancestral populations.
 \code{\link{cross.entropy}}
 }
 \examples{
-### Example of analyses using snmf ###
+### Example of analysis using snmf ###
 
-# creation of the genotype file, genotypes.geno.
-# It contains 400 SNPs for 50 individuals.
+# Creation of the genotype file: genotypes.geno.
+# The data contain 400 SNPs for 50 individuals.
 data("tutorial")
 write.geno(tutorial.R, "genotypes.geno")
 
 ################
-# runs of snmf #
+# running snmf #
 ################
 
-# main options, K: (the number of ancestral populations), 
-#        entropy: calculate the cross-entropy criterion, 
-#        CPU: the number of CPUs.
-
-# Runs with K between 1 and 5 with cross-entropy and 2 repetitions.
-project = NULL
-project = snmf("genotypes.geno", K = 3, repetitions = 2, project = "new")
+project = snmf("genotypes.geno", 
+                K = 3, 
+                repetitions = 2, 
+                project = "new")
 
 # get the ancestry coefficients for the 2nd run for K = 3. 
-res = Q(project, K = 3, run = 2)
+Q.3 = Q(project, K = 3, run = 2)
+Q.matrix <- as.qmatrix(Q.3)
+my.colors <- c("tomato", "lightblue", "olivedrab", "gold")
 
-# plot the 2nd run for K = 3 (ancestry coefficients).
-barplot(t(Q(project, K = 3, run = 2)))
+barplot(Q.matrix, 
+        border = NA, 
+        space = 0, 
+        col = my.colors, 
+        xlab = "Individuals",
+        ylab = "Ancestry proportions", 
+        main = "Ancestry matrix") -> bp
+        
+axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 }
 
 

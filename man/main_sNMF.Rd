@@ -176,7 +176,7 @@ and Efficient Estimation of Individual Ancestry Coefficients}. Genetics,
 ### Example of analysis using snmf ###
 
 # Creation of the genotype file: genotypes.geno.
-# The data contains 400 SNPs for 50 individuals.
+# The data contain 400 SNPs for 50 individuals.
 data("tutorial")
 write.geno(tutorial.R, "genotypes.geno")
 
