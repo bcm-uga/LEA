@@ -1,17 +1,12 @@
 \name{cross.entropy}
 \alias{cross.entropy}
 
-\title{Cross-entropy criterion from snmf runs}
+\title{Cross-entropy criterion for snmf runs}
 \description{
-Return the cross-entropy criterion for the chosen runs
-with K ancestral populations. For an example, see \code{\link{snmf}}.
-The cross-entropy criterion is a value based on the prediction of masked 
-genotypes to evaluate the error of ancestry estimation. The criterion will 
-help to choose the best number of ancestral population (K) and the best run 
-among a set of runs in \code{\link{snmf}}. A smaller value of cross-entropy 
-means a better run in terms of prediction capacity.
-The cross-entropy criterion can be automatically calculated by the 
-\code{\link{snmf}} function with the \code{entropy} option.
+Return the cross-entropy criterion for runs of \code{snmf}cwith K ancestral populations.
+The cross-entropy criterion is based on the prediction of masked genotypes to evaluate the fit of a model with K populations. The cross-entropy criterion helps choosing the number of ancestral populations or a best run for a fixed value of K. A smaller value of cross-entropy 
+means a better run in terms of prediction capability.
+The cross-entropy criterion is computed by the \code{\link{snmf}} function when the \code{entropy} Boolean option is TRUE.
 }
 \usage{
 cross.entropy(object, K, run)
@@ -25,12 +20,12 @@ A snmfProject object.
 The number of ancestral populations.
 }
 \item{run}{
-A list of chosen run number.
+A vector of run labels.
 }
 }
 \value{
 \item{res}{
-A list containing the cross-entropy criterion for the chosen runs with K 
+A matrix containing the cross-entropy criterion for runs with K 
 ancestral populations. 
 }
 }
@@ -46,23 +41,23 @@ ancestral populations.
 \examples{
 ### Example of analyses using snmf ###
 
-# creation of the genotype file, genotypes.geno.
-# It contains 400 SNPs for 50 individuals.
+# creation of a genotype file: genotypes.geno.
+# The data contains 400 SNPs for 50 individuals.
 data("tutorial")
 write.geno(tutorial.R, "genotypes.geno")
 
 ################
-# runs of snmf #
+# running snmf #
 ################
 
-# main options, K: (the number of ancestral populations), 
-#        entropy: calculate the cross-entropy criterion, 
-#        CPU: the number of CPUs.
-
-# Runs with K = 3 with cross-entropy and 2 repetitions.
+# Runs with K = 3 populations 
+# cross-entropy is computed for 2 runs.
 project = NULL
-project = snmf("genotypes.geno", K = 3, entropy = TRUE, repetitions = 2, 
-    project = "new")
+project = snmf("genotypes.geno", 
+                K = 3, 
+                entropy = TRUE, 
+                repetitions = 2, 
+                project = "new")
 
 # get the cross-entropy for all runs for K = 3 
 ce = cross.entropy(project, K = 3)
