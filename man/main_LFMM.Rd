@@ -174,7 +174,7 @@ data("tutorial")
 write.lfmm(tutorial.R, "genotypes.lfmm")
 
 # Creation of a phenotype/environment file: gradient.env.
-# 1 environmental predictor for 40 individuals.
+# One environmental predictor for 40 individuals.
 write.env(tutorial.C, "gradients.env")
 
 ################
@@ -185,28 +185,31 @@ write.env(tutorial.C, "gradients.env")
 #           CPU: the number of CPUs.
 
 # Runs with K = 3 and 5 repetitions.
-# runs with 6000 iterations including 3000 iterations
-# for burnin.
+# runs with 6000 iterations 
+# including 3000 iterations for burnin.
 # Around 30 seconds per run.
-project = NULL
-project = lfmm("genotypes.lfmm", "gradients.env", K = 3, repetitions = 5, 
-        project = "new")
+project = lfmm( "genotypes.lfmm", 
+                "gradients.env", 
+                 K = 3, 
+                 repetitions = 5, 
+                 project = "new")
 
-# get adjusted p-values using all runs (and genomic control)
+# get adjusted p-values using all runs
 pv = lfmm.pvalues(project, K = 3)
 
+# Evaluate FDR and POWER
 for (alpha in c(.05,.1,.15,.2)) {
     # expected FDR
     print(paste("expected FDR:", alpha))
     L = length(pv$pvalues)
-    # Benjamini-Hochberg's list of candidates with expected FDR alpha.
-    w = which(sort(pv$pvalues) < alpha * (1:L) / L)
+    # Benjamini-Hochberg's mehod for an expected FDR = alpha.
+    w = which(sort(pv$pvalues) < alpha * (1:L)/L)
     candidates = order(pv$pvalues)[w]
 
     # estimated FDR and True Positive Rate
-    # The target loci are loci 351:400
-    
-    estimated.FDR = length(which(candidates <= 350))/length(candidates)
+    # The targets SNPs are loci 351 to 400
+    Lc = length(candidates)
+    estimated.FDR = length(which(candidates <= 350))/Lc
     estimated.TPR = length(which(candidates > 350))/50
     print(paste("FDR:", estimated.FDR, "True Positive Rate:", estimated.TPR))
 }
@@ -225,7 +228,7 @@ summary(project)
 z = z.scores(project, K = 6, run = 2)
 
 # get the p-values for K = 6 and run 2
-res = lfmm.pvalues(project, K = 6, run = 2)
+p = lfmm.pvalues(project, K = 6, run = 2)
 
 ##########################
 # Manage an lfmm project #
