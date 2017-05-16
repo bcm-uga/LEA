@@ -3,6 +3,7 @@
 .Rhistory
 .RData
 src/*.o
+*.o
 src/*.so
 src/*.dll
 dat.*
