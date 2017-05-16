@@ -41,7 +41,7 @@ K ancestral populations.
 ### Example of analyses using snmf ###
 
 # creation of a genotype file: genotypes.geno.
-# The data contains 400 SNPs for 50 individuals.
+# The data contain 400 SNPs for 50 individuals.
 data("tutorial")
 write.geno(tutorial.R, "genotypes.geno")
 
