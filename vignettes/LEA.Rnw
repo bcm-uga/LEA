@@ -1,6 +1,6 @@
 %\VignetteIndexEntry{LEA: An R Package for Landscape and Ecological Association Studies}
 
-\documentclass[12pt,a4paper,oneside]{article}
+\documentclass[11pt,a4paper,oneside]{article}
 
 \usepackage{natbib}
 
@@ -50,7 +50,7 @@ setwd("LEA_analyses")
 
 \newline
 \newline
-The tutorial dataset is a quite small dataset that consists of 400 SNPs genotyped for 50 diploids individuals. The last 50 SNPs are correlated with an environmental variable, and represent the targets of the LEA analysis. Similar artificial data were analyzed in the computer note introducing the R package LEA \citep{Frichot_2015}. 
+This tutorial is based on a small dataset consisting of 400 SNPs genotyped for 50 diploids individuals. The last 50 SNPs are correlated with an environmental variable, and represent the target loci for an association analysis. Similar artificial data were analyzed in the computer note introducing the R package LEA \citep{Frichot_2015}. 
 
 <<results='hide'>>=
 library(LEA)
@@ -76,7 +76,7 @@ genetic data sets. Genomic data are processed using fast C codes wrapped into th
 The {\tt R} package {\tt LEA} can handle several input file formats for genotypic matrices. More specifically, the package uses the {\tt lfmm} and {\tt geno} formats, and provides functions to convert from other formats such as {\tt ped}, {\tt vcf}, and {\tt ancestrymap} formats. The program VCFTOOLS can be very useful in providing one of those format ({\tt ped} is the closest to an {\tt lfmm} matrix).
 \newline
 \newline
-The {\tt lfmm} and {\tt geno} formats can also be used for coding multiallelic marker data (eg, microsatellites). For those data, the conversion function {\tt struct2geno} converts files in the STRUCTURE format in the  {\tt geno} or {\tt lfmm} formats. {\tt LEA} can also process allele frequency data if they are encoded in the {\tt lfmm} format. In that case, the {\tt lfmm} function will use allele counts for populations in its model. 
+The {\tt lfmm} and {\tt geno} formats can also be used for coding multiallelic marker data (eg, microsatellites). For  multiallelic marker data, the conversion function{\tt struct2geno()} converts files in the STRUCTURE format in the {\tt geno} or {\tt lfmm} formats. {\tt LEA} can also process allele frequency data if they are encoded in the {\tt lfmm} format. In that case, the {\tt lfmm} function will use allele counts for populations in its model. 
 \newline
 \newline
 Phenotypic traits and ecological predictors must be formatted in the {\tt env} format. This format corresponds to a matrix where each variable is represented as a column \citep{Frichot_2013}. It uses the {\tt .env} extension.
@@ -88,13 +88,13 @@ When using ecological data, we often need to decide which variables should be us
 The {\tt LEA} package can handle missing data in population structure analyses. In association analyses, missing genotypes must be replaced by imputed values using a missing data imputation method. We encourage users to remove their missing data by using the function {\tt impute()}, which is based on population structure analysis(see next section). Note that specialized genotype imputation programs such as BEAGLE, IMPUTE2 or MENDEL-IMPUTE could provide better imputation results than {\tt LEA}. Filtering out rare variants -- retaining minor allele frequency greater than 5 percent --, and removing regions in strong LD may also result in better analyses with {\tt LEA}.
 
 
-\section{Analysis of population structure and missing data imputation}
+\section{Analysis of population structure and imputation of missing data}
 
-The {\tt R} package {\tt LEA} implements two classical approaches for the estimation of population genetic structure: principal component analysis (pca) and admixture analysis \citep{Patterson_2006, Pritchard_2000a} using nonnegative matrix factorization (snmf). The algorithms programmed in {\tt LEA} are improved versions of pca and admixture analysis able to process very large genotypic matrices efficiently.
+The {\tt R} package {\tt LEA} implements two classical approaches for the estimation of population genetic structure: principal component analysis (pca) and admixture analysis \citep{Patterson_2006, Pritchard_2000a} using sparse nonnegative matrix factorization (snmf). The algorithms programmed in {\tt LEA} are improved versions of pca and admixture analysis, and they are able to process large genotypic matrices efficiently.
 
 \subsection{Principal Component Analysis}
 
-The {\tt LEA} function {\tt pca} computes the scores of a pca for a genotypic matrix, and returns a scree-plot for the eigenvalues of the sample covariance matrix. Using {\tt pca}, an object of class {\tt pcaProject} is created. This object contains a path to the files storing eigenvectors, eigenvalues and projections. 
+The {\tt LEA} function {\tt pca()} computes the scores of a pca for a genotypic matrix, and returns a screeplot for the eigenvalues of the sample covariance matrix. Using {\tt pca}, an object of class {\tt pcaProject} is created. This object contains a path to the files storing eigenvectors, eigenvalues and projections. 
 
 <<results='hide'>>=
 # run of pca
@@ -118,9 +118,9 @@ Following  \citep{Patterson_2006}, the {\tt tracy.widom} function computes Tracy
 tw = tracy.widom(pc)
 @
 
-<<>>=
-# display p-values for the Tracy-Widom tests (first 10 pcs). 
-tw$pvalues[1:10]
+<<results='asis'>>=
+# display p-values for the Tracy-Widom tests (first 5 pcs). 
+tw$pvalues[1:5]
 @
 
 \begin{figure}[h!]
@@ -129,9 +129,10 @@ tw$pvalues[1:10]
 # plot the percentage of variance explained by each component
 plot(tw$percentage)
 @
-\caption{Screeplot for the percentage of variance explained by each component in PCA of the genetic data. The knee at $K = 4$ indicates that their 5 major genetic clusters in the data.}
+\caption{Screeplot for the percentage of variance explained by each component in a PCA of the genetic data. The knee at $K = 4$ indicates that there are 5 major genetic clusters in the data.}
 \end{figure}
 
+\newpage
 
 \subsection{Inference of individual admixture coefficients using {\tt snmf}}
 
@@ -157,16 +158,18 @@ The {\tt snmf} function estimates an entropy criterion that evaluates the qualit
     \centering
 <<fig.width=4, fig.height=4, echo=TRUE>>=
 # plot cross-entropy criterion for all runs in the snmf project
-plot(project, lwd = 5, col = "blue", pch = 1)
+plot(project, col = "blue", pch = 19, cex = 1.2)
 @
 \caption{Value of the cross-entropy criterion as a function
 of the number of populations in {\tt snmf}.}
 \end{figure}
 
-The next step is to display a barplot for the $Q$-matrix. Here, the {\tt Q} function is called and its output is converted into a {\tt Qmatrix} object. 
+\newpage
+
+The next step is to display a barplot for the $Q$-matrix. In Figure 3, the {\tt Q()} function of LEA is called and the output $Q$-matrix is converted into a {\tt Qmatrix} object. The conversion of the $Q$-matrix as a {\tt Qmatrix} object is also useful for running improved graphical functions from other packages such as {\tt tess3r} \citep{Caye_2016}.
 \begin{figure}[h!]
     \centering
-<<fig.width=4, fig.height=4, echo=TRUE>>=
+<<fig.width=10, fig.height=4, echo=TRUE>>=
 # select the best run for K = 4
 best = which.min(cross.entropy(project, K = 4))
 Q.matrix <- as.qmatrix(Q(project, K = 4, run = best))
@@ -178,50 +181,53 @@ barplot(Q.matrix, border = NA, space = 0,
         ylab = "Ancestry proportions",
         main = "Ancestry matrix") -> bp
 axis(1, at = 1:nrow(Q.matrix), 
-     labels = bp$order, las = 3, 
-     cex.axis = .7)
+     labels = bp$order, las=1, 
+     cex.axis = .3)
 @
 \caption{Ancestry coefficients obtained from {\tt snmf}.}
 \end{figure}
 
-Note that the conversion as a {\tt Qmatrix} object is also useful for running improved graphical functions from other packages such as {\tt tess3r} \citep{Caye_2016}.
+\newpage
 
 \subsection{Population differentation tests using {\tt snmf}}
 
-Approaches to sorting selective loci from the genomic background commonly focus on extreme values of the fixation index, $F_{\rm st}$, across loci. The {\tt snmf} function can compute fixation indices when the population is genetically continuous, when predefining subpopulations is a difficult task, and in the presence of admixed individuals in the sample (\citep{Martins_2016}). In this approach, population differentiation statistics are computed from ancestry coefficients obtained a {\tt snmf} project, and $p$-values are returned for all loci. Here is an example of outlier analysis with {\tt snmf}.
+The most common approaches to detecting outlier loci from the genomic background have focused on extreme values of the fixation index, $F_{\rm st}$, across loci. The {\tt snmf()} function can compute fixation indices when the population is genetically continuous, when predefining subpopulations is difficult, and in the presence of admixed individuals in the sample (\citep{Martins_2016}). In the snmf approach, population differentiation statistics are computed from ancestry coefficients obtained a {\tt snmf} project, and $p$-values are returned for all loci. Figure 4 is an example of outlier analysis with {\tt snmf}.
 
 \begin{figure}[h!]
     \centering
-<<fig.width=4, fig.height=4, echo=TRUE>>=
+<<fig.width=8, fig.height=6, echo=TRUE, results='hide'>>=
 # Population differentiation tests
-p = snmf.pvalues(project.snmf, 
+p = snmf.pvalues(project, 
                  entropy = TRUE, 
                  ploidy = 2, 
                  K = 4)
+pvalues = p$pvalues
 par(mfrow = c(2,1))
-hist(p$pvalues, col = "orange")
-plot(-log10(p$pvalues), pch = 19, col = "blue", cex = .7)
+hist(pvalues, col = "orange")
+plot(-log10(pvalues), pch = 19, col = "blue", cex = .7)
 @
 \caption{$P$-values for population differentiation tests.}
 \end{figure}
 
-
+\newpage
 
 \subsection{Missing genotype imputation using {\tt snmf}}
 
-Missing genotypes are critical to genomewide association studies. Before running an association study, an important step is to replace the missing data, represented as "9" in the {\tt geno} and {\tt lfmm}) files, by better values. To provide an example of missing data imputation, let's start by removing 100 genotypes from the original data.
-The resulting matrix is saved in the file "genotype_M.geno".
+Missing genotypes are critical to genomewide association studies. 
+Before running an association study, an important step is to replace the missing data, represented as '9' 
+in the {\tt geno} and {\tt lfmm}) files, by better values. To provide an example of missing data imputation, let's start by removing 100 genotypes from the original data.
+The resulting matrix is saved in the file {\tt genotypeM.geno}.
 <<>>=
 # creation of a genotypic matrix  with missing genotypes
 dat = as.numeric(tutorial.R)
 dat[sample(1:length(dat), 100)] <-  9
 dat <- matrix(dat, nrow = 50, ncol = 400)
-write.geno(dat, "genotype_M.geno")
+write.lfmm(dat, "genotypeM.lfmm")
 @
 
 Next, {\tt snmf} can be run on the data with missing genotypes as follows. The genotypic matrix completion is based on estimated ancestry coefficients and ancestral genotype frequencies.
-<<>>=
-project.missing = snmf("genotype_M.geno", K = 4, 
+<<results='hide'>>=
+project.missing = snmf("genotypeM.lfmm", K = 4, 
         entropy = TRUE, repetitions = 10,
         project = "new")
 @
@@ -232,14 +238,17 @@ Then the project data can be used to impute the missing data as follows.
 best = which.min(cross.entropy(project.missing, K = 4))
 
 # Impute the missing genotypes
-impute(project, "genotype_M.lfmm", method = 'mode', K = 4, run = best)
+impute(project.missing, "genotypeM.lfmm", 
+       method = 'mode', K = 4, run = best)
 
-# Compare with truth: proportion of correct imputation results
-dat.imp = read.lfmm("genotypes_M.lfmm_imputed.lfmm")
+# Proportion of correct imputation results
+dat.imp = read.lfmm("genotypeM.lfmm_imputed.lfmm")
 mean( tutorial.R[dat == 9] == dat.imp[dat == 9] )
 @
  
-The results are saved in an output file with the string "_imputed" in its suffix name.
+The results are saved in an output file with the string {\tt "imputed"} in its suffix name.
+
+\newpage
 
 \section{Ecological associations tests using lfmm}
 
@@ -250,71 +259,73 @@ The {\tt R} package {\tt LEA} performs genomewide association analysis based on 
 where $\mu_\ell$ is a locus specific effect, $\beta_\ell$ is a $d$-dimensional vector of regression coefficients, $U_i$ contains $K$ latent factors, and $V_\ell$ contains their corresponding loadings ($i$ stands for an individual and $\ell$ for a locus). The residual terms, $\epsilon_{i\ell}$, are statistically independent Gaussian variables with mean zero and variance $\sigma^2$.
 \newline
 \newline
- In latent factor models, association between predictors and allele frequencies can be tested while estimating unobserved latent factors that model confounding effects. In principle, the latent factors include levels of population structure due to shared demographic history or background genetic variation. After correction for confounding effects, association between allele frequencies and an ecological predictorat a particular locus is often interpreted as a signature of natural selection.
+ In latent factor models, association between predictors and allele frequencies can be tested while estimating unobserved latent factors that model confounding effects. In principle, the latent factors include levels of population structure due to shared demographic history or background genetic variation. After correction for confounding effects, association between allele frequencies and an ecological predictor at a particular locus is often interpreted as a signature of natural selection.
 
 
-\paragraph{The run.}  The {\tt lfmm} program is based on a stochastic algorithm (MCMC) which doesnot provide exact results. We recommend using large number of cycles (e.g., {\tt -i 6000}) and the burnin period should set at least to one-half of the total number of cycles ({\tt -b 3000}). We have noticed that the program results are sensitive to the run-length parameter when data sets have relatively small sizes (eg, a few hundreds of individuals, a few thousands of loci). We recommend increasing  the burn-in period and the total number of cycles in this situation.
+\paragraph{Running LFMM.}  The {\tt lfmm} program is based on a stochastic algorithm (MCMC) which doesnot provide exact results. We recommend using large number of cycles (e.g., {\tt -i 6000}) and the burnin period should set at least to one-half of the total number of cycles ({\tt -b 3000}). We have noticed that the program results are sensitive to the run-length parameter when data sets have relatively small sizes (eg, a few hundreds of individuals, a few thousands of loci). We recommend increasing  the burnin period and the total number of cycles in this situation.
 
 
 <<results='hide'>>=
 # main options: 
 # K: (the number of latent factors)
-# Runs with K = 4 and 5 repetitions.
+# Runs with K = 6 and 5 repetitions.
 project = NULL
 project = lfmm("genotypes.lfmm", 
                "gradients.env", 
-                K = 4, 
+                K = 6, 
                 repetitions = 5, 
                 project = "new")
 @
-
 \paragraph{Deciding the number of latent factors.} Deciding an appropriate value for the number of latent factors in the {\tt lfmm} call can be based on the analysis of histograms of test significance values. Ideally, histograms should be flat, with a peak close to zero.
+\newline
+\newline
+Since the objective is to control the false discovery rate (FDR) while keeping reasonable power to reject the null hypothesis, we recommend using several runs for each value of $K$ and combine $p$-values (use 5 to 10 runs, see our script below).  Choosing values of $K$ for which the histograms show their correct shape warrants that the FDR can be controlled efficiently.
+\newline
+\newline
+Testing all $K$ values in a large range, from 1 to 20 for example, is generally useless. A careful analysis of population structure and estimates of the number of ancestral populations contributing to the genetic data indicates the range of values to be explored. For example the {\tt snmf} program estimates 4 ancestral populations, then running {\tt lfmm} for $K = 3-6$ often provides good results.
 
-Since the objective is to control the false discovery rate (FDR) while keeping reasonable power to reject the null hypothesis, we recommend using several runs for each value of $K$ and combine $p$-values (use 5 to 10 runs, see our script below).  Choosing values of $K$ for which the histograms show their correct shape warrants that the FDR can be controlled efficiently.\\
 
+\paragraph{Combining $z$-scores obtained from multiple runs.}  We use the Fisher-Stouffer method to combine $z$-scores from multiple runs. In practice, we found that using the median $z$-scores of 5-10 runs and re-adjusting the $p$-values afterwards can increase the power of {\tt lfmm} tests. This procedure is implemented in {\tt LEA} function {\tt lfmm.pvalues()}.
 
-Testing all $K$ values in a large range, from 1 to 20 for example, is generally useless. A careful analysis of population structure and estimates of the number of ancestral populations contributing to the genetic data indicates the range of values to be explored. For example the {\tt snmf} program estimates 4 ancestral populations, then running {\tt lfmm} for $K = 3-5$ often provides good results.
-
-
-\paragraph{Combining $z$-scores obtained from multiple runs.}  We use the Fisher-Stouffer or a similar method to combine $z$-scores from multiple runs. In practice, we found that using the median $z$-scores of 5-10 runs and re-adjusting the $p$-values afterwards increase the power of {\tt lfmm} tests. This procedure is implemented in {\tt LEA} function, {\tt lfmm.pvalues}.
-
-The $p$-values were adjusted as follows
 <<>>=
 # compute adjusted p-values
-p = lfmm.pvalues(project, K = 4)
+p = lfmm.pvalues(project, K = 6)
 pvalues = p$pvalues
 @
-The results can be displayed as follows.
+The results displayed in Figure 5 show that the null-hypothesis is correctly calibrated. The loci exhibiting significant associations are found at the right on the Manhattan plot. 
 \begin{figure}[h!]
     \centering
-<<fig.width=4, fig.height=4, echo=TRUE>>=
+<<fig.width=8, fig.height=6, echo=TRUE>>=
 # GWAS significance test
 par(mfrow = c(2,1))
-hist(p$pvalues, col = "lightblue")
+hist(pvalues, col = "lightblue")
 plot(-log10(pvalues), pch = 19, col = "blue", cex = .7)
 @
-\caption{$P$-values for LFMM tests.}
+\caption{$P$-values for LFMM tests. The loci showing significant associations are at the right on the Manhattan plot.}
 \end{figure}
 
-\noindent
-To adjust $p$-values for multiple testing issues, we can use the Benjamini-Hochberg procedure. Here we set the expected levels of FDR equal to $q = 5 \%$, $10 \%$, $15 \%$ and $20 \%$ respectively \citep{Benjamini_1995}. The lists of candidate loci are given by the following script.
+\newpage
+
+To adjust $p$-values for multiple testing issues, we use the Benjamini-Hochberg procedure \citep{Benjamini_1995}. We set the expected levels of FDR to $q = 5 \%$, $10 \%$, $15 \%$ and $20 \%$ respectively . The lists of candidate loci are given by the following script. Since we the ground truth is known for the simulated data, we can compare the expected FDR levels to their observed levels, and compute the power (TPR) of the test.
 <<>>=
 for (alpha in c(.05,.1,.15,.2)) {
     # expected FDR
-    print(paste("expected FDR:", alpha))
+    print(paste("Expected FDR:", alpha))
     L = length(pvalues)
+ 
     # return a list of candidates with expected FDR alpha.
     # Benjamini-Hochberg's algorithm:
     w = which(sort(pvalues) < alpha * (1:L) / L)
     candidates = order(pvalues)[w]
-@
 
-Since we have simulated data with their ground truth, we can compare the expected FDR levels to their observed levels, and compute the power (TPR) of the test.
-<<>>=
-    # estimated FDR and True Positif
-    estimated.FDR = length(which(candidates <= 350))/length(candidates)
-    estimated.TPR = length(which(candidates > 350))/50
-    print(paste("FDR:", estimated.FDR, "True Positive Rate:", estimated.TPR))
+    # estimated FDR and True Positive Rate
+    Lc = length(candidates)
+    estimated.FDR = sum(candidates <= 350)/Lc
+    print(paste("Observed FDR:", 
+                round(estimated.FDR, digits = 2)))    
+    estimated.TPR = sum(candidates > 350)/50
+    print(paste("Estimated TPR:", 
+                round(estimated.TPR, digits = 2)))  
 }
 @
 
