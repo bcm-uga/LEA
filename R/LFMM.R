@@ -21,8 +21,10 @@ lfmm <- function(input.file,
 
     # input file
     input.file = test_character("input.file", input.file, NULL)
+    if (!file.exists(input.file)) stop("Input file not found.")
     input.file = test_input_file(input.file, "lfmm")
     input.file = normalizePath(input.file)
+    
     # cov file
     environment.file = test_character("environment.file", 
         environment.file, NULL)
@@ -33,7 +35,7 @@ lfmm <- function(input.file,
     for (k in 1:length(K)) {
         K[k] = test_integer("K", K[k], NULL)
         if (K[k] < 0)
-            stop("'K' argument has to be not negative.")
+            stop("'K' has to be positive.")
     }
     # nd
     if (!missing(d)) {
@@ -53,6 +55,11 @@ lfmm <- function(input.file,
     output.file = setExtension(input.file, "")
     # missing.data  
     missing.data = test_logical("missing.data", missing.data, FALSE)
+    dat = read.lfmm(input.file)
+    if (sum(dat == 9) > 0) stop("Missing genotypes are not allowed.", 
+                                "Use the 'impute()' function to impute 
+                                missing values.", 
+                                "Re-run lfmm with imputed genotypes.") 
     # CPU    
     CPU = test_integer("CPU", CPU, 1)
     if (CPU <= 0)
@@ -62,14 +69,14 @@ lfmm <- function(input.file,
         # iterations
     iterations = test_integer("iterations", iterations, 10000)
     if (iterations <= 0)
-                stop("'iterations' argument has to be positive.")
+                stop("'iterations' must be positive.")
         # burnin
     burnin = test_integer("burnin", burnin, 5000)
     if (burnin <= 0)
-        stop("'burnin' argument has to be positive.")
+        stop("'burnin' must be positive.")
     if (burnin >= iterations) {
         stop("the number of iterations for burnin (burnin) is greater",
-            "than the number total of iterations (iterations)")
+            "than the  total number of iterations (iterations)")
     }
     # repetitions
     repetitions = test_integer("repetitions", repetitions, 1)
@@ -87,7 +94,7 @@ lfmm <- function(input.file,
     if (missing(project)) 
         project = "continue"
     else if (!(project %in% c("continue", "new", "force"))) 
-        stop("A project argument can be 'continue', 'new' or 'force'.");
+        stop("Project arguments are: 'continue', 'new' or 'force'.");
 
 
     ####################

@@ -1,0 +1,19 @@
+new("snmfClass"
+    , directory = "K7/run4/"
+    , snmfClass.file = "genotypes_r4.7.snmfClass"
+    , K = 7L
+    , run = 4L
+    , CPU = 1L
+    , seed = 1651253055L
+    , alpha = 10
+    , percentage = 0.05
+    , I = 0L
+    , iterations = 200L
+    , entropy = TRUE
+    , tolerance = 1e-05
+    , crossEntropy = 0.747048935700791
+    , ploidy = 2L
+    , Q.input.file = ""
+    , Q.output.file = "genotypes_r4.7.Q"
+    , G.output.file = "genotypes_r4.7.G"
+)

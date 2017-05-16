@@ -21,11 +21,7 @@
 
 
 \title{Fitting Latent Factor Mixed Models}
-\description{
-\code{\link{lfmm}} is used to fit Latent Factor Mixed Models. The goal of 
-\code{lfmm} is to identify genetic polymorphisms that exhibit high correlation
-with some environmental gradient or with the variables used as proxies for 
-ecological pressures.
+\description{Latent Factor Mixed Models (LFMMs) are linear regression models in which the response variable is a genotype, and the explanatory variable is a phenotypic trait value or a measure of ecological interest for a set of individuals. The \code{\link{lfmm}} performs statistical testing in LFMMs, and allows identifying genetic polymorphisms that exhibit  association with some phenotype or ecological gradient after correction for latent (unobserved) confounders.
 }
 \usage{
 lfmm(input.file, environment.file, K, 
@@ -42,7 +38,7 @@ lfmm(input.file, environment.file, K,
 \arguments{
 \item{input.file}{
     A character string containing a path to the input file,
-    a genotypic matrix in the \code{\link{lfmm}{lfmm_fomat}} format.
+    a genotypic matrix in the \code{\link{lfmm}{lfmm_format}} format.
 }
 \item{environment.file}{
     A character string containing a path to the environmental file,
@@ -54,23 +50,23 @@ lfmm(input.file, environment.file, K,
 \item{project}{
     A character string among "continue", "new", and "force". If "continue",
     the results are stored in the current project. If "new", the current project
-    is removed and a new one is created to store the result. If "force", the 
+    is removed and a new project is created. If "force", the 
     results are stored in the current project even if the input file has been 
     modified since the creation of the project.
 }
 \item{d}{
-    An integer corresponding to the fit of \code{lfmm} model with the 
+    An integer corresponding to the fit of an \code{lfmm} model with the 
     \code{d}-th variable only from \code{environment.file}. By default (if NULL
-    and all is FALSE), fit \code{lfmm} with each variable from 
+    and all are FALSE), \code{lfmm} fits each variable from 
     \code{environment.file} sequentially and independently.
 }
 \item{all}{
-    A boolean option. If true, fit \code{lfmm} with all variables from 
+    A Boolean option. If TRUE, \code{lfmm} fits all variables from the
     \code{environment.file} at the same time. This option is not compatible 
     with the \code{d} option. 
 }
 \item{missing.data}{
-    A boolean option. If true, the \code{input.file} contains missing genotypes.
+    A Boolean option. If TRUE, the \code{input.file} contains missing genotypes.
 }
 #ifndef windows
 \item{CPU}{
@@ -92,55 +88,43 @@ lfmm(input.file, environment.file, K,
 }
 \item{seed}{
     A seed to initialize the random number generator. By default, the seed is 
-    randomly chosen. The seed is initialized at each repetition. If you want
-    to set a seed, please provide a seed per repetition.
+    randomly chosen. The seed is initialized in each run of the program. 
+    For modifying the default setting, provide one seed per run.
 }
 \item{repetitions}{
-    The number of repetitions of each run.
+    A number of replicated runs for the Gibbs Sampler algorithm.
 }
 \item{epsilon.noise}{
-    Prior on the different variances.
+    A prior parameter for variances.
 }
 \item{epsilon.b}{
-    Prior on the variance of the correlation coefficients.
+    A prior parameter for the variance of correlation coefficients.
 }
 \item{random.init}{
-    A boolean option. If true, the Gibbs Sampler is initiliazed randomly. 
-    Otherwise, it is initialized with zeros.
+    A Boolean option. If true, the Gibbs Sampler is initiliazed randomly. 
+    Otherwise, it is initialized with zero values.
 }
 }
 \value{
 \code{lfmm} returns an object of class \code{lfmmProject}.
 
-The following methods can be applied to the object of class \code{lfmmProject}:
-
-
+The following methods can be applied to an object of class \code{lfmmProject}:
 
 \item{show}{
-    Display information about the analyses.
+    Display information about all analyses.
 }
 \item{summary}{
-    Summarize the analyses.
+    Summarize analyses.
 }
 \item{\code{\link{z.scores}}}{
-    Return the \code{lfmm} output vector of zscores for the chosen runs with K
-    latent factors, the d-th variable and the all option.
+    Return the \code{lfmm} output vector of z.scores for some runs.
 }
-\item{\code{\link{p.values}}}{
-    Return the \code{lfmm} output vector of p-values for the chosen runs with K
-    latent factors, the d-th variable and the all option.
-}
-\item{\code{\link{adjusted.pvalues}}}{
-    Return the output vector of adjusted p-values using the genomic control method
-    or the provided lambda inflation factor for the chosen runs with K
-    latent factors, the d-th variable and the all option.
-}
-\item{\code{\link{mlog10p.values}}}{
-    Return the \code{lfmm} output vector of -log10(p-values) for the chosen 
-    runs with K latent factors, the d-th variable and the all option.
+\item{\code{\link{lfmm.pvalues}}}{
+    Return the vector of adjusted p-values for a combination of runs with K
+    latent factors, and for the d-th predictor.
 }
 \item{load.lfmmProject (file = "character") }{
-    Load the file containing an lfmmProject objet and return the lfmmProject 
+    Load the file containing an lfmmProject objet and show the
     object.
 }
 \item{remove.lfmmProject (file = "character")}{
@@ -148,7 +132,7 @@ The following methods can be applied to the object of class \code{lfmmProject}:
     the object will be removed.
 }
 \item{export.lfmmProject(file.lfmmProject)}{
-    Create a zip file containing the full \code{lfmmProject} object. It allows to move
+    Create a zip file containing the full \code{lfmmProject} object. It allows users to move
     the project to a new directory or a new computer (using import). If you want
     to overwrite an existing export, use the option \code{force == TRUE}.
 }
@@ -166,13 +150,12 @@ The following methods can be applied to the object of class \code{lfmmProject}:
 }
 \author{
     Eric Frichot
+    Olivier François
 }
 \seealso{
 \code{\link{lfmm.data}}
 \code{\link{z.scores}}
-\code{\link{p.values}}
-\code{\link{adjusted.pvalues}}
-\code{\link{mlog10p.values}}
+\code{\link{lfmm.pvalues}}
 \code{\link{pca}}
 \code{\link{lfmm}}
 \link{tutorial}
@@ -186,43 +169,46 @@ models}. Molecular biology and evolution, 30(7), 1687-1699.
 ### Example of analyses using lfmm ###
 
 data("tutorial")
-# creation of the genotype file, genotypes.lfmm.
-# It contains 400 SNPs for 50 individuals.
+# creation of a genotype file: genotypes.lfmm.
+# The file contains 400 SNPs for 50 individuals.
 write.lfmm(tutorial.R, "genotypes.lfmm")
-# creation of the environment file, gradient.env.
-# It contains 1 environmental variable for 40 individuals.
+
+# Creation of a phenotype/environment file: gradient.env.
+# 1 environmental predictor for 40 individuals.
 write.env(tutorial.C, "gradients.env")
 
 ################
-# runs of lfmm #
+# running lfmm #
 ################
 
 # main options, K: (the number of latent factors), 
 #           CPU: the number of CPUs.
 
-# Runs with K = 9 and 5 repetitions.
-# The runs are composed of 6000 iterations including 3000 iterations
+# Runs with K = 3 and 5 repetitions.
+# runs with 6000 iterations including 3000 iterations
 # for burnin.
-# around 30 seconds per run.
+# Around 30 seconds per run.
 project = NULL
-project = lfmm("genotypes.lfmm", "gradients.env", K = 6, repetitions = 5, 
+project = lfmm("genotypes.lfmm", "gradients.env", K = 3, repetitions = 5, 
         project = "new")
 
-# get the adjusted p-values using the genomic control method
-res = adjusted.pvalues(project, K = 6)
+# get adjusted p-values using all runs (and genomic control)
+pv = lfmm.pvalues(project, K = 3)
 
 for (alpha in c(.05,.1,.15,.2)) {
     # expected FDR
     print(paste("expected FDR:", alpha))
-    L = length(res$p.values)
-    # return a list of candidates with an expected FDR of alpha.
-    w = which(sort(res$p.values) < alpha * (1:L) / L)
-    candidates = order(res$p.values)[w]
+    L = length(pv$pvalues)
+    # Benjamini-Hochberg's list of candidates with expected FDR alpha.
+    w = which(sort(pv$pvalues) < alpha * (1:L) / L)
+    candidates = order(pv$pvalues)[w]
 
-    # estimated FDR and True Positif
+    # estimated FDR and True Positive Rate
+    # The target loci are loci 351:400
+    
     estimated.FDR = length(which(candidates <= 350))/length(candidates)
-    estimated.TP = length(which(candidates > 350))/50
-    print(paste("FDR:", estimated.FDR, "True Positive:", estimated.TP))
+    estimated.TPR = length(which(candidates > 350))/50
+    print(paste("FDR:", estimated.FDR, "True Positive Rate:", estimated.TPR))
 }
 
 ###################
@@ -238,33 +224,27 @@ summary(project)
 # get the z-scores for the 2nd run for K = 6
 z = z.scores(project, K = 6, run = 2)
 
-# get the p-values for the 2nd run for K = 6
-p = p.values(project, K = 6, run = 2)
-
-# get the adjusted p-values for for K = 6
-res = adjusted.pvalues(project, K = 6)
-
-# get the -log10(p-values) for the 2nd run for K = 6
-mp = mlog10p.values(project, K = 6, run = 2)
+# get the p-values for K = 6 and run 2
+res = lfmm.pvalues(project, K = 6, run = 2)
 
 ##########################
 # Manage an lfmm project #
 ##########################
 
 # All the runs of lfmm for a given file are 
-# automatically saved into a lfmm project directory and a file.
-# The name of the lfmmProject file is a combination of 
+# automatically saved into an lfmm project directory and a file.
+# The name of the lfmmProject file is the concatenation of 
 # the name of the input file and the environment file 
 # with a .lfmmProject extension ("genotypes_gradient.lfmmProject").
 # The name of the lfmmProject directory is the same name as
 # the lfmmProject file with a .lfmm extension ("genotypes_gradient.lfmm/")
-# There is only one lfmm Project for each input file including all the runs.
+# There is a unique lfmm Project for each input file.
 
-# An lfmmProject can be load in a different session.
+# An lfmmProject can be loaded in an R session as follows
 project = load.lfmmProject("genotypes_gradients.lfmmProject")
 
 # An lfmmProject can be exported to be imported in another directory
-# or in another computer
+# or in another computer as follows
 export.lfmmProject("genotypes_gradients.lfmmProject")
 
 #ifndef windows
@@ -288,7 +268,7 @@ newProject = import.lfmmProject("genotypes_gradients_lfmmProject.zip")
 #endif
 
 
-# An lfmmProject can be erased.
+# An lfmmProject can be removed as follows.
 # Caution: All the files associated with the project will be removed.
 remove.lfmmProject("genotypes_gradients.lfmmProject")
 
