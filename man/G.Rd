@@ -24,7 +24,7 @@ A chosen run.
 }
 \value{
 \item{res}{
-A matrix containing the ancestral allele frequencies for the chosen run with 
+A matrix containing the ancestral allele frequencies for a run with 
 K ancestral populations. 
 }
 }
@@ -40,22 +40,21 @@ K ancestral populations.
 \examples{
 ### Example of analyses using snmf ###
 
-# creation of the genotype file, genotypes.geno.
-# It contains 400 SNPs for 50 individuals.
+# creation of a genotype file: genotypes.geno.
+# The data contains 400 SNPs for 50 individuals.
 data("tutorial")
 write.geno(tutorial.R, "genotypes.geno")
 
 ################
-# runs of snmf #
+# running snmf #
 ################
 
-# main options, K: (the number of ancestral populations), 
-#        entropy: calculate the cross-entropy criterion, 
-#        CPU: the number of CPUs.
 
-# Runs with K between 1 and 5 with cross-entropy and 2 repetitions.
-project = NULL
-project = snmf("genotypes.geno", K = 3, repetitions = 2, project = "new")
+# Two runs for K = 1 to 5 
+project = snmf("genotypes.geno", 
+                K = 3, 
+                repetitions = 2, 
+                project = "new")
 
 # get the ancestral genotype frequency matrix, G, for the 2nd run for K = 3. 
 res = G(project, K = 3, run = 2)
