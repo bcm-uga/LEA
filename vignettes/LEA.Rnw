@@ -1,4 +1,5 @@
 %\VignetteIndexEntry{LEA: An R Package for Landscape and Ecological Association Studies}
+%\VignetteEngine{knitr::knitr}
 
 \documentclass[11pt,a4paper,oneside]{article}
 
