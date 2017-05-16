@@ -162,6 +162,9 @@ The following methods can be applied to the object of class {snmfProject}:
 \code{\link{geno}}
 \code{\link{pca}}
 \code{\link{lfmm}}
+\code{\link{Q}}
+\code{\link{as.qmatrix}}
+\code{\link{barpot.Qmatrix}}
 \code{\link{tutorial}}
 }
 \references{
@@ -170,37 +173,45 @@ and Efficient Estimation of Individual Ancestry Coefficients}. Genetics,
 194(4): 973--983.
 }
 \examples{
-### Example of analyses using snmf ###
+### Example of analysis using snmf ###
 
-# creation of the genotype file, genotypes.geno.
-# It contains 400 SNPs for 50 individuals.
+# Creation of the genotype file: genotypes.geno.
+# The data contains 400 SNPs for 50 individuals.
 data("tutorial")
 write.geno(tutorial.R, "genotypes.geno")
 
 ################
-# runs of snmf #
+# running snmf #
 ################
 
-# main options, K: (the number of ancestral populations), 
-#        entropy: calculate the cross-entropy criterion, 
-#        CPU: the number of CPUs.
-
-# Runs with K between 1 and 5 with cross-entropy and 2 repetitions.
-project = NULL
-project = snmf("genotypes.geno", K=1:10, entropy = TRUE, repetitions = 10,
-    project = "new")
+project = snmf("genotypes.geno",
+                K = 1:10, 
+                entropy = TRUE, 
+                repetitions = 10,
+                project = "new")
 
 # plot cross-entropy criterion of all runs of the project
-plot(project, lwd = 5, col = "red", pch=1)
+plot(project, cex = 1.2, col = "lightblue", pch = 19)
 
-# get the cross-entropy of each run for K = 4
+# get the cross-entropy of all runs for K = 4
 ce = cross.entropy(project, K = 4)
 
-# select the run with the lowest cross-entropy
+# select the run with the lowest cross-entropy for K = 4
 best = which.min(ce)
 
-# plot the best run for K = 4 (ancestry coefficients).
-barplot(t(Q(project, K = 4, run = best)))
+# display the Q-matrix
+Q.matrix <- as.qmatrix(Q(project, K = 4, run = best))
+my.colors <- c("tomato", "lightblue", "olivedrab", "gold")
+
+barplot(Q.matrix, 
+        border = NA, 
+        space = 0, 
+        col = my.colors, 
+        xlab = "Individuals",
+        ylab = "Ancestry proportions", 
+        main = "Ancestry matrix") -> bp
+        
+axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 
 ###################
 # Post-treatments #
