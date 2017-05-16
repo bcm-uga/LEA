@@ -1,25 +1,26 @@
 Package: LEA
 Title: LEA: an R package for Landscape and Ecological Association
         Studies
-Version: 1.7.0
+Version: 2.0.0
 Date: 2016-04-03
 Author: Eric Frichot <eric.frichot@gmail.com>, Olivier Francois
-        <olivier.francois@imag.fr>
-Maintainer: Eric Frichot <eric.frichot@gmail.com>
+        <olivier.francois@grenoble-inp.fr>
+Maintainer: Eric Frichot <eric.frichot@gmail.com>, Olivier Francois
+        <olivier.francois@grenoble-inp.fr>
 Depends: R (>= 3.0.2), methods, stats, utils
 Description: LEA is an R package dedicated to landscape genomics and
         ecological association tests. LEA can run analyses of
-        population structure and genome scans for local adaptation. It
-        includes statistical methods for estimating ancestry
-        coefficients from large genotypic matrices and evaluating the
-        number of ancestral populations (snmf, pca); and identifying
-        genetic polymorphisms that exhibit high correlation with some
-        environmental gradient or with the variables used as proxies
-        for ecological pressures (lfmm), and controlling the false
-        discovery rate. LEA is mainly based on optimized C programs
-        that can scale with the dimension of very large data sets.
+        population structure and genomewide tests for local adaptation. 
+        The package includes statistical methods for estimating ancestry
+        coefficients from large genotypic matrices and for evaluating the
+        number of ancestral populations (snmf, pca). It performs statistical 
+        tests using latent factor mixed models for identifying
+        genetic polymorphisms that exhibit association with
+        environmental gradients or phenotypic traits (lfmm). 
+        LEA is mainly based on optimized C programs
+        that can scale with the dimension of large data sets.
 License: GPL-3
 biocViews: Software, StatisticalMethod, Clustering, Regression
 URL: http://membres-timc.imag.fr/Olivier.Francois/lea.html
 NeedsCompilation: yes
-Packaged: 2015-10-18 17:49:47 UTC; eric
+Packaged: 2017-05-18 17:49:47 UTC; olivier

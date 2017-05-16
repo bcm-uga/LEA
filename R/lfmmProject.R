@@ -7,6 +7,7 @@ setClass("lfmmProject",
         D = "integer", creationTime = "POSIXct")
 )
 
+
 # addRun
 
 setGeneric("addRun.lfmmProject", function(project="lfmmProject", 
@@ -24,10 +25,10 @@ setMethod("addRun.lfmmProject", signature(project="lfmmProject",
     }
 )
 
-# adjusted-pvalues
+# lfmm-pvalues
 
-setGeneric("adjusted.pvalues", function(object, genomic.control, lambda, K, d, all, run) vector)
-setMethod("adjusted.pvalues", "lfmmProject",
+setGeneric("lfmm.pvalues", function(object, genomic.control, lambda, K, d, all, run) vector)
+setMethod("lfmm.pvalues", "lfmmProject",
     function(object, genomic.control, lambda, K, d, all, run) {
 
         # check for genomic control
@@ -50,11 +51,12 @@ setMethod("adjusted.pvalues", "lfmmProject",
         else
             gif <- lambda
 
-        adjusted.pvalues = pchisq(zs.median^2/gif, df = 1, lower.tail = FALSE)
+        lfmm.pvalues = pchisq(zs.median^2/gif, df = 1, lower.tail = FALSE)
 
-        return(list(p.values = adjusted.pvalues, genomic.inflation.factor = gif))
+        return(list(pvalues = lfmm.pvalues, GIF = gif))
     }
 )
+
 
 
 # listMethods

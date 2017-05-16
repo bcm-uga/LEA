@@ -6,6 +6,8 @@ setClass("snmfProject",
         creationTime = "POSIXct")
 )
 
+
+
 # addRun
 
 setGeneric("addRun.snmfProject", function(project="snmfProject", 
@@ -214,6 +216,185 @@ setMethod("cross.entropy", "snmfProject",
         }
     }
 ) 
+
+
+# snmf-pvalues
+setGeneric("snmf.pvalues", function(object, genomic.control, lambda, ploidy, entropy,  K, run) list)
+setMethod("snmf.pvalues", "snmfProject",
+          function(object, genomic.control, lambda, ploidy, entropy,  K, run) {
+            
+            # check for genomic control
+            if (missing(genomic.control)) {
+              genomic.control = TRUE
+            }
+            
+            # check for lambda
+            if (missing(lambda)) {
+              lambda = 1.0
+            }
+  
+
+            # check for run
+ 
+            if (missing(run)) {
+              if (entropy) {
+                ce = cross.entropy(object, K)
+                run = which.min(ce) } else {
+                  stop("Run number is missing.") 
+                }
+            }
+            
+            if (length(run) > 1) {
+              stop("Select a single run number.")
+            }
+            
+            # check for ploidy
+            if (missing(ploidy)) {
+              stop("The ploidy parameter is missing without any default value.")
+            }
+            if (ploidy > 2) {
+              stop("Choose option among ploidy = 1 or ploidy = 2.")
+            }
+            
+            # estimate Fst            
+            l = nrow(G(object, K, run))
+            q = apply(Q(object, K, run), MARGIN = 2, mean)
+            
+            if (ploidy == 2) {
+                G1.t = G(object, K, run)[seq(2,l,by = 3),]
+                G2.t = G(object, K, run)[seq(3,l,by = 3),]
+                freq = G1.t/2 + G2.t
+              }
+              else {
+                freq = G(object, K, run)[seq(2,l,by = 2),]
+              }
+            
+            H.s = apply(freq*(1-freq), MARGIN = 1, FUN = function(x) sum(q*x))
+            P.t = apply(freq, MARGIN = 1, FUN = function(x) sum(q*x))
+            H.t = P.t*(1-P.t)
+            fst = 1 - H.s/H.t
+            
+            
+            # compute the z-scores
+            
+            n = nrow(Q(object, K, run))
+            
+            fst[fst<0] = 0.000001
+            
+            zs = sqrt(fst*(n-K)/(1-fst))
+            
+            if (genomic.control)
+              gif <- median(zs^2)/qchisq(0.5, df = K-1)
+            else
+              gif <- lambda
+            
+            snmf.pvalues = pchisq(zs^2/gif, df = K-1, lower.tail = FALSE)
+            
+            return(list(pvalues = snmf.pvalues, GIF = gif))
+          }
+)
+
+#impute
+
+setGeneric("impute",  function(object, input.file, method, K, run) NULL)
+setMethod("impute", "snmfProject",
+          function(object, input.file, method, K, run) {
+            
+            
+            # check input file
+            
+            
+            if (missing(input.file)){
+              stop("Missing input file: geno or lfmm format\n")} else {
+                input.file = test_character("input.file", input.file, NULL)
+                # check extension and convert if necessary 
+                input.file = test_input_file(input.file, "lfmm") 
+              }
+            if (!file.exists(input.file)) stop("Input file not found.\n")
+            
+            
+            #check  K
+            if (missing(K)) {
+              # if only one, that is the one
+              if (length(unique(object@K)) == 1) {
+                K = unique(object@K)
+              } else {
+                stop("Please, choose a value of K among: ", 
+                     paste(unique(object@K), collapse=" "))
+              }
+            } else {
+              if (length(K) > 1) {
+                stop("K is")  ## TODO 
+              }
+              K = test_integer("K", K, NULL)
+              cat(paste("Missing genotype imputation for K =",K,"\n"))
+              
+              if (!(K %in% unique(object@K))) {
+                stop(paste("No run exists for K = ", K,
+                           ". Please, choose a value of K among: ", 
+                           paste(unique(object@K), collapse=" "),sep=""))
+              }
+            }
+            
+            # check of run
+            r = which(object@K == K)
+            if (missing(run)) {
+              if (length(r) > 1) {
+                stop(paste(length(r)," runs have been performed for K =", K,
+                           ".\n", "Please choose one run with the parameter 'run'"))
+              } else {
+                run = 1;
+              }
+            } else { 
+              run = test_integer('run', run, NULL)
+              cat(paste("Missing genotype imputation for run =",run,"\n"))
+              
+              
+              if (run > length(r)) {
+                stop(paste("You chose run number ", run,". But only ", 
+                           length(r)," run(s) have been performed.", sep=""))
+              }
+            } 
+            
+            
+            # check of method
+            if (missing(method)) {
+              method = "mode" } else { 
+                method = test_character('method', method, NULL)
+                if ( sum(method == c("random","mode")) < 1 ) stop("method must be 'mode' or 'random'.")
+              } 
+            
+            
+            dat = read.lfmm(input.file)
+            QQ <- Q(object, K, run)
+            GG <- t(G(object, K, run))
+            nploidy <- ncol(GG)/object@L 
+            
+            X =  QQ %*% GG
+            
+            for (i in 1:nrow(dat)){
+              mat = matrix(X[i,], nrow = nploidy, byrow = F)
+              
+              if (method == 'mode') {
+                wm = apply(mat, 2, which.max) } else { 
+                  wm = apply(mat, 2, FUN = function(x) sample(1:nploidy, 1, prob = x ))
+                }
+              
+              dat[i,] = wm - 1  
+              
+            }
+            out.file  = paste(input.file,"_imputed.lfmm", sep ="")
+            
+            write.lfmm(R = dat, output.file = out.file )
+            
+            rm(X)
+            rm(dat)
+            cat("Results are written in the file: ",
+                out.file,"\n" )
+          }
+)
+
+
 
 # show
 

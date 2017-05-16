@@ -1,0 +1,68 @@
+new("snmfProject"
+    , snmfProject.file = "genotypes.snmfProject"
+    , projDir = "/Users/francois/Datas/LEA/LEA/vignettes/"
+    , snmfDir = "genotypes.snmf/"
+    , input.file = "genotypes.geno"
+    , runs = list()
+    , K = c(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 1L, 2L, 3L, 4L, 5L, 
+6L, 7L, 8L, 9L, 10L, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 
+1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 1L, 2L, 3L, 4L, 5L, 
+6L, 7L, 8L, 9L, 10L, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 
+1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 1L, 2L, 3L, 4L, 5L, 
+6L, 7L, 8L, 9L, 10L, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 
+1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L)
+    , snmfClass.files = c("K1/run1/genotypes_r1.1.snmfClass", "K2/run1/genotypes_r1.2.snmfClass", 
+"K3/run1/genotypes_r1.3.snmfClass", "K4/run1/genotypes_r1.4.snmfClass", 
+"K5/run1/genotypes_r1.5.snmfClass", "K6/run1/genotypes_r1.6.snmfClass", 
+"K7/run1/genotypes_r1.7.snmfClass", "K8/run1/genotypes_r1.8.snmfClass", 
+"K9/run1/genotypes_r1.9.snmfClass", "K10/run1/genotypes_r1.10.snmfClass", 
+"K1/run2/genotypes_r2.1.snmfClass", "K2/run2/genotypes_r2.2.snmfClass", 
+"K3/run2/genotypes_r2.3.snmfClass", "K4/run2/genotypes_r2.4.snmfClass", 
+"K5/run2/genotypes_r2.5.snmfClass", "K6/run2/genotypes_r2.6.snmfClass", 
+"K7/run2/genotypes_r2.7.snmfClass", "K8/run2/genotypes_r2.8.snmfClass", 
+"K9/run2/genotypes_r2.9.snmfClass", "K10/run2/genotypes_r2.10.snmfClass", 
+"K1/run3/genotypes_r3.1.snmfClass", "K2/run3/genotypes_r3.2.snmfClass", 
+"K3/run3/genotypes_r3.3.snmfClass", "K4/run3/genotypes_r3.4.snmfClass", 
+"K5/run3/genotypes_r3.5.snmfClass", "K6/run3/genotypes_r3.6.snmfClass", 
+"K7/run3/genotypes_r3.7.snmfClass", "K8/run3/genotypes_r3.8.snmfClass", 
+"K9/run3/genotypes_r3.9.snmfClass", "K10/run3/genotypes_r3.10.snmfClass", 
+"K1/run4/genotypes_r4.1.snmfClass", "K2/run4/genotypes_r4.2.snmfClass", 
+"K3/run4/genotypes_r4.3.snmfClass", "K4/run4/genotypes_r4.4.snmfClass", 
+"K5/run4/genotypes_r4.5.snmfClass", "K6/run4/genotypes_r4.6.snmfClass", 
+"K7/run4/genotypes_r4.7.snmfClass", "K8/run4/genotypes_r4.8.snmfClass", 
+"K9/run4/genotypes_r4.9.snmfClass", "K10/run4/genotypes_r4.10.snmfClass", 
+"K1/run5/genotypes_r5.1.snmfClass", "K2/run5/genotypes_r5.2.snmfClass", 
+"K3/run5/genotypes_r5.3.snmfClass", "K4/run5/genotypes_r5.4.snmfClass", 
+"K5/run5/genotypes_r5.5.snmfClass", "K6/run5/genotypes_r5.6.snmfClass", 
+"K7/run5/genotypes_r5.7.snmfClass", "K8/run5/genotypes_r5.8.snmfClass", 
+"K9/run5/genotypes_r5.9.snmfClass", "K10/run5/genotypes_r5.10.snmfClass", 
+"K1/run6/genotypes_r6.1.snmfClass", "K2/run6/genotypes_r6.2.snmfClass", 
+"K3/run6/genotypes_r6.3.snmfClass", "K4/run6/genotypes_r6.4.snmfClass", 
+"K5/run6/genotypes_r6.5.snmfClass", "K6/run6/genotypes_r6.6.snmfClass", 
+"K7/run6/genotypes_r6.7.snmfClass", "K8/run6/genotypes_r6.8.snmfClass", 
+"K9/run6/genotypes_r6.9.snmfClass", "K10/run6/genotypes_r6.10.snmfClass", 
+"K1/run7/genotypes_r7.1.snmfClass", "K2/run7/genotypes_r7.2.snmfClass", 
+"K3/run7/genotypes_r7.3.snmfClass", "K4/run7/genotypes_r7.4.snmfClass", 
+"K5/run7/genotypes_r7.5.snmfClass", "K6/run7/genotypes_r7.6.snmfClass", 
+"K7/run7/genotypes_r7.7.snmfClass", "K8/run7/genotypes_r7.8.snmfClass", 
+"K9/run7/genotypes_r7.9.snmfClass", "K10/run7/genotypes_r7.10.snmfClass", 
+"K1/run8/genotypes_r8.1.snmfClass", "K2/run8/genotypes_r8.2.snmfClass", 
+"K3/run8/genotypes_r8.3.snmfClass", "K4/run8/genotypes_r8.4.snmfClass", 
+"K5/run8/genotypes_r8.5.snmfClass", "K6/run8/genotypes_r8.6.snmfClass", 
+"K7/run8/genotypes_r8.7.snmfClass", "K8/run8/genotypes_r8.8.snmfClass", 
+"K9/run8/genotypes_r8.9.snmfClass", "K10/run8/genotypes_r8.10.snmfClass", 
+"K1/run9/genotypes_r9.1.snmfClass", "K2/run9/genotypes_r9.2.snmfClass", 
+"K3/run9/genotypes_r9.3.snmfClass", "K4/run9/genotypes_r9.4.snmfClass", 
+"K5/run9/genotypes_r9.5.snmfClass", "K6/run9/genotypes_r9.6.snmfClass", 
+"K7/run9/genotypes_r9.7.snmfClass", "K8/run9/genotypes_r9.8.snmfClass", 
+"K9/run9/genotypes_r9.9.snmfClass", "K10/run9/genotypes_r9.10.snmfClass", 
+"K1/run10/genotypes_r10.1.snmfClass", "K2/run10/genotypes_r10.2.snmfClass", 
+"K3/run10/genotypes_r10.3.snmfClass", "K4/run10/genotypes_r10.4.snmfClass", 
+"K5/run10/genotypes_r10.5.snmfClass", "K6/run10/genotypes_r10.6.snmfClass", 
+"K7/run10/genotypes_r10.7.snmfClass", "K8/run10/genotypes_r10.8.snmfClass", 
+"K9/run10/genotypes_r10.9.snmfClass", "K10/run10/genotypes_r10.10.snmfClass"
+)
+    , n = 50L
+    , L = 400L
+    , creationTime = structure(1494935388.08437, class = c("POSIXct", "POSIXt"))
+)

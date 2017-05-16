@@ -1,0 +1,1642 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.12.4)  16 MAY 2017 13:51
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**LEA.tex
+(./LEA.tex
+LaTeX2e <2015/01/01>
+Babel <3.9l> and hyphenation patterns for 79 languages loaded.
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 94.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count87
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2014/10/28 v1.1a Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 142.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip43
+\fb@frw=\dimen105
+\fb@frh=\dimen106
+\FrameRule=\dimen107
+\FrameSep=\dimen108
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/alltt.sty
+Package: alltt 1997/06/16 v2.0g defines alltt environment
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip44
+\bibsep=\skip45
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count88
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+) (./LEA.aux)
+\openout1 = `LEA.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+
+(/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count89
+\scratchdimen=\dimen109
+\scratchbox=\box26
+\nofMPsegments=\count90
+\nofMParguments=\count91
+\everyMPshowfont=\toks15
+\MPscratchCnt=\count92
+\MPscratchDim=\dimen110
+\MPnumerator=\count93
+\makeMPintoPDFobject=\count94
+\everyMPtoPDFconversion=\toks16
+) (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <14.4> on input line 68.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 68.
+
+(./LEA.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 3.
+)
+\tf@toc=\write3
+\openout3 = `LEA.toc'.
+
+ [1
+
+{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Package color Info: Redefining color shadecolor on input line 90.
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 93.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.100 \newline
+              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.101 \newline
+              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Package color Info: Redefining color shadecolor on input line 105.
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.123 \newline
+              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.124 \newline
+              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--142
+
+ []
+
+
+Overfull \hbox (8.73642pt too wide) in paragraph at lines 129--142
+\OT1/cmr/m/n/12 data (eg, mi-crosatel-lites). For those data, the con-ver-sion 
+func-tion \OT1/cmtt/m/n/12 struct2geno
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--142
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--142
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--142
+
+ []
+
+[2] [3]
+Package color Info: Redefining color shadecolor on input line 153.
+Package color Info: Redefining color shadecolor on input line 173.
+
+Overfull \hbox (13.19629pt too wide) in paragraph at lines 176--176
+[][]\OT1/cmtt/m/it/12 # create file: tuto.tracyWidom - tracy-widom test informa
+tion.  [][] 
+ []
+
+Package color Info: Redefining color shadecolor on input line 183.
+
+Overfull \hbox (85.47523pt too wide) in paragraph at lines 191--191
+[]\OT1/cmtt/m/n/12 ##  [1] 8.000e-09 8.000e-09 8.000e-09 1.503e-04 3.152e-02 4.
+215e-01 6.565e-01[] 
+ []
+
+[4]
+Package color Info: Redefining color shadecolor on input line 198.
+ <figure/unnamed-chunk-7-1.pdf, id=22, 289.08pt x 289.08pt>
+File: figure/unnamed-chunk-7-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-7-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-7-1.pdf used on input line 204.
+(pdftex.def)             Requested size: 289.07928pt x 289.09251pt.
+Package color Info: Redefining color shadecolor on input line 216.
+ [5 <./figure/unnamed-chunk-7-1.pdf>]
+Package color Info: Redefining color shadecolor on input line 238.
+
+Overfull \hbox (8.97968pt too wide) in paragraph at lines 240--240
+[][]\OT1/cmtt/m/it/12 # plot cross-entropy criterion for all runs in the snmf p
+roject[][] 
+ []
+
+<figure/unnamed-chunk-9-1.pdf, id=31, 289.08pt x 289.08pt>
+File: figure/unnamed-chunk-9-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-9-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-9-1.pdf used on input line 244.
+(pdftex.def)             Requested size: 289.07928pt x 289.09251pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+Package color Info: Redefining color shadecolor on input line 255.
+<figure/unnamed-chunk-10-1.pdf, id=32, 289.08pt x 289.08pt>
+File: figure/unnamed-chunk-10-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-10-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-10-1.pdf used on input line 272.
+(pdftex.def)             Requested size: 289.07928pt x 289.09251pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+Package color Info: Redefining color shadecolor on input line 287.
+Missing character: There is no Ã in font cmtt12!
+Missing character: There is no © in font cmtt12!
+Missing character: There is no Ã in font cmtt12!
+Missing character: There is no © in font cmtt12!
+Missing character: There is no Ã in font cmtt12!
+Missing character: There is no © in font cmtt12!
+Missing character: There is no Ã in font cmtt12!
+Missing character: There is no © in font cmtt12!
+Missing character: There is no Ã in font cmtt12!
+Missing character: There is no © in font cmtt12!
+Missing character: There is no Ã in font cmtt12!
+Missing character: There is no © in font cmtt12!
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.318 ...ng matrix is saved in the file "genotype_
+                                                  M.geno".
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+Package color Info: Redefining color shadecolor on input line 320.
+! Missing $ inserted.
+<inserted text> 
+                $
+l.320 ....969, 0.969}\color{fgcolor}\begin{kframe}
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.320 ....969, 0.969}\color{fgcolor}\begin{kframe}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.320 ....969, 0.969}\color{fgcolor}\begin{kframe}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+[6] [7 <./figure/unnamed-chunk-9-1.pdf>]
+! Undefined control sequence.
+\endkframe ...ip \endMakeFramed \at@end@of@kframe 
+                                                  
+l.331 \end{kframe}
+                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: \begin{document} ended by \end{kframe}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.331 \end{kframe}
+                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.331 \end{kframe}
+                  
+Things are pretty mixed up, but I think the worst is over.
+
+
+! LaTeX Error: \begin{document} ended by \end{knitrout}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.332 \end{knitrout}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.332 \end{knitrout}
+                    
+Things are pretty mixed up, but I think the worst is over.
+
+Package color Info: Redefining color shadecolor on input line 336.
+[8 <./figure/unnamed-chunk-10-1.pdf>]
+Overfull \hbox (5.2002pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                      203972
+1533[] 
+ []
+
+
+Overfull \hbox (283.07533pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file in .geno format)         /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (437.45041pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -o (output file in .geno format)           /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (369.52538pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  Write genotype file with masked data, /Users/francois/Da
+tas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (input file)                        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture file)         /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run1/genotype_M_r1.4.Q[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies file)        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run1/genotype_M_r1.4.G[] 
+ []
+
+
+Overfull \hbox (11.3752pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                  1402327219
+35933[] 
+ []
+
+
+Overfull \hbox (246.02531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Read genotype file /Users/francois/Datas/LEA/LEA/vignette
+s/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (110.17525pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  [                                                       
+                    ][] 
+ []
+
+
+Overfull \hbox (400.40039pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write individual ancestry coefficient file /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run1/genotype_M_r1.4.Q:
+ []
+
+
+Overfull \hbox (443.62541pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write ancestral allele frequency coefficient file /Users/
+francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run1/genotype_M_r1.4.G:
+ []
+
+
+Overfull \hbox (233.67531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file)                 /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture)          /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run1/genotype_M_r1.4.Q[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run1/genotype_M_r1.4.G[] 
+ []
+
+
+Overfull \hbox (388.05038pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -i (with masked genotypes)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (283.07533pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file in .geno format)         /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (437.45041pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -o (output file in .geno format)           /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (369.52538pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  Write genotype file with masked data, /Users/francois/Da
+tas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (input file)                        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture file)         /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run2/genotype_M_r2.4.Q[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies file)        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run2/genotype_M_r2.4.G[] 
+ []
+
+
+Overfull \hbox (11.3752pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                  1402308361
+52903[] 
+ []
+
+
+Overfull \hbox (246.02531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Read genotype file /Users/francois/Datas/LEA/LEA/vignette
+s/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (110.17525pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  [                                                       
+                    ][] 
+ []
+
+
+Overfull \hbox (400.40039pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write individual ancestry coefficient file /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run2/genotype_M_r2.4.Q:
+ []
+
+
+Overfull \hbox (443.62541pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write ancestral allele frequency coefficient file /Users/
+francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run2/genotype_M_r2.4.G:
+ []
+
+
+Overfull \hbox (233.67531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file)                 /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture)          /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run2/genotype_M_r2.4.Q[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run2/genotype_M_r2.4.G[] 
+ []
+
+
+Overfull \hbox (388.05038pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -i (with masked genotypes)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (5.2002pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                      198925
+5669[] 
+ []
+
+
+Overfull \hbox (283.07533pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file in .geno format)         /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (437.45041pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -o (output file in .geno format)           /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (369.52538pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  Write genotype file with masked data, /Users/francois/Da
+tas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (input file)                        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture file)         /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run3/genotype_M_r3.4.Q[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies file)        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run3/genotype_M_r3.4.G[] 
+ []
+
+
+Overfull \hbox (11.3752pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                  1402326714
+70069[] 
+ []
+
+
+Overfull \hbox (246.02531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Read genotype file /Users/francois/Datas/LEA/LEA/vignette
+s/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (110.17525pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  [                                                       
+                    ][] 
+ []
+
+
+Overfull \hbox (400.40039pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write individual ancestry coefficient file /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run3/genotype_M_r3.4.Q:
+ []
+
+
+Overfull \hbox (443.62541pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write ancestral allele frequency coefficient file /Users/
+francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run3/genotype_M_r3.4.G:
+ []
+
+
+Overfull \hbox (233.67531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file)                 /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture)          /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run3/genotype_M_r3.4.Q[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run3/genotype_M_r3.4.G[] 
+ []
+
+
+Overfull \hbox (388.05038pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -i (with masked genotypes)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (5.2002pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                      119878
+6353[] 
+ []
+
+
+Overfull \hbox (283.07533pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file in .geno format)         /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (437.45041pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -o (output file in .geno format)           /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (369.52538pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  Write genotype file with masked data, /Users/francois/Da
+tas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (input file)                        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture file)         /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run4/genotype_M_r4.4.Q[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies file)        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run4/genotype_M_r4.4.G[] 
+ []
+
+
+Overfull \hbox (11.3752pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                  1402318810
+00753[] 
+ []
+
+
+Overfull \hbox (246.02531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Read genotype file /Users/francois/Datas/LEA/LEA/vignette
+s/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (110.17525pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  [                                                       
+                    ][] 
+ []
+
+
+Overfull \hbox (400.40039pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write individual ancestry coefficient file /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run4/genotype_M_r4.4.Q:
+ []
+
+
+Overfull \hbox (443.62541pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write ancestral allele frequency coefficient file /Users/
+francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run4/genotype_M_r4.4.G:
+ []
+
+
+Overfull \hbox (233.67531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file)                 /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture)          /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run4/genotype_M_r4.4.Q[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run4/genotype_M_r4.4.G[] 
+ []
+
+
+Overfull \hbox (388.05038pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -i (with masked genotypes)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (283.07533pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file in .geno format)         /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (437.45041pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -o (output file in .geno format)           /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (369.52538pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  Write genotype file with masked data, /Users/francois/Da
+tas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (input file)                        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture file)         /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run5/genotype_M_r5.4.Q[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies file)        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run5/genotype_M_r5.4.G[] 
+ []
+
+
+Overfull \hbox (11.3752pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                  1402312958
+34533[] 
+ []
+
+
+Overfull \hbox (246.02531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Read genotype file /Users/francois/Datas/LEA/LEA/vignette
+s/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (110.17525pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  [                                                       
+                    ][] 
+ []
+
+
+Overfull \hbox (400.40039pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write individual ancestry coefficient file /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run5/genotype_M_r5.4.Q:
+ []
+
+
+Overfull \hbox (443.62541pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write ancestral allele frequency coefficient file /Users/
+francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run5/genotype_M_r5.4.G:
+ []
+
+
+Overfull \hbox (233.67531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file)                 /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture)          /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run5/genotype_M_r5.4.Q[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run5/genotype_M_r5.4.G[] 
+ []
+
+
+Overfull \hbox (388.05038pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -i (with masked genotypes)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (5.2002pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                      196324
+8173[] 
+ []
+
+
+Overfull \hbox (283.07533pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file in .geno format)         /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (437.45041pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -o (output file in .geno format)           /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (369.52538pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  Write genotype file with masked data, /Users/francois/Da
+tas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (input file)                        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture file)         /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run6/genotype_M_r6.4.Q[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies file)        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run6/genotype_M_r6.4.G[] 
+ []
+
+
+Overfull \hbox (246.02531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Read genotype file /Users/francois/Datas/LEA/LEA/vignette
+s/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (110.17525pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  [                                                       
+                    ][] 
+ []
+
+
+Overfull \hbox (400.40039pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write individual ancestry coefficient file /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run6/genotype_M_r6.4.Q:
+ []
+
+
+Overfull \hbox (443.62541pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write ancestral allele frequency coefficient file /Users/
+francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run6/genotype_M_r6.4.G:
+ []
+
+
+Overfull \hbox (233.67531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file)                 /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture)          /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run6/genotype_M_r6.4.Q[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run6/genotype_M_r6.4.G[] 
+ []
+
+
+Overfull \hbox (388.05038pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -i (with masked genotypes)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (5.2002pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                      134937
+4288[] 
+ []
+
+
+Overfull \hbox (283.07533pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file in .geno format)         /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (437.45041pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -o (output file in .geno format)           /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (369.52538pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  Write genotype file with masked data, /Users/francois/Da
+tas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (input file)                        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture file)         /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run7/genotype_M_r7.4.Q[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies file)        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run7/genotype_M_r7.4.G[] 
+ []
+
+
+Overfull \hbox (246.02531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Read genotype file /Users/francois/Datas/LEA/LEA/vignette
+s/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (110.17525pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  [                                                       
+                    ][] 
+ []
+
+
+Overfull \hbox (400.40039pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write individual ancestry coefficient file /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run7/genotype_M_r7.4.Q:
+ []
+
+
+Overfull \hbox (443.62541pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write ancestral allele frequency coefficient file /Users/
+francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run7/genotype_M_r7.4.G:
+ []
+
+
+Overfull \hbox (233.67531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file)                 /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture)          /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run7/genotype_M_r7.4.Q[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run7/genotype_M_r7.4.G[] 
+ []
+
+
+Overfull \hbox (388.05038pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -i (with masked genotypes)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (5.2002pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                      144164
+9775[] 
+ []
+
+
+Overfull \hbox (283.07533pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file in .geno format)         /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (437.45041pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -o (output file in .geno format)           /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (369.52538pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  Write genotype file with masked data, /Users/francois/Da
+tas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (input file)                        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture file)         /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run8/genotype_M_r8.4.Q[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies file)        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run8/genotype_M_r8.4.G[] 
+ []
+
+
+Overfull \hbox (11.3752pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                  1402321238
+64175[] 
+ []
+
+
+Overfull \hbox (246.02531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Read genotype file /Users/francois/Datas/LEA/LEA/vignette
+s/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (110.17525pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  [                                                       
+                    ][] 
+ []
+
+
+Overfull \hbox (400.40039pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write individual ancestry coefficient file /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run8/genotype_M_r8.4.Q:
+ []
+
+
+Overfull \hbox (443.62541pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write ancestral allele frequency coefficient file /Users/
+francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run8/genotype_M_r8.4.G:
+ []
+
+
+Overfull \hbox (233.67531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file)                 /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture)          /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run8/genotype_M_r8.4.Q[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run8/genotype_M_r8.4.G[] 
+ []
+
+
+Overfull \hbox (388.05038pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -i (with masked genotypes)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (283.07533pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file in .geno format)         /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (437.45041pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -o (output file in .geno format)           /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (369.52538pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  Write genotype file with masked data, /Users/francois/Da
+tas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (input file)                        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture file)         /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run9/genotype_M_r9.4.Q[] 
+ []
+
+
+Overfull \hbox (418.9254pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies file)        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run9/genotype_M_r9.4.G[] 
+ []
+
+
+Overfull \hbox (36.07521pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                  4607182418
+939201952[] 
+ []
+
+
+Overfull \hbox (246.02531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Read genotype file /Users/francois/Datas/LEA/LEA/vignette
+s/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (110.17525pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  [                                                       
+                    ][] 
+ []
+
+
+Overfull \hbox (400.40039pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write individual ancestry coefficient file /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run9/genotype_M_r9.4.Q:
+ []
+
+
+Overfull \hbox (443.62541pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write ancestral allele frequency coefficient file /Users/
+francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run9/genotype_M_r9.4.G:
+ []
+
+
+Overfull \hbox (233.67531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file)                 /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture)          /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run9/genotype_M_r9.4.Q[] 
+ []
+
+
+Overfull \hbox (394.22539pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run9/genotype_M_r9.4.G[] 
+ []
+
+
+Overfull \hbox (388.05038pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -i (with masked genotypes)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (5.2002pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                      119827
+6514[] 
+ []
+
+
+Overfull \hbox (283.07533pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file in .geno format)         /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (437.45041pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -o (output file in .geno format)           /Users
+/francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (369.52538pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  Write genotype file with masked data, /Users/francois/Da
+tas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (input file)                        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+
+Overfull \hbox (431.2754pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture file)         /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run10/genotype_M_r10.4.Q[] 
+ []
+
+
+Overfull \hbox (431.2754pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies file)        /Users/fra
+ncois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run10/genotype_M_r10.4.G[] 
+ []
+
+
+Overfull \hbox (11.3752pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -s (seed random init)                  1402318804
+90914[] 
+ []
+
+
+Overfull \hbox (246.02531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Read genotype file /Users/francois/Datas/LEA/LEA/vignette
+s/genotype_M.snmf/masked/genotype_M_I.geno:
+ []
+
+
+Overfull \hbox (110.17525pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##  [                                                       
+                    ][] 
+ []
+
+
+Overfull \hbox (412.7504pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write individual ancestry coefficient file /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run10/genotype_M_r10.4.Q:
+ []
+
+
+Overfull \hbox (455.97542pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ## Write ancestral allele frequency coefficient file /Users/
+francois/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run10/genotype_M_r10.4.G:
+ []
+
+
+Overfull \hbox (233.67531pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -x (genotype file)                 /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.geno[] 
+ []
+
+
+Overfull \hbox (406.5754pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -q (individual admixture)          /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run10/genotype_M_r10.4.Q[] 
+ []
+
+
+Overfull \hbox (406.5754pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -g (ancestral frequencies)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/K4/run10/genotype_M_r10.4.G[] 
+ []
+
+
+Overfull \hbox (388.05038pt too wide) in paragraph at lines 1051--1051
+[]\OT1/cmtt/m/n/12 ##         -i (with masked genotypes)         /Users/francoi
+s/Datas/LEA/LEA/vignettes/genotype_M.snmf/masked/genotype_M_I.geno[] 
+ []
+
+[9]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[10]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[11]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[12]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[13]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[14]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[15]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[16]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[17]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[18]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[19]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[20]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[21]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[22]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[23]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[24]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[25]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[26]
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1052
+ []
+
+[27]
+Package color Info: Redefining color shadecolor on input line 1057.
+
+Overfull \hbox (42.25021pt too wide) in paragraph at lines 1063--1063
+[][]\OT1/cmtt/m/n/12 impute[][](project,[] []"genotype_M.lfmm"[][],[] []method[
+] []=[] []^^Mmode^^M[][],[] []K[] []=[] []4[][],[] []run[] []= best)[][] 
+ []
+
+
+Overfull \hbox (9.6462pt too wide) in paragraph at lines 1067--1067
+[]\OT1/cmtt/m/n/12 ## Error in impute(project, "genotype[]M.lfmm", method = "mo
+de", K
+ []
+
+
+Overfull \hbox (2.67973pt too wide) in paragraph at lines 1068--1068
+[][]\OT1/cmtt/m/it/12 # Compare with truth: proportion of correct imputation re
+sults[][] 
+ []
+
+
+Overfull \hbox (193.16728pt too wide) in paragraph at lines 1073--1074
+[]\OT1/cmtt/m/n/12 ## Warning in file(file, "rt"): impossible d'ouvrir le fichi
+er 'genotypes[]M.lfmm[]imputed.lfmm'
+ []
+
+
+Overfull \hbox (23.7252pt too wide) in paragraph at lines 1080--1080
+[]\OT1/cmtt/m/n/12 ## Error in mean(tutorial.R[dat == 9] == dat.imp[dat == 9]):
+ objet
+ []
+
+[28]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1083 ...ved in an output file with the string "_
+                                                  imputed" in its suffix name.
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1084 
+       
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (41.72118pt too wide) in paragraph at lines 1083--1084
+[]\OT1/cmr/m/n/12 The re-sults are saved in an out-put file with the string "$[
+]\OML/cmm/m/it/12 mputed\OT1/cmr/m/n/12 "\OML/cmm/m/it/12 initssuffixname:$ 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1090--1095
+
+ []
+
+Package color Info: Redefining color shadecolor on input line 1101.
+[29]
+Underfull \hbox (badness 10000) in paragraph at lines 1118--1119
+
+ []
+
+Package color Info: Redefining color shadecolor on input line 1128.
+Package color Info: Redefining color shadecolor on input line 1140.
+<figure/unnamed-chunk-17-1.pdf, id=122, 289.08pt x 289.08pt>
+File: figure/unnamed-chunk-17-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-17-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-17-1.pdf used on input line 1148.
+
+(pdftex.def)             Requested size: 289.07928pt x 289.09251pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+Package color Info: Redefining color shadecolor on input line 1157.
+[30]
+LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 115
+9.
+
+(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/omscmtt.fd
+File: omscmtt.fd 
+)
+LaTeX Font Info:    Font shape `OMS/cmtt/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1159.
+
+
+[31 <./figure/unnamed-chunk-17-1.pdf>]
+Package color Info: Redefining color shadecolor on input line 1175.
+
+Overfull \hbox (48.42522pt too wide) in paragraph at lines 1178--1178
+[]    \OT1/cmtt/m/n/12 estimated.FDR = []length[]([]which[](candidates <= 350))
+/[]length[](candidates)[] 
+ []
+
+
+Overfull \hbox (85.47523pt too wide) in paragraph at lines 1180--1180
+[]    []\OT1/cmtt/m/n/12 print[]([]paste[]([]"FDR:"[], estimated.FDR, []"True P
+ositive Rate:"[], estimated.TPR))[] 
+ []
+
+LaTeX Font Info:    Font shape `OMS/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 1185.
+
+
+Overfull \hbox (17.5502pt too wide) in paragraph at lines 1185--1185
+\OT1/cmtt/m/n/12 ## 4:    print(paste("FDR:", estimated.FDR, "True Positive Rat
+e:",
+ []
+
+(./LEA.bbl [32]) [33] (./LEA.aux) ) 
+Here is how much of TeX's memory you used:
+ 2054 strings out of 493089
+ 29421 string characters out of 6134842
+ 260423 words of memory out of 5000000
+ 5512 multiletter control sequences out of 15000+600000
+ 9738 words of font info for 36 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 38i,7n,51p,821b,313s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2015/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmbsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmitt10.pfb></usr/local/texlive/2015/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmr17.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmtt12.pfb>
+Output written on LEA.pdf (33 pages, 208586 bytes).
+PDF statistics:
+ 177 PDF objects out of 1000 (max. 8388607)
+ 122 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+

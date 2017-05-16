@@ -27,6 +27,8 @@ export(vcf2geno)
 export(vcf2lfmm)
 export(ancestrymap2lfmm)
 export(ancestrymap2geno)
+export(struct2geno)
+export(as.qmatrix)
 
 # classes
 #exportClasses(#pcaProject,
@@ -65,16 +67,17 @@ exportMethods(
         G,
         plot,
         z.scores,
-        p.values,
-        adjusted.pvalues,
-        mlog10p.values,
+        lfmm.pvalues,
+        snmf.pvalues,
         cross.entropy,
-        #inflationFactorEstimation,
-        #cFDR,
-        tracy.widom
+        tracy.widom,
+        impute
 )
 
-export(.DollarNames.pcaProject)
+export(barplot.Qmatrix)
+#S3method(barplot.Qmatrix, "Qmatrix")
+
+#export(.DollarNames.pcaProject)
 #export(.DollarNames.snmfClass)
 #export(.DollarNames.snmfProject)
 #export(.DollarNames.lfmmClass)
