@@ -7,6 +7,7 @@ src/*.so
 src/*.dll
 dat.*
 *.lfmm
+*.snmf
 *.geno
 *Project
 vignettes/gen*
