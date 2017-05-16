@@ -17,5 +17,6 @@ vignettes/LEA_analyses/*.*
 vignettes/*.log
 vignettes/*.pdf
 vignettes/*.t*
-vignettes/*.b*
+vignettes/*.bbl
+vignettes/*.blg
 vignettes/*.synctex.gz
