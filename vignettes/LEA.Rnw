@@ -33,12 +33,13 @@ TIMC-IMAG UMR 5525, Grenoble, 38042, France.
         number of ancestral populations (snmf, pca). It performs statistical 
         tests using latent factor mixed models for identifying
         genetic polymorphisms that exhibit high correlation with
-        environmental gradients (lfmm). {\tt LEA} is mainly based on optimized C programs
+        environmental gradients (lfmm). {\tt LEA} can also evaluate association
+        with phenotypic traits. The program is mainly based on optimized C programs
         that can scale with the dimension of large data sets.  
 
 
 \section{Introduction} 
-The goal of this tutorial is to give an overview of the main  functionalities of the {\tt R} package {\tt LEA}. It will show the main steps of analysis, including 1) analysing population structure and preparing a genotypic matrix for genomewide association studies, 2) fitting GWAS latent factor mixed models to the data and extracting candidate regions of interest.    
+The goal of this tutorial is to give an overview of the main functionalities of the {\tt R} package {\tt LEA}. It shows the main steps of analysis, including 1) analyzing population structure and preparing a genotypic matrix for genomewide association studies, 2) fitting latent factor mixed models to the data and extracting candidate regions of interest.    
 
 As some functions may take a few hours to analyse very large datasets, output files are written into text files that can be read by {\tt LEA} after each batch of runs (called a 'project'). We advise creating working directories containing genotypic data and covariables when starting {\tt LEA}. Note that two files with the same names but a different extension are assumed to contain the same data in distinct formats.
 
