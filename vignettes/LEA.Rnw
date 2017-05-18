@@ -10,7 +10,8 @@
 <<include=FALSE>>=
 library(knitr)
 opts_chunk$set(
-concordance=TRUE
+concordance=TRUE,
+cache=TRUE
 )
 @
 
@@ -33,13 +34,12 @@ TIMC-IMAG UMR 5525, Grenoble, 38042, France.
         number of ancestral populations (snmf, pca). It performs statistical 
         tests using latent factor mixed models for identifying
         genetic polymorphisms that exhibit high correlation with
-        environmental gradients (lfmm). {\tt LEA} can also evaluate association
-        with phenotypic traits. The program is mainly based on optimized C programs
+        environmental gradients (lfmm). {\tt LEA} is mainly based on optimized C programs
         that can scale with the dimension of large data sets.  
 
 
 \section{Introduction} 
-The goal of this tutorial is to give an overview of the main functionalities of the {\tt R} package {\tt LEA}. It shows the main steps of analysis, including 1) analyzing population structure and preparing a genotypic matrix for genomewide association studies, 2) fitting latent factor mixed models to the data and extracting candidate regions of interest.    
+The goal of this tutorial is to give an overview of the main  functionalities of the {\tt R} package {\tt LEA}. It will show the main steps of analysis, including 1) analysing population structure and preparing a genotypic matrix for genomewide association studies, 2) fitting GWAS latent factor mixed models to the data and extracting candidate regions of interest.    
 
 As some functions may take a few hours to analyse very large datasets, output files are written into text files that can be read by {\tt LEA} after each batch of runs (called a 'project'). We advise creating working directories containing genotypic data and covariables when starting {\tt LEA}. Note that two files with the same names but a different extension are assumed to contain the same data in distinct formats.
 
@@ -50,8 +50,8 @@ dir.create("LEA_analyses")
 setwd("LEA_analyses")
 @
 
-\newline
-\newline
+
+
 This tutorial is based on a small dataset consisting of 400 SNPs genotyped for 50 diploids individuals. The last 50 SNPs are correlated with an environmental variable, and represent the target loci for an association analysis. Similar artificial data were analyzed in the computer note introducing the R package LEA \citep{Frichot_2015}. 
 
 <<results='hide'>>=
@@ -69,24 +69,24 @@ write.geno(tutorial.R, "genotypes.geno")
 write.env(tutorial.C, "gradients.env")
 @
 
-\newline
-\newline
+
+
 Note that the {\tt LEA} package is to be able to handle very large population 
 genetic data sets. Genomic data are processed using fast C codes wrapped into the {\tt R} code. Most {\tt LEA} functions use character strings containing paths to input files as arguments.
 
 \subsection{Input files}
 The {\tt R} package {\tt LEA} can handle several input file formats for genotypic matrices. More specifically, the package uses the {\tt lfmm} and {\tt geno} formats, and provides functions to convert from other formats such as {\tt ped}, {\tt vcf}, and {\tt ancestrymap} formats. The program VCFTOOLS can be very useful in providing one of those format ({\tt ped} is the closest to an {\tt lfmm} matrix).
-\newline
-\newline
+
+
 The {\tt lfmm} and {\tt geno} formats can also be used for coding multiallelic marker data (eg, microsatellites). For  multiallelic marker data, the conversion function{\tt struct2geno()} converts files in the STRUCTURE format in the {\tt geno} or {\tt lfmm} formats. {\tt LEA} can also process allele frequency data if they are encoded in the {\tt lfmm} format. In that case, the {\tt lfmm} function will use allele counts for populations in its model. 
-\newline
-\newline
+
+
 Phenotypic traits and ecological predictors must be formatted in the {\tt env} format. This format corresponds to a matrix where each variable is represented as a column \citep{Frichot_2013}. It uses the {\tt .env} extension.
-\newline
-\newline
+
+
 When using ecological data, we often need to decide which variables should be used among a large number of ecological indicators (eg, climatic variables), we suggest that users summarize their data using linear combinations of those indicators. Considering principal component analysis and using the first principal components as proxies for ecological gradients linked to selective forces can be useful in this context.
-\newline
-\newline
+
+
 The {\tt LEA} package can handle missing data in population structure analyses. In association analyses, missing genotypes must be replaced by imputed values using a missing data imputation method. We encourage users to remove their missing data by using the function {\tt impute()}, which is based on population structure analysis(see next section). Note that specialized genotype imputation programs such as BEAGLE, IMPUTE2 or MENDEL-IMPUTE could provide better imputation results than {\tt LEA}. Filtering out rare variants -- retaining minor allele frequency greater than 5 percent --, and removing regions in strong LD may also result in better analyses with {\tt LEA}.
 
 
@@ -111,7 +111,7 @@ pc = pca("genotypes.lfmm", scale = TRUE)
 @
 \noindent
 The number of "significant" components can be evaluated using graphical methods based on the screeplot (Figure 1). The knee in the screeplot indicates that there
-are around $K = 5$ major components in the data ($\approx 6$ genetic clusters). 
+are around $K = 4$ major components in the data ($\approx 5$ genetic clusters). 
 Following  \citep{Patterson_2006}, the {\tt tracy.widom} function computes Tracy-Widom tests for each eigenvalue as follows.
 
 <<results='hide'>>=
@@ -131,7 +131,7 @@ tw$pvalues[1:5]
 # plot the percentage of variance explained by each component
 plot(tw$percentage)
 @
-\caption{Screeplot for the percentage of variance explained by each component in a PCA of the genetic data. The knee at $K = 5$ indicates that there are around 6 major genetic clusters in the data.}
+\caption{Screeplot for the percentage of variance explained by each component in a PCA of the genetic data. The knee at $K = 4$ indicates that there are 5 major genetic clusters in the data.}
 \end{figure}
 
 \newpage
@@ -154,7 +154,7 @@ project = snmf("genotypes.geno",
 @
 
 
-The {\tt snmf} function estimates an entropy criterion that evaluates the quality of fit of the statistical model to the data using a cross-validation technique (Figure 2). The entropy criterion can help choosing the number of ancestral populations that best explains the genotypic data \citep{Alexander_2011, Frichot_2014}. Here we have a minimum at $K = 3$ or $K = 4$, suggesting 3-4 genetic clusters. If the plot shows a less clear pattern, choosing the "knee" value is a generally good approach. The number of ancestral populations is closely linked to the number of principal components. Both numbers can help determining the number of latent factors when correcting for confounding effects due to population structure in ecological association tests. 
+The {\tt snmf} function estimates an entropy criterion that evaluates the quality of fit of the statistical model to the data using a cross-validation technique (Figure 2). The entropy criterion can help choosing the number of ancestral populations that best explains the genotypic data \citep{Alexander_2011, Frichot_2014}. Here we have a clear minimum at $K = 4$, suggesting 4 genetic clusters. Often, the plot shows a less clear pattern, and choosing the "knee" is a generally good approach. The number of ancestral populations is closely linked to the number of principal components that explain variation in the genomic data. Both numbers can help determining the number of latent factors when correcting for confounding effects due to population structure in ecological association tests. 
 
 \begin{figure}[h!]
     \centering
@@ -216,7 +216,9 @@ plot(-log10(pvalues), pch = 19, col = "blue", cex = .7)
 \subsection{Missing genotype imputation using {\tt snmf}}
 
 Missing genotypes are critical to genomewide association studies. 
-Before running an association study, an important step is to replace the missing data, represented as '9' in the {\tt geno} and {\tt lfmm}) files, by better values. To provide an example of missing data imputation, let's start by removing 100 genotypes from the original data. The resulting matrix is saved in the file {\tt genotypeM.geno}.
+Before running an association study, an important step is to replace the missing data, represented as '9' 
+in the {\tt geno} and {\tt lfmm}) files, by better values. To provide an example of missing data imputation, let's start by removing 100 genotypes from the original data.
+The resulting matrix is saved in the file {\tt genotypeM.geno}.
 <<>>=
 # creation of a genotypic matrix  with missing genotypes
 dat = as.numeric(tutorial.R)
@@ -257,8 +259,8 @@ The {\tt R} package {\tt LEA} performs genomewide association analysis based on 
  G_{i\ell} = \mu_\ell + \beta_{\ell}^TX_{i} + U_i^TV_\ell + \epsilon_{i\ell} \, ,
  \end{equation}
 where $\mu_\ell$ is a locus specific effect, $\beta_\ell$ is a $d$-dimensional vector of regression coefficients, $U_i$ contains $K$ latent factors, and $V_\ell$ contains their corresponding loadings ($i$ stands for an individual and $\ell$ for a locus). The residual terms, $\epsilon_{i\ell}$, are statistically independent Gaussian variables with mean zero and variance $\sigma^2$.
-\newline
-\newline
+
+
  In latent factor models, association between predictors and allele frequencies can be tested while estimating unobserved latent factors that model confounding effects. In principle, the latent factors include levels of population structure due to shared demographic history or background genetic variation. After correction for confounding effects, association between allele frequencies and an ecological predictor at a particular locus is often interpreted as a signature of natural selection.
 
 
@@ -276,13 +278,13 @@ project = lfmm("genotypes.lfmm",
                 repetitions = 5, 
                 project = "new")
 @
-\paragraph{Deciding the number of latent factors.} Deciding an appropriate value for the number of latent factors in the {\tt lfmm()} call can be based on the analysis of histograms of test significance values. Ideally, histograms should be flat, with a peak close to zero.
-\newline
-\newline
+\paragraph{Deciding the number of latent factors.} Deciding an appropriate value for the number of latent factors in the {\tt lfmm} call can be based on the analysis of histograms of test significance values. Ideally, histograms should be flat, with a peak close to zero.
+
+
 Since the objective is to control the false discovery rate (FDR) while keeping reasonable power to reject the null hypothesis, we recommend using several runs for each value of $K$ and combine $p$-values (use 5 to 10 runs, see our script below).  Choosing values of $K$ for which the histograms show their correct shape warrants that the FDR can be controlled efficiently.
-\newline
-\newline
-Testing all $K$ values in a large range, from 1 to 20 for example, is generally useless. A careful analysis of population structure and estimates of the number of ancestral populations contributing to the genetic data indicates the range of values to be explored. For example the {\tt snmf} program estimates 4 ancestral populations, then running {\tt lfmm} for $K = 3-7$ often provides good results.
+
+
+Testing all $K$ values in a large range, from 1 to 20 for example, is generally useless. A careful analysis of population structure and estimates of the number of ancestral populations contributing to the genetic data indicates the range of values to be explored. For example the {\tt snmf} program estimates 4 ancestral populations, then running {\tt lfmm} for $K = 3-6$ often provides good results.
 
 
 \paragraph{Combining $z$-scores obtained from multiple runs.}  We use the Fisher-Stouffer method to combine $z$-scores from multiple runs. In practice, we found that using the median $z$-scores of 5-10 runs and re-adjusting the $p$-values afterwards can increase the power of {\tt lfmm} tests. This procedure is implemented in {\tt LEA} function {\tt lfmm.pvalues()}.
