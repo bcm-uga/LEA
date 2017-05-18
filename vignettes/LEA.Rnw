@@ -252,7 +252,7 @@ The results are saved in an output file with the string {\tt "imputed"} in its s
 
 \newpage
 
-\section{Ecological associations tests using lfmm}
+\section{Ecological association tests using lfmm}
 
 The {\tt R} package {\tt LEA} performs genomewide association analysis based on latent factor mixed models using the {\tt lfmm} function \citep{Frichot_2013}. To recall the model, let $G$ denote the genotypic matrix, storing allele frequencies for each individual at each locus, and let $X$ denote a set of $d$ ecological predictors or phenotypic traits. LFMMs consider the genotypic matrix entries as response variables in a linear regression model
 \begin{equation}
