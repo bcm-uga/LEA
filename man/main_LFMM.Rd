@@ -184,20 +184,20 @@ write.env(tutorial.C, "gradients.env")
 # main options, K: (the number of latent factors), 
 #           CPU: the number of CPUs.
 
-# Runs with K = 3 and 5 repetitions.
+# Runs with K = 6 and 5 repetitions.
 # runs with 6000 iterations 
 # including 3000 iterations for burnin.
 # Around 30 seconds per run.
 project = lfmm( "genotypes.lfmm", 
                 "gradients.env", 
-                 K = 3, 
+                 K = 6, 
                  repetitions = 5, 
                  project = "new")
 
 # get adjusted p-values using all runs
-pv = lfmm.pvalues(project, K = 3)
+pv = lfmm.pvalues(project, K = 6)
 
-# Evaluate FDR and POWER
+# Evaluate FDR and POWER (TPR)
 for (alpha in c(.05,.1,.15,.2)) {
     # expected FDR
     print(paste("expected FDR:", alpha))
