@@ -21,3 +21,5 @@ vignettes/*.t*
 vignettes/*.bbl
 vignettes/*.blg
 vignettes/*.synctex.gz
+vignettes/*.aux
+vignettes/cache/
