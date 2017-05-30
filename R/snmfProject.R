@@ -366,6 +366,7 @@ setMethod("impute", "snmfProject",
             
             
             dat = read.lfmm(input.file)
+            if (!(9 %in% dat)) stop("Missing data must be encoded as 9.")
             QQ <- Q(object, K, run)
             GG <- t(G(object, K, run))
             nploidy <- ncol(GG)/object@L 
@@ -380,7 +381,7 @@ setMethod("impute", "snmfProject",
                   wm = apply(mat, 2, FUN = function(x) sample(1:nploidy, 1, prob = x ))
                 }
               
-              dat[i,] = wm - 1  
+              dat[i,dat[i,]==9] = wm[dat[i,] == 9] - 1  
               
             }
             out.file  = paste(input.file,"_imputed.lfmm", sep ="")
