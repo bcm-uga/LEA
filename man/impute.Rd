@@ -3,7 +3,7 @@
 
 \title{Impute missing genotypes using an snmf object}
 \description{
-Impute missing genotypes in a genotype file (lfmm) by using ancestry and genotype frequency estimates from an \code{snmf} run. Generate an  \code{lfmm} file. See \code{\link{lfmm}}.
+Impute missing genotypes in a genotype file (lfmm) by using ancestry and genotype frequency estimates from an \code{snmf} run. The function generates a new \code{lfmm} file. See \code{\link{lfmm}}.
 }
 \usage{
 impute (object, input.file, method, K, run) 
@@ -13,9 +13,9 @@ impute (object, input.file, method, K, run)
 \item{object}{
 An snmfProject object.
 }
-\item{input.file}{A path (character string) for an input file with missing genotypes, used previously when generating the snmf object. 
+\item{input.file}{A path (character string) to an input file in lfmm format with missing genotypes. The same input data must be used when generating the snmf object. 
 }
-\item{method}{A character string: "random" or "mode". With "random", imputation is performed by using the genotype probabilities. With "mode", the most likely genotype is in for matrix completion. 
+\item{method}{A character string: "random" or "mode". With "random", imputation is performed by using the genotype probabilities. With "mode", the most likely genotype is used for matrix completion. 
 }
 \item{K}{An integer value. The number of ancestral populations.
 }
@@ -55,7 +55,7 @@ project = snmf("genotypes.lfmm", K = 4,
         project = "new")
         
 # select the run with the lowest cross-entropy value
-best = which.min(cross.entropy(project, K = 4)
+best = which.min(cross.entropy(project, K = 4))
 
 # Impute the missing genotypes
 impute(project, "genotypes.lfmm", method = 'mode', K = 4, run = best)
