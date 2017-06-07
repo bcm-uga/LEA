@@ -649,7 +649,8 @@ void inputation_freq(float *R, int *I, int N, int M)
                                 nb++;
                         }
                 }
-                freq /= nb;
+                if (nb) 
+                    freq /= nb;
                 for (i = 0; i < N; i++) {
                         if (!I[i * M + j]) {
                                 R[i * M + j] = rand_binary(freq)

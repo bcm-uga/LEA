@@ -121,6 +121,7 @@ void LFMM(LFMM_param param)
         if (param->missing_data) {
                 param->I = (int *)Calloc(n * L * sizeof(int), int);
                 create_I(param->dat, param->I, n, L);
+                inputation_freq(param->dat, param->I, n, L);
         }
         // warnings about the variables
         if (param->all) {

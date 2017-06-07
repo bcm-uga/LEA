@@ -55,11 +55,6 @@ lfmm <- function(input.file,
     output.file = setExtension(input.file, "")
     # missing.data  
     missing.data = test_logical("missing.data", missing.data, FALSE)
-    dat = read.lfmm(input.file)
-    if (sum(dat == 9) > 0) stop("Missing genotypes are not allowed.", 
-                                "Use the 'impute()' function to impute 
-                                missing values.", 
-                                "Re-run lfmm with imputed genotypes.") 
     # CPU    
     CPU = test_integer("CPU", CPU, 1)
     if (CPU <= 0)
