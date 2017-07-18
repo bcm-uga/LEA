@@ -1,6 +1,6 @@
 \name{barplot.Qmatrix}
 \alias{barplot.Qmatrix}
-\title{Barplot representation of a Q-matrix}
+\title{Bar plot representation of a Q-matrix}
 \usage{
 \method{barplot}{Qmatrix}(height, sort.by.Q = TRUE, lab = FALSE, ...)
 }

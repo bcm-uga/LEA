@@ -20,7 +20,7 @@ An snmfProject object.
 \item{K}{An integer value. The number of ancestral populations.
 }
 
-\item{run}{An integer value. A particular run used for imputation (usually the run that minimizes the cross entropy criterion).
+\item{run}{An integer value. A particular run used for imputation (usually the run number that minimizes the cross entropy criterion).
 }
 }
 \value{

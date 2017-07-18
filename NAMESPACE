@@ -71,10 +71,11 @@ exportMethods(
         snmf.pvalues,
         cross.entropy,
         tracy.widom,
-        impute
+        impute,
+        barchart
 )
 
-export(barplot.Qmatrix)
+#export(barplot.Qmatrix)
 #S3method(barplot.Qmatrix, "Qmatrix")
 
 #export(.DollarNames.pcaProject)

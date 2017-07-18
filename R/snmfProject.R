@@ -65,7 +65,7 @@ setMethod("plot", "snmfProject",
                 axe = c(axe, K[k])        
         }
 
-        plot(axe, s$crossEntropy[1,], ylab="Minimal Cross-Entropy", 
+        plot(axe, s$crossEntropy[1,], ylab="Cross-entropy", 
                 xlab="Number of ancestral populations",     ...)
     }
 )
@@ -82,7 +82,7 @@ setMethod("G", "snmfProject",
             if (length(unique(object@K)) == 1) {
                 K = unique(object@K)
             } else {
-                stop("Please, choose a value of K among: ", 
+                stop("Please choose a value of K among: ", 
                     paste(unique(object@K), collapse=" "))
             }
         } else {
@@ -394,6 +394,77 @@ setMethod("impute", "snmfProject",
                 out.file,"\n" )
           }
 )
+
+
+
+#barchart
+setGeneric("barchart",  function(object, K, run, sort.by.Q = TRUE, lab = FALSE,...) list)
+setMethod("barchart", "snmfProject",
+          function(object, K, run, sort.by.Q = TRUE, lab = FALSE,...){
+            
+            #check  K
+            if (missing(K)) {
+              # if only one, that is the one
+              if (length(unique(object@K)) == 1) {
+                K = unique(object@K)
+              } else {
+                stop("Please choose a value of K among: ", 
+                     paste(unique(object@K), collapse=" "))
+              }
+            } else {
+              if (length(K) > 1) {
+                stop("K is")  ## TODO 
+              }
+              K = test_integer("K", K, NULL)
+              
+              if (!(K %in% unique(object@K))) {
+                stop(paste("No run exists for K = ", K,
+                           ". Please, choose a value of K among: ", 
+                           paste(unique(object@K), collapse=" "),sep=""))
+              }
+            }
+            
+            # check of run
+            r = which(object@K == K)
+            if (missing(run)) {
+              if (length(r) > 1) {
+                stop(paste(length(r)," runs have been performed for K =", K,
+                           ".\n", "Please choose one run with the parameter 'run'"))
+              } else { run = 1 }
+            } else { 
+              run = test_integer('run', run, NULL)
+
+              if (run > length(r)) {
+                stop(paste("You chose run number ", run,". But only ", 
+                           length(r)," run(s) have been performed.", sep=""))
+              }
+            } 
+            
+            QQ = Q(object, K, run)
+            
+            if (sort.by.Q) {
+              gr = apply(QQ, MARGIN = 1, which.max)
+              gm = max(gr)
+              gr.o = order(sapply(1:gm, FUN = function(g) mean(QQ[,g])))
+              gr = sapply(gr, FUN = function(i) gr.o[i])
+              or = order(gr)
+              Qm = t(QQ[or,])
+              class(Qm) = "matrix"
+              graphics::barplot(height = Qm, ...)
+              return(list(order = or))
+            }
+            else {
+              Qm = t(QQ)
+              class(Qm) = "matrix"
+              graphics::barplot(height = Qm, ...)
+              return(list(order = 1:nrow(QQ)))
+            }
+          }
+)
+
+
+
+
 
 
 
