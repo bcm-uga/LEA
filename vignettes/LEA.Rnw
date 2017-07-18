@@ -174,15 +174,15 @@ The next step is to display a barplot for the $Q$-matrix. In Figure 3, the {\tt 
 <<fig.width=10, fig.height=4, echo=TRUE>>=
 # select the best run for K = 4
 best = which.min(cross.entropy(project, K = 4))
-Q.matrix <- as.qmatrix(Q(project, K = 4, run = best))
 my.colors <- c("tomato", "lightblue", 
                "olivedrab", "gold")
-barplot(Q.matrix, border = NA, space = 0, 
+barchart(project, K = 4, run = best,
+        border = NA, space = 0, 
         col = my.colors, 
         xlab = "Individuals",
         ylab = "Ancestry proportions",
         main = "Ancestry matrix") -> bp
-axis(1, at = 1:nrow(Q.matrix), 
+axis(1, at = 1:length(bp$order), 
      labels = bp$order, las=1, 
      cex.axis = .3)
 @
