@@ -28,14 +28,17 @@ lfmm <- function(input.file,
     # cov file
     environment.file = test_character("environment.file", 
         environment.file, NULL)
+    if (!file.exists(environment.file)) stop("Environment file not found.")
+    
     environment.file = normalizePath(environment.file)
+    
     # check extension
     test_extension(environment.file, "env")
     # K
     for (k in 1:length(K)) {
         K[k] = test_integer("K", K[k], NULL)
         if (K[k] < 0)
-            stop("'K' has to be positive.")
+            stop("'K' must be positive.")
     }
     # nd
     if (!missing(d)) {
@@ -277,6 +280,7 @@ lfmm <- function(input.file,
             }
         }    
     }
-
-    return(proj);
+    message("LFMM uses a very naive imputation method which has low power when 
+            genotypes are missing: See impute() for a better imputation method.")
+    return(proj)
 } 
