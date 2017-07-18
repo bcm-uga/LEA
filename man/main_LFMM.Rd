@@ -18,10 +18,11 @@
 \alias{adjusted.pvalues,lfmmProject-method}
 \alias{mlog10p.values,lfmmProject-method}
 \alias{plot,lfmmProject-method}
+\alias{lfmm.pvalues,lfmmProject-method}
 
 
 \title{Fitting Latent Factor Mixed Models}
-\description{Latent Factor Mixed Models (LFMMs) are linear regression models in which the response variable is a genotype, and the explanatory variable is a phenotypic trait value or a measure of ecological interest for a set of individuals. The \code{\link{lfmm}} performs statistical testing in LFMMs, and allows identifying genetic polymorphisms that exhibit  association with some phenotype or ecological gradient after correction for latent (unobserved) confounders.
+\description{Latent Factor Mixed Models (LFMMs) are linear regression models in which the response variable is a genotype, and the explanatory variable is a phenotypic trait value or a measure of ecological interest for a set of individuals. The \code{\link{lfmm}} performs statistical testing in LFMMs, and allows identifying genetic polymorphisms that exhibit  association with some phenotype or ecological gradient after correction for latent or unobserved confounders.
 }
 \usage{
 lfmm(input.file, environment.file, K, 
@@ -66,7 +67,8 @@ lfmm(input.file, environment.file, K,
     with the \code{d} option. 
 }
 \item{missing.data}{
-    A Boolean option. If TRUE, the \code{input.file} contains missing genotypes.
+    A Boolean option. If TRUE, the \code{input.file} contains missing genotypes. Caution: \code{lfmm} requires imputed genotype matrices. See 
+    \code{\link{impute}}.
 }
 #ifndef windows
 \item{CPU}{
@@ -76,15 +78,14 @@ lfmm(input.file, environment.file, K,
 #endif
 #ifdef windows
 \item{CPU}{
-    The windows version is not parallelized. By consequence, CPU is always set
-    to 1.
+    The windows version is not parallelized. By consequence, CPU is always set to 1.
 }
 #endif
 \item{iterations}{
-    The total number of iterations in the Gibbs Sampling algorithm.
+    The total number of cycles for the Gibbs Sampling algorithm.
 }
 \item{burnin}{
-    The burnin number of iterations in the Gibbs Sampling algorithm.
+    The burnin number of cycles for the Gibbs Sampling algorithm.
 }
 \item{seed}{
     A seed to initialize the random number generator. By default, the seed is 
@@ -92,7 +93,7 @@ lfmm(input.file, environment.file, K,
     For modifying the default setting, provide one seed per run.
 }
 \item{repetitions}{
-    A number of replicated runs for the Gibbs Sampler algorithm.
+    A number of replicate runs for the Gibbs Sampler algorithm.
 }
 \item{epsilon.noise}{
     A prior parameter for variances.
@@ -101,7 +102,7 @@ lfmm(input.file, environment.file, K,
     A prior parameter for the variance of correlation coefficients.
 }
 \item{random.init}{
-    A Boolean option. If true, the Gibbs Sampler is initiliazed randomly. 
+    A Boolean option. If TRUE, the Gibbs Sampler is initiliazed randomly. 
     Otherwise, it is initialized with zero values.
 }
 }
@@ -150,7 +151,7 @@ The following methods can be applied to an object of class \code{lfmmProject}:
 }
 \author{
     Eric Frichot
-    Olivier François
+    Olivier Francois
 }
 \seealso{
 \code{\link{lfmm.data}}
@@ -256,7 +257,10 @@ dir.create("test", showWarnings = TRUE)
 newProject = import.lfmmProject("genotypes_gradients_lfmmProject.zip", "test")
 
 # combine projects
-combinedProject = combine.lfmmProject("genotypes_gradients.lfmmProject", "test/genotypes_gradients.lfmmProject")
+combinedProject <- combine.lfmmProject(
+                  "genotypes_gradients.lfmmProject", 
+                  "test/genotypes_gradients.lfmmProject"
+                  )
 
 # remove
 remove.lfmmProject("test/genotypes_gradients.lfmmProject")

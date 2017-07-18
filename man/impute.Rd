@@ -50,17 +50,18 @@ write.lfmm(dat, "genotypes.lfmm")
 # running snmf #
 ################
 
-project = snmf("genotypes.lfmm", K = 4, 
+project.snmf = snmf("genotypes.lfmm", K = 4, 
         entropy = TRUE, repetitions = 10,
         project = "new")
         
 # select the run with the lowest cross-entropy value
-best = which.min(cross.entropy(project, K = 4))
+best = which.min(cross.entropy(project.snmf, K = 4))
 
 # Impute the missing genotypes
-impute(project, "genotypes.lfmm", method = 'mode', K = 4, run = best)
+impute(project.snmf, "genotypes.lfmm", method = 'mode', K = 4, run = best)
 
-# Compare with truth: proportion of correct imputation results
+# Compare with truth
+# Proportion of correct imputation results:
 mean( tutorial.R[dat == 9] == read.lfmm("genotypes.lfmm_imputed.lfmm")[dat == 9] )
 
 }

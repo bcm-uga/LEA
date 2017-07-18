@@ -17,12 +17,14 @@
 \alias{summary,snmfProject-method}
 \alias{Q,snmfProject-method}
 \alias{G,snmfProject-method}
+\alias{impute,snmfProject-method}
+\alias{barchart,snmfProject-method}
+\alias{snmf.pvalues,snmfProject-method}
 
 \title{Estimates individual ancestry coefficients and ancestral allele 
 frequencies.}
 \description{
-\code{\link{snmf}} estimates admixture coefficients using sparse Non-Negative 
-    Matrix Factorization algorithms, and provide STRUCTURE-like outputs.
+\code{\link{snmf}} estimates admixture coefficients using sparse Non-Negative Matrix Factorization algorithms, and provides STRUCTURE-like outputs.
 }
 \usage{
 snmf (input.file, K, 
@@ -130,6 +132,15 @@ The following methods can be applied to the object of class {snmfProject}:
     Return the cross-entropy criterion for the chosen runs with K
     ancestral populations. 
 }
+\item{\code{\link{snmf.pvalues}}}{
+    Return the vector of adjusted p-values for a run with K ancestral           populations.
+}
+\item{\code{\link{impute}}}{
+    Return a \code{geno} or \code{lfmm} file with missing data imputation.
+}
+\item{\code{\link{barchart}}}{
+    Return a bar plot representation of the Q matrix from a run with K          ancestral populations .
+}
 \item{load.snmfProject(file.snmfProject)}{
     Load the file containing an snmfProject objet and return the snmfProject 
     object.
@@ -163,8 +174,7 @@ The following methods can be applied to the object of class {snmfProject}:
 \code{\link{pca}}
 \code{\link{lfmm}}
 \code{\link{Q}}
-\code{\link{as.qmatrix}}
-\code{\link{barpot.Qmatrix}}
+\code{\link{barchart}}
 \code{\link{tutorial}}
 }
 \references{
@@ -184,89 +194,88 @@ write.geno(tutorial.R, "genotypes.geno")
 # running snmf #
 ################
 
-project = snmf("genotypes.geno",
+project.snmf = snmf("genotypes.geno",
                 K = 1:10, 
                 entropy = TRUE, 
                 repetitions = 10,
                 project = "new")
 
 # plot cross-entropy criterion of all runs of the project
-plot(project, cex = 1.2, col = "lightblue", pch = 19)
+plot(project.snmf, cex = 1.2, col = "lightblue", pch = 19)
 
-# get the cross-entropy of all runs for K = 4
-ce = cross.entropy(project, K = 4)
+# get the cross-entropy of the 10 runs for K = 4
+ce = cross.entropy(project.snmf, K = 4)
 
 # select the run with the lowest cross-entropy for K = 4
 best = which.min(ce)
 
 # display the Q-matrix
-Q.matrix <- as.qmatrix(Q(project, K = 4, run = best))
-my.colors <- c("tomato", "lightblue", "olivedrab", "gold")
 
-barplot(Q.matrix, 
-        border = NA, 
-        space = 0, 
-        col = my.colors, 
-        xlab = "Individuals",
-        ylab = "Ancestry proportions", 
+my.colors <- c("tomato", "lightblue", 
+              "olivedrab", "gold")
+
+barchart(project.snmf, K = 4, run = best, 
+        border = NA, space = 0, col = my.colors, 
+        xlab = "Individuals", ylab = "Ancestry proportions", 
         main = "Ancestry matrix") -> bp
         
-axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
+axis(1, at = 1:length(bp$order), 
+    labels = bp$order, las = 3, cex.axis = .4)
 
 ###################
 # Post-treatments #
 ###################
 
 # show the project
-show(project)
+show(project.snmf)
 
 # summary of the project
-summary(project)
+summary(project.snmf)
 
 # get the cross-entropy for all runs for K = 4
-ce = cross.entropy(project, K = 4)
+ce = cross.entropy(project.snmf, K = 4)
 
 # get the cross-entropy for the 2nd run for K = 4
-ce = cross.entropy(project, K = 4, run = 2)
+ce = cross.entropy(project.snmf, K = 4, run = 2)
 
 # get the ancestral genotype frequency matrix, G, for the 2nd run for K = 4. 
-res = G(project, K = 4, run = 2)
+freq = G(project.snmf, K = 4, run = 2)
 
 #############################
 # Advanced snmf run options #
 #############################
 
 # Q.input.file: init a run with a given ancestry coefficient matrix Q. 
-# Here, it is initialized with the Q matrix from the first run with K=4
-project = snmf("genotypes.geno", K = 4, 
+# Here it is initialized with the Q matrix from the first run with K=4
+project.snmf = snmf("genotypes.geno", K = 4, 
     Q.input.file = "./genotypes.snmf/K4/run1/genotypes_r1.4.Q")
 
 # I: init the Q matrix of a run from a smaller run with 100 randomly chosen 
 # SNPs. 
-project = snmf("genotypes.geno", K = 4, I = 100)
+project.snmf = snmf("genotypes.geno", K = 4, I = 100)
 
 # CPU: run snmf with 2 CPUs. 
-project = snmf("genotypes.geno", K = 4, CPU=2)
+project.snmf = snmf("genotypes.geno", K = 4, CPU = 2)
 
 # percentage: run snmf and calculate the cross-entropy criterion with 10% of 
 # masked genotypes, instead of 5% of masked genotypes. 
-project = snmf("genotypes.geno", K = 4, entropy= TRUE, percentage = 0.1)
+project.snmf = snmf("genotypes.geno", K = 4, entropy = TRUE, percentage = 0.1)
 
-# seed: choose the seed to init the randomization.
-project = snmf("genotypes.geno", K = 4, seed=42)
+# seed: choose the seed for the random generator.
+project.snmf = snmf("genotypes.geno", K = 4, seed = 42)
 
 # alpha: choose the regularization parameter.
-project = snmf("genotypes.geno", K = 4, alpha = 100)
+project.snmf = snmf("genotypes.geno", K = 4, alpha = 100)
 
 # tolerance: choose the tolerance parameter.
-project = snmf("genotypes.geno", K = 4, tolerance = 0.0001)
+project.snmf = snmf("genotypes.geno", K = 4, tolerance = 0.0001)
 
 ##########################
 # Manage an snmf project #
 ##########################
 
 # All the runs of snmf for a given file are 
-# automatically saved into a snmf project directory and a file.
+# automatically saved into an snmf project directory and a file.
 # The name of the snmfProject file is the same name as 
 # the name of the input file with a .snmfProject extension 
 # ("genotypes.snmfProject").
@@ -275,7 +284,7 @@ project = snmf("genotypes.geno", K = 4, tolerance = 0.0001)
 # There is only one snmf Project for each input file including all the runs.
 
 # An snmfProject can be load in a different session.
-project = load.snmfProject("genotypes.snmfProject") 
+project.snmf = load.snmfProject("genotypes.snmfProject") 
 
 # An snmfProject can be exported to be imported in another directory
 # or in another computer

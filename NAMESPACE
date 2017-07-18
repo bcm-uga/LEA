@@ -2,6 +2,7 @@ import(methods)
 
 importFrom("stats", "median", "pchisq", "qchisq", "runif")
 importFrom("utils", "read.table", "unzip", "write.table", "zip")
+importFrom("graphics", "barplot")
 
 useDynLib(LEA, .registration=TRUE, .fixes = "R_") 
 #.registration = TRUE, .fixes = "R_")
@@ -28,7 +29,7 @@ export(vcf2lfmm)
 export(ancestrymap2lfmm)
 export(ancestrymap2geno)
 export(struct2geno)
-export(as.qmatrix)
+
 
 # classes
 #exportClasses(#pcaProject,

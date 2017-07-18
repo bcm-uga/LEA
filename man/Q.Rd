@@ -48,25 +48,17 @@ write.geno(tutorial.R, "genotypes.geno")
 # running snmf #
 ################
 
-project = snmf("genotypes.geno", 
+project.snmf <- snmf("genotypes.geno", 
                 K = 3, 
                 repetitions = 2, 
                 project = "new")
 
 # get the ancestry coefficients for the 2nd run for K = 3. 
-Q.3 = Q(project, K = 3, run = 2)
-Q.matrix <- as.qmatrix(Q.3)
-my.colors <- c("tomato", "lightblue", "olivedrab", "gold")
+Q.3 <- Q( project.snmf, K = 3, run = 2)
 
-barplot(Q.matrix, 
-        border = NA, 
-        space = 0, 
-        col = my.colors, 
-        xlab = "Individuals",
-        ylab = "Ancestry proportions", 
-        main = "Ancestry matrix") -> bp
-        
-axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
+# cluster assignment for each individual
+cluster <- apply( Q.3, 1, which.max)
+table(cluster)
 }
 
 

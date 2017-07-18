@@ -12,6 +12,7 @@ dat.*
 *.lfmm
 *.snmf
 *.geno
+*.env
 *Project
 
 vignettes/gen*

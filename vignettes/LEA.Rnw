@@ -269,7 +269,7 @@ where $\mu_\ell$ is a locus specific effect, $\beta_\ell$ is a $d$-dimensional v
 
 <<results='hide'>>=
 # main options: 
-# K: (the number of latent factors)
+# K the number of latent factors
 # Runs with K = 6 and 5 repetitions.
 project = NULL
 project = lfmm("genotypes.lfmm", 

@@ -44,27 +44,34 @@ write.geno(tutorial.R, "genotypes.geno")
 # running snmf #
 ################
 
-project = snmf("genotypes.geno", K = 4, entropy = TRUE, repetitions = 10,
-    project = "new")
+project.snmf <- snmf("genotypes.geno", 
+                    K = 4, entropy = TRUE, 
+                    repetitions = 10,
+                    project = "new")
 
 # get the cross-entropy value for each run 
-ce = cross.entropy(project, K = 4)
+ce <- cross.entropy(project.snmf, K = 4)
 
 # select the run with the lowest cross-entropy value
-best = which.min(ce)
+best <- which.min(ce)
 
 # plot the ancestry coefficients for the best run and K = 4 
 
 my.colors <- c("tomato", "lightblue", "olivedrab", "gold")
-barchart(project, K = 4, run = best, border = NA, space = 0, col = my.colors, xlab = "Individuals",
-        ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
+
+barchart(project.snmf, K = 4, run = best, 
+        border = NA, space = 0, col = my.colors, 
+        xlab = "Individuals", ylab = "Ancestry proportions", 
+        main = "Ancestry matrix") -> bp
         
-axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
+axis(1, at = 1:length(bp$order), 
+      labels = bp$order, las = 3, 
+      cex.axis = .4)
 }
 \author{
-Olivier François
+Olivier Francois
 }
 \seealso{
-\code{ \code{\link{snmf}} }
+\code{\link{snmf}} 
 }
 

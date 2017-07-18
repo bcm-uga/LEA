@@ -24,7 +24,7 @@ by rescaling the chi-squared test statistics using the \code{lambda} parameter.
 }
 \item{entropy}{A Boolean value. If \code{TRUE}, the run of minimum entropy is used for computing the p-values.
 }
-\item{K}{An integer value. The number of gentic clusters.
+\item{K}{An integer value. The number of genetic clusters.
 }
 \item{run}{An integer for the run number used the computation of p-values (by default, the minimum entropy run).
 }
@@ -34,7 +34,7 @@ by rescaling the chi-squared test statistics using the \code{lambda} parameter.
 \item{GIF}{The inflation factor value used in the test.}
 }
 \author{
-    Olivier François
+    Olivier Francois
 }
 \seealso{
 \code{\link{snmf}}

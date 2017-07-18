@@ -11,10 +11,6 @@ struct2geno (input.file, ploidy, FORMAT, extra.row, extra.column)
 \arguments{
 \item{input.file}{A character string. A path to a STRUCTURE or a TESS input file of multiallelic markers (eg, microsatellites) for haploid or diploid individuals. Missing data must be encoded as "-9" or as any negative value. Individual genotypes are encoded using either one or two rows of data. 
 }
-\item{genomic.control}{
-A Boolean value. If \code{TRUE}, the p-values are automatically calibrated using genomic control. If \code{FALSE}, the p-values are calculated
-by rescaling the chi-squared test statistics using the \code{lambda} parameter.
-}
 \item{ploidy}{An integer value (1 or 2). Value 2 for diploids and 1 for haploids.
 }
 \item{FORMAT}{An integer value equal to 1 for markers encoded using one row of data for each individual, and 2 for markers encoded using two rows of data for each individual.
@@ -28,7 +24,7 @@ by rescaling the chi-squared test statistics using the \code{lambda} parameter.
 NULL. Output files in the 'geno' and the 'lfmm' format record individual genotypes for each allele at each marker.
 }
 \author{
-    Olivier François
+    Olivier Francois
 }
 \seealso{
 \code{\link{lfmm.data}}
@@ -38,12 +34,15 @@ NULL. Output files in the 'geno' and the 'lfmm' format record individual genotyp
 }
 \examples{
 ### Example of conversion from a STRUCTURE format ###
-### Artificial data with 10 diploid individuals and 10 STR markers
+### Artificial data with 10 diploid individuals and 10 STR markers 
+### FORMAT = 1
 ### Input file: 'dat.str'
 
 library(LEA)
-dat.str  <- matrix(sample(c(100:120,-9), 200, replace = TRUE), 
-                   nrow = 10, ncol = 20)
+dat.str  <- matrix(sample(c(101:105,-9), 
+                  200, prob = c(rep(1,5), 0.1),
+                  replace = TRUE), 
+                  nrow = 10, ncol = 20)
 write.table(dat.str, 
             file = "dat.str", 
             col.names = FALSE, 
@@ -55,5 +54,5 @@ struct2geno("dat.str", ploidy = 2, FORMAT = 1)
 
 ### snmf run and barplot
 s  <- snmf("dat.str.geno", K = 2, project = "new")
-barplot(as.qmatrix(Q(s)), xlab = "Individuals")
+barchart(s, K = 2, run = 1, xlab = "Individuals")
 }

@@ -51,13 +51,13 @@ write.geno(tutorial.R, "genotypes.geno")
 
 
 # Two runs for K = 1 to 5 
-project = snmf("genotypes.geno", 
+project.snmf = snmf("genotypes.geno", 
                 K = 3, 
                 repetitions = 2, 
                 project = "new")
 
 # get the ancestral genotype frequency matrix, G, for the 2nd run for K = 3. 
-res = G(project, K = 3, run = 2)
+freq = G(project.snmf, K = 3, run = 2)
 }
 
 
