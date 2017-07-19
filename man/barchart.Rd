@@ -33,7 +33,6 @@ Q matrix.
 }
 
 \examples{
-library(LEA)
 # creation of a genotype file: genotypes.geno.
 # 400 SNPs for 50 individuals.
 

@@ -225,12 +225,12 @@ setMethod("snmf.pvalues", "snmfProject",
             
             # check for genomic control
             if (missing(genomic.control)) {
-              genomic.control = TRUE
+              genomic.control <- TRUE
             }
             
             # check for lambda
             if (missing(lambda)) {
-              lambda = 1.0
+              lambda <-  1.0
             }
   
 
@@ -238,8 +238,9 @@ setMethod("snmf.pvalues", "snmfProject",
  
             if (missing(run)) {
               if (entropy) {
-                ce = cross.entropy(object, K)
-                run = which.min(ce) } else {
+                ce <-  cross.entropy(object, K)
+                run <-  which.min(ce) 
+                } else {
                   stop("Run number is missing.") 
                 }
             }
@@ -257,38 +258,37 @@ setMethod("snmf.pvalues", "snmfProject",
             }
             
             # estimate Fst            
-            l = nrow(G(object, K, run))
-            q = apply(Q(object, K, run), MARGIN = 2, mean)
+            l <-  nrow(G(object, K, run))
+            q <-  apply(Q(object, K, run), MARGIN = 2, mean)
             
             if (ploidy == 2) {
-                G1.t = G(object, K, run)[seq(2,l,by = 3),]
-                G2.t = G(object, K, run)[seq(3,l,by = 3),]
-                freq = G1.t/2 + G2.t
-              }
-              else {
-                freq = G(object, K, run)[seq(2,l,by = 2),]
+                G1.t <-  G(object, K, run)[seq(2,l,by = 3),]
+                G2.t <-  G(object, K, run)[seq(3,l,by = 3),]
+                freq <-  G1.t/2 + G2.t
+              } else {
+                freq <-  G(object, K, run)[seq(2,l,by = 2),]
               }
             
-            H.s = apply(freq*(1-freq), MARGIN = 1, FUN = function(x) sum(q*x))
-            P.t = apply(freq, MARGIN = 1, FUN = function(x) sum(q*x))
-            H.t = P.t*(1-P.t)
-            fst = 1 - H.s/H.t
+            H.s <-  apply(freq*(1-freq), MARGIN = 1, FUN = function(x) sum(q*x))
+            P.t <-  apply(freq, MARGIN = 1, FUN = function(x) sum(q*x))
+            H.t <-  P.t*(1-P.t)
+            fst <-  1 - H.s/H.t
             
             
             # compute the z-scores
             
-            n = nrow(Q(object, K, run))
+            n <-  nrow(Q(object, K, run))
             
-            fst[fst<0] = 0.000001
+            fst[fst<0] <-  0.000001
             
-            zs = sqrt(fst*(n-K)/(1-fst))
+            zs <- sqrt(fst*(n-K)/(1-fst))
             
             if (genomic.control)
               gif <- median(zs^2)/qchisq(0.5, df = K-1)
             else
               gif <- lambda
             
-            snmf.pvalues = pchisq(zs^2/gif, df = K-1, lower.tail = FALSE)
+            snmf.pvalues <-  pchisq(zs^2/gif, df = K-1, lower.tail = FALSE)
             
             return(list(pvalues = snmf.pvalues, GIF = gif))
           }
@@ -320,7 +320,7 @@ setMethod("impute", "snmfProject",
                 K = unique(object@K)
               } else {
                 stop("Please, choose a value of K among: ", 
-                     paste(unique(object@K), collapse=" "))
+                     paste(unique(object@K), collapse = " "))
               }
             } else {
               if (length(K) > 1) {
@@ -351,40 +351,43 @@ setMethod("impute", "snmfProject",
               
               
               if (run > length(r)) {
-                stop(paste("You chose run number ", run,". But only ", 
-                           length(r)," run(s) have been performed.", sep=""))
+                stop(paste("You chose run number ", run,"but only ", 
+                           length(r),"run(s) were performed.", sep=""))
               }
             } 
             
             
             # check of method
             if (missing(method)) {
-              method = "mode" } else { 
+              method = "mode" 
+              } else { 
                 method = test_character('method', method, NULL)
-                if ( sum(method == c("random","mode")) < 1 ) stop("method must be 'mode' or 'random'.")
+                if ( sum(method == c("random","mode")) < 1 ) 
+                  {stop("method must be 'mode' or 'random'.")}
               } 
             
             
-            dat = read.lfmm(input.file)
-            if (!(9 %in% dat)) stop("Missing data must be encoded as 9.")
+            dat <- read.lfmm(input.file)
+            if (!(9 %in% dat)) {stop("Missing data must be encoded as 9.")} 
             QQ <- Q(object, K, run)
             GG <- t(G(object, K, run))
             nploidy <- ncol(GG)/object@L 
             
-            X =  QQ %*% GG
+            X <-  QQ %*% GG
             
             for (i in 1:nrow(dat)){
-              mat = matrix(X[i,], nrow = nploidy, byrow = F)
+              mat <- matrix(X[i,], nrow = nploidy, byrow = FALSE)
               
               if (method == 'mode') {
-                wm = apply(mat, 2, which.max) } else { 
-                  wm = apply(mat, 2, FUN = function(x) sample(1:nploidy, 1, prob = x ))
+                wm <- apply(mat, 2, which.max) 
+                } else { 
+                  wm <- apply(mat, 2, FUN = function(x) sample(1:nploidy, 1, prob = x))
                 }
               
-              dat[i,dat[i,]==9] = wm[dat[i,] == 9] - 1  
+              dat[i, dat[i,]==9] <- wm[dat[i,] == 9] - 1  
               
             }
-            out.file  = paste(input.file,"_imputed.lfmm", sep ="")
+            out.file  <- paste(input.file,"_imputed.lfmm", sep ="")
             
             write.lfmm(R = dat, output.file = out.file )
             
@@ -440,22 +443,21 @@ setMethod("barchart", "snmfProject",
               }
             } 
             
-            QQ = Q(object, K, run)
+            QQ <- Q(object, K, run)
             
             if (sort.by.Q) {
-              gr = apply(QQ, MARGIN = 1, which.max)
-              gm = max(gr)
-              gr.o = order(sapply(1:gm, FUN = function(g) mean(QQ[,g])))
-              gr = sapply(gr, FUN = function(i) gr.o[i])
-              or = order(gr)
-              Qm = t(QQ[or,])
-              class(Qm) = "matrix"
+              gr <- apply(QQ, MARGIN = 1, which.max)
+              gm <-  max(gr)
+              gr.o <-  order(sapply(1:gm, FUN = function(g) mean(QQ[,g])))
+              gr <- sapply(gr, FUN = function(i) gr.o[i])
+              or <-  order(gr)
+              Qm <-  t(QQ[or,])
+              class(Qm) <-  "matrix"
               graphics::barplot(height = Qm, ...)
               return(list(order = or))
-            }
-            else {
-              Qm = t(QQ)
-              class(Qm) = "matrix"
+            } else {
+              Qm <-  t(QQ)
+              class(Qm) <-  "matrix"
               graphics::barplot(height = Qm, ...)
               return(list(order = 1:nrow(QQ)))
             }

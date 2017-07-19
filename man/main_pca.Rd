@@ -24,12 +24,13 @@
 
 \title{Principal Component Analysis}
 \description{
-The function \code{pca} performs a Principal Component Analysis 
-of a genotypic matrix using the \code{\link{lfmm}}, \code{\link{geno}}, 
-\code{\link{ancestrymap}}, \code{\link{ped}} or \code{\link{vcf}} format. 
-The function computes eigenvalue, eigenvector, and standard deviation 
-for each principal component and the projection of each individual 
-on each component. The function pca returns an object of class 
+The  \code{pca} function performs a principal component analysis 
+of a genotypic matrix encoded in one of the following formats: 
+\code{\link{lfmm}}, \code{\link{geno}}, \code{\link{ancestrymap}}, 
+\code{\link{ped}} or \code{\link{vcf}}. 
+The \code{pca} function computes eigenvalues, eigenvectors, and standard deviations 
+for all principal components and the projections of individuals 
+on each component. The\code{pca} function returns an object of class 
 "pcaProject" containing the output data and the input parameters. 
 }
 \usage{
@@ -46,10 +47,10 @@ a genotypic matrix in the \code{\link{lfmm}} format.
     calculated. By default, all principal components are calculated.
 }
 \item{center}{
-    A boolean option. If true, the data matrix is centered (default: TRUE).
+    A boolean option. If TRUE, the data matrix is centered (default: TRUE).
 }
 \item{scale}{
-    A boolean option. If true, the data matrix is centered and scaled (default:
+    A boolean option. If TRUE, the data matrix is centered and scaled (default:
     FALSE).
 }
 }
@@ -74,13 +75,13 @@ by \code{pca}:
     Plot the eigenvalues.
 }
 \item{show}{
-    Display information about the analysis.
+    Display information on analysis.
 }
 \item{summary}{
-    Summarize the analysis.
+    Summarize analysis.
 }
 \item{tracy.widom}{
-    Perform Tracy-Widom tests on the eigenvalues.
+    Perform Tracy-Widom tests for eigenvalues.
 }
 \item{load.pcaProject(file.pcaProject)}{
     Load the file containing a pcaProject object and return the pcaProject
@@ -88,10 +89,10 @@ by \code{pca}:
 }
 \item{remove.pcaProject(file.pcaProject)}{
     Erase a \code{pcaProject} object. Caution: All the files associated with 
-    the object will be removed.
+    the \code{pcaProject} object will be removed except the genotype file.
 }
 \item{export.pcaProject(file.pcaProject)}{
-    Create a zip file containing the full \code{pcaProject} object. It allows to move
+    Create a zip file containing the full \code{pcaProject} object. It allows users to move
     the project to a new directory or a new computer (using import). If you want
     to overwrite an existing export, use the option \code{force == TRUE}.
 }
@@ -112,35 +113,36 @@ by \code{pca}:
 \code{\link{tutorial}}
 }
 \examples{
-# Creation of the genotype file "genotypes.lfmm"
+# Create a genotype file "genotypes.lfmm"
 # with 1000 SNPs for 165 individuals.
 data("tutorial")
 write.lfmm(tutorial.R,"genotypes.lfmm")
 
 #################
-# Perform a PCA #
+# Perform PCA   #
 #################
 
-# run of PCA
-# Available options, K (the number of PCs calculated), 
+# run PCA
+# Available options: K (the number of PCs), 
 #                    center and scale. 
-# Creation of   genotypes.pcaProject - the pcaProject object.
+# Creation of  genotypes.pcaProject - the pcaProject object.
 #               a directory genotypes.pca containing:
-# Create files: genotypes.eigenvalues - eigenvalues,    
-#               genotypes.eigenvectors - eigenvectors,
-#               genotypes.sdev - standard deviations,
-#               genotypes.projections - projections,
+#  genotypes.eigenvalues - eigenvalues,    
+#  genotypes.eigenvectors - eigenvectors,
+#  genotypes.sdev - standard deviations,
+#  genotypes.projections - projections,
+
 # Create a pcaProject object: pc.
-pc = pca("genotypes.lfmm", scale = TRUE)
+pc <- pca("genotypes.lfmm", scale = TRUE)
 
 #######################
-# Display Information #
+# Display information #
 #######################
 
-# Display information about the analysis.
+# Display information on analysis.
 show(pc)
 
-# Summarize the analysis.
+# Summarize analysis.
 summary(pc)
 
 #####################
@@ -150,7 +152,7 @@ summary(pc)
 par(mfrow=c(2,2))
 
 # Plot eigenvalues.
-plot(pc, lwd=5, col="red",xlab=("PCs"),ylab="eigen")
+plot(pc, lwd=5, col="blue", cex = .7, xlab=("Factors"), ylab="Eigenvalues")
 
 # PC1-PC2 plot.
 plot(pc$projections)
@@ -164,28 +166,28 @@ plot(pc$sdev)
 # Perform Tracy-Widom tests #
 #############################
 
-# Perfom Tracy-Widom tests on all eigenvalues.
+# Perfom Tracy-Widom tests for all eigenvalues.
 # Create file: genotypes.tracyWidom - tracy-widom test information, 
 #          in the directory genotypes.pca/.
-tw = tracy.widom(pc)
+tw <- tracy.widom(pc)
 
 # Plot the percentage of variance explained by each component.
 plot(tw$percentage)
 
-# Display the p-values for the Tracy-Widom tests. 
+# Show p-values for the Tracy-Widom tests. 
 tw$pvalues
 
 ##########################
-# Manage an pca project #
+# Manage a pca project   #
 ##########################
 
-# All the file of pca for a given file are 
-# automatically saved into a pca project directory and a file.
+# All the project files for a given input matrix are 
+# automatically saved into a pca project directory.
 # The name of the pcaProject file is the same name as 
 # the name of the input file with a .pcaProject extension 
 # ("genotypes.pcaProject").
 # The name of the pcaProject directory is the same name as
-# the name of the input file with a .pca extension ("genotypes.pca/")
+# the name of the input file with .pca extension ("genotypes.pca/")
 # There is only one pca Project for each input file including all the runs.
 
 # An pcaProject can be load in a different session.
@@ -211,7 +213,7 @@ remove.pcaProject("genotypes.pcaProject")
 newProject = import.pcaProject("genotypes_pcaProject.zip")
 #endif
 
-# An pcaProject can be erased.
+# A pcaProject can be erased.
 # Caution: All the files associated with the project will be removed.
 remove.pcaProject("genotypes.pcaProject")
 }

@@ -38,7 +38,6 @@ NULL. Output files in the 'geno' and the 'lfmm' format record individual genotyp
 ### FORMAT = 1
 ### Input file: 'dat.str'
 
-library(LEA)
 dat.str  <- matrix(sample(c(101:105,-9), 
                   200, prob = c(rep(1,5), 0.1),
                   replace = TRUE), 

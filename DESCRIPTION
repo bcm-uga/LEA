@@ -2,12 +2,12 @@ Package: LEA
 Title: LEA: an R package for Landscape and Ecological Association
         Studies
 Version: 2.0.0
-Date: 2016-04-03
+Date: 2017-04-03
 Author: Eric Frichot <eric.frichot@gmail.com>, Olivier Francois
         <olivier.francois@grenoble-inp.fr>
 Maintainer: Eric Frichot <eric.frichot@gmail.com>, Olivier Francois
         <olivier.francois@grenoble-inp.fr>
-Depends: R (>= 3.0.2), methods, stats, utils, graphics
+Depends: R (>= 3.3.0), methods, stats, utils, graphics
 Suggests: knitr
 Description: LEA is an R package dedicated to landscape genomics and
         ecological association tests. LEA can run analyses of
