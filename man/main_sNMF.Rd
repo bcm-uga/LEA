@@ -248,7 +248,7 @@ freq = G(project.snmf, K = 4, run = 2)
 # Q.input.file: init a run with a given ancestry coefficient matrix Q. 
 # Here it is initialized with the Q matrix from the first run with K=4
 project.snmf = snmf("genotypes.geno", K = 4, 
-    Q.input.file = "./genotypes.snmf/K4/run1/genotypes_r1.4.Q")
+    Q.input.file = "./genotypes.snmf/K4/run1/genotypes_r1.4.Q", project = "force")
 
 # I: init the Q matrix of a run from a smaller run with 100 randomly chosen 
 # SNPs. 
