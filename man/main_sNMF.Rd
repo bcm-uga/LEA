@@ -245,6 +245,7 @@ freq = G(project.snmf, K = 4, run = 2)
 # Advanced snmf run options #
 #############################
 
+#ifdef windows
 # Q.input.file: init a run with a given ancestry coefficient matrix Q. 
 # Here it is initialized with the Q matrix from the first run with K=4
 project.snmf = snmf("genotypes.geno", K = 4, 
@@ -269,6 +270,35 @@ project.snmf = snmf("genotypes.geno", K = 4, alpha = 100, project = "new")
 
 # tolerance: choose the tolerance parameter.
 project.snmf = snmf("genotypes.geno", K = 4, tolerance = 0.0001, project = "new")
+#endif
+
+#ifndef windows
+# Q.input.file: init a run with a given ancestry coefficient matrix Q. 
+# Here it is initialized with the Q matrix from the first run with K=4
+project.snmf = snmf("genotypes.geno", K = 4, 
+    Q.input.file = "./genotypes.snmf/K4/run1/genotypes_r1.4.Q")
+
+# I: init the Q matrix of a run from a smaller run with 100 randomly chosen 
+# SNPs. 
+project.snmf = snmf("genotypes.geno", K = 4, I = 100)
+
+# CPU: run snmf with 2 CPUs. 
+project.snmf = snmf("genotypes.geno", K = 4, CPU = 2)
+
+# percentage: run snmf and calculate the cross-entropy criterion with 10% of 
+# masked genotypes, instead of 5% of masked genotypes. 
+project.snmf = snmf("genotypes.geno", K = 4, entropy = TRUE, percentage = 0.1)
+
+# seed: choose the seed for the random generator.
+project.snmf = snmf("genotypes.geno", K = 4, seed = 42)
+
+# alpha: choose the regularization parameter.
+project.snmf = snmf("genotypes.geno", K = 4, alpha = 100)
+
+# tolerance: choose the tolerance parameter.
+project.snmf = snmf("genotypes.geno", K = 4, tolerance = 0.0001)
+#endif
+
 
 ##########################
 # Manage an snmf project #
