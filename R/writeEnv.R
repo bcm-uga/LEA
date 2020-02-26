@@ -11,8 +11,8 @@ write.env <- function(R, output.file)
 
     output.file = test_character("output.file", output.file, NULL)
 
-    if(is.na(R) || is.nan(R)) {
-        stop("'R' matrix contains Na.")
+    if(anyNA(R)) {
+        stop("'R' matrix contains NA.")
     }
 
     write.table(R,output.file, col.names=FALSE,row.names=FALSE);
