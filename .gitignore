@@ -19,6 +19,7 @@ LEA.pdf
 
 vignettes/gen*
 vignettes/grad*
+vignettes/figure/
 vignettes/figure/*.*
 vignettes/LEA_analyses/*.*
 vignettes/*.log

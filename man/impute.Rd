@@ -3,7 +3,7 @@
 
 \title{Impute missing genotypes using an snmf object}
 \description{
-Impute missing genotypes in a genotype file (lfmm) by using ancestry and genotype frequency estimates from an \code{snmf} run. The function generates a new \code{lfmm} file. See \code{\link{lfmm}}.
+Impute missing genotypes in a genotype file (.lfmm) by using ancestry and genotype frequency estimates from an \code{snmf} run. The function generates a new \code{lfmm} file. See \code{\link{lfmm}} and \code{\link{lfmm2}}.
 }
 \usage{
 impute (object, input.file, method, K, run) 
@@ -31,8 +31,9 @@ An snmfProject object.
   Olivier Francois
 }
 \seealso{
-\code{\link{lfmm}}
 \code{\link{snmf}}
+\code{\link{lfmm}}
+\code{\link{lfmm2}}
 }
 \examples{
 ### Example of analysis ###

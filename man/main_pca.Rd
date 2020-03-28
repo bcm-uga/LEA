@@ -110,6 +110,7 @@ by \code{pca}:
 \code{\link{lfmm.data}}
 \code{\link{snmf}}
 \code{\link{lfmm}}
+\code{\link{lfmm2}}
 \code{\link{tutorial}}
 }
 \examples{

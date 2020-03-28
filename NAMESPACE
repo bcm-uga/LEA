@@ -1,6 +1,6 @@
 import(methods)
 
-importFrom("stats", "median", "pchisq", "qchisq", "runif")
+importFrom("stats", "median", "pchisq", "qchisq", "runif", "lm", "glm", "family", "binomial")
 importFrom("utils", "read.table", "unzip", "write.table", "zip")
 importFrom("graphics", "barplot")
 
@@ -32,11 +32,14 @@ export(struct2geno)
 
 
 # classes
-#exportClasses(#pcaProject,
+#exportClasses(
+#pcaProject,
 #snmfClass,
 #snmfProject,
 #lfmmClass,
-#lfmmProject)
+#lfmmProject,
+#lfmm2Class
+#)
 
 # main functions
 export(create.dataset)
@@ -45,6 +48,7 @@ export(cross.entropy.estimation)
 export(pca)
 # export(tracyWidom) <-- added as a method in pcaProject
 export(lfmm)
+export(lfmm2)
 
 # method associated with the classes
 exportMethods(
@@ -69,6 +73,7 @@ exportMethods(
         plot,
         z.scores,
         lfmm.pvalues,
+        lfmm2.test,
         snmf.pvalues,
         cross.entropy,
         tracy.widom,

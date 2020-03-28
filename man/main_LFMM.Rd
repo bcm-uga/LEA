@@ -21,9 +21,10 @@
 \alias{lfmm.pvalues,lfmmProject-method}
 
 
-\title{Fitting Latent Factor Mixed Models}
-\description{Latent Factor Mixed Models (LFMMs) are linear regression models in which the response variable is a genotype, and the explanatory variable is a phenotypic trait value or a measure of ecological interest for a set of individuals. The \code{\link{lfmm}} performs statistical testing in LFMMs, and allows identifying genetic polymorphisms that exhibit  association with some phenotype or ecological gradient after correction for latent or unobserved confounders.
+\title{Fitting Latent Factor Mixed Models (MCMC algorithm)}
+\description{Latent Factor Mixed Models (LFMMs) are factor regression models in which the response variable is a genotypic matrix, and the explanatory variables are environmental measures of ecological interest or trait values. The \code{\link{lfmm}} function estimates latent factors and effect sizes based on an MCMC algorithm. The resulting object can be used in the function \code{\link{lfmm.pvalues}} to identify genetic polymorphisms exhibiting association with ecological gradients or phenotypes, while correcting for unobserved confounders. An exact and computationally efficient least-squares method is implemented in the function \code{\link{lfmm2}}.
 }
+
 \usage{
 lfmm(input.file, environment.file, K, 
     project = "continue", 
@@ -39,7 +40,7 @@ lfmm(input.file, environment.file, K,
 \arguments{
 \item{input.file}{
     A character string containing a path to the input file,
-    a genotypic matrix in the \code{\link{lfmm}{lfmm_format}} format.
+    a genotypic matrix in the \code{\link{lfmm}{lfmm_format}} format. The matrix must not contain missing values. See \code{\link{impute}} for completion based on nonnegative matrix factorization.
 }
 \item{environment.file}{
     A character string containing a path to the environmental file,
@@ -283,4 +284,5 @@ remove.lfmmProject("genotypes_gradients.lfmmProject")
 
 
 \keyword{lfmm}
+\keyword{lfmm2}
 \keyword{tutorial}
