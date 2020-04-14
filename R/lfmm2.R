@@ -84,13 +84,19 @@ lfmm2 <- function(input,
 # run SVD of modified Y    
     svk <- svd(D %*% t(Q) %*% scale(Y, scale = FALSE), nu = K)
 
+    if (K > 1) {
+      Sigma_k <- diag(svk$d[1:K])
+    } else {
+      Sigma_k <- as.matrix(svk$d[1])
+    }
+    
 # compute the latent matrix W
-    W <- Q %*% D_inv %*% tcrossprod(svk$u %*% diag(svk$d[1:K]), svk$v[,1:K])
+    W <- Q %*% D_inv %*% tcrossprod(svk$u %*% Sigma_k, svk$v[,1:K])
 
 # compute LFMM factors U and loadings V
 # Non orthogonal factors
-    U <- crossprod(t(Q %*% D_inv), svk$u %*% diag(svk$d[1:K]))
-    #U <- Q %*% D_inv %*% svk$u %*% diag(svk$d[1:K])
+    U <- crossprod(t(Q %*% D_inv), svk$u %*% Sigma_k)
+    #U <- Q %*% D_inv %*% svk$u %*% Sigma_k
     V <- svk$v[,1:K]
 
     obj <- new("lfmm2Class")
