@@ -10,7 +10,7 @@ lfmm2.test (object, input, env, genomic.control, linear, family)
 
 \arguments{
 \item{object}{
-An object of class lfmm2Class.
+An object of class \code{lfmm2Class}.
 }
 
 \item{input}{A genotypic matrix or a character string containing a path to the input file. The genotypic  matrix must be in the \code{\link{lfmm}{lfmm_format}} format without missing values (9 or \code{NA}). See \code{\link{impute}} for completion based on nonnegative matrix factorization and consider R packages for reading large matrices.
@@ -30,7 +30,7 @@ A logical value. If \code{TRUE}, the p-values are recalibrated by using genomic 
 \value{
 \item{pvalues}{A matrix of p-values for each locus and each environmental variable.}
 \item{zscores}{A matrix of z-scores for each locus and each environmental variable.}
-\item{gif}{Genomic inflation factors computed for each environmental variable.}
+\item{gif}{A vector of genomic inflation factors computed for each environmental variable.}
 }
 \author{
     Olivier Francois
