@@ -12,7 +12,7 @@ lfmm2 <- function(input,
                   K, 
                   lambda = 1e-5){
   
-## Check response input matrix 
+## Check input response matrix 
 ## LEA  
     if (is.character(input)){
       Y <- read.lfmm(input)
@@ -113,7 +113,7 @@ lfmm2 <- function(input,
 setGeneric("lfmm2.test", function(object, input, env, 
                                   genomic.control = TRUE, 
                                   linear = TRUE, 
-                                  family  = binomial(link = "logit")) matrix);
+                                  family = binomial(link = "logit")) matrix);
 setMethod("lfmm2.test", "lfmm2Class",
           function(object, 
                    input,
@@ -202,5 +202,135 @@ setMethod("lfmm2.test", "lfmm2Class",
        return(res)
       }
 )
+
+
+
+setGeneric("genetic.offset", function(object, 
+                                      input, 
+                                      env, 
+                                      new.env, 
+                                      pop.labels) numeric);
+setMethod("genetic.offset", "lfmm2Class",
+          function(object, 
+                   input, 
+                   env, 
+                   new.env, 
+                   pop.labels){
+  ## Check input response matrix 
+  ## LEA  
+  if (is.character(input)){
+    Y <- read.lfmm(input)
+    lst.unique <- unique(as.numeric(Y))
+    if (9 %in% lst.unique){
+      stop("'input' file contains missing data (9's). Use the 'impute()' function to impute them.")
+    }
+    if (-9 %in% lst.unique){
+      stop("'input' file contains missing data (-9's). Use the 'impute()' function to impute them.")
+    }
+  } else {
+    ## Y is an R object       
+    if (is.null(input)){
+      stop("NULL value for argument 'input'.")
+    }
+    Y <- as.matrix(input)
+    Y[Y == 9] <- NA
+    Y[Y == -9] <- NA
+    if (anyNA(Y)) {
+      stop("The input matrix contains missing values: NA, 9 or -9 not allowed.")
+    }
+  }
+  
+  ## Check independent/covariate env matrix  
+  ## LEA 
+  if (is.character(env)){
+    X <- read.env(env)
+    if (anyNA(X)){
+      stop("'env' file contains missing data (NA).")
+    }
+  } else {
+    if (is.null(env)){
+      stop("NULL value for argument 'env'.")
+    }
+    X <- as.matrix(env)
+    if (anyNA(X)) {
+      stop("The environmental matrix contains NA.")
+    }
+  }
+  
+  ## Check new.env matrix  
+  ## LEA 
+  if (is.character(new.env)){
+    X.new <- read.env(new.env)
+    if (anyNA(X.new)){
+      stop("'new.env' file contains missing data (NA).")
+    }
+  } else {
+    if (is.null(new.env)){
+      stop("NULL value for argument 'new.env'.")
+    }
+    X.new <- as.matrix(new.env)
+    if (anyNA(X.new)) {
+      stop("The new environmental matrix contains NA.")
+    }
+  }
+  
+  d <-  ncol(X) #number of environmental variables
+  d.new <-  ncol(X.new) #number of environmental variables
+  if (d.new != d){
+    stop("Number of columns in 'new.env' matrix is not equal to the number of columns in 'env' matrix")    
+  }
+  
+  n <-  nrow(X) #number of individuals
+  n.new <-  nrow(X.new) #number of individuals
+  if (n.new != n){
+    stop("Number of rows in 'new.env' matrix is not equal to the number of rows in 'env' matrix")    
+  }
+  
+  if (nrow(Y) != n){
+    stop("Number of rows in the input matrix not equal to the number of rows in the 'env' matrix")    
+  }
+  
+  if (n < d) {
+    stop("The environmental covariate matrix contains more columns (d) than rows (n).")
+  }
+  
+  ## Check pop.labels
+  if (length(pop.labels) != n){
+    stop("Number of pop labels not equal to the number of rows in the input matrix")    
+  }
+  
+  unique.labels <- unique(pop.labels)
+  tab <- sapply(unique.labels, FUN = function(x) sum(pop.labels == x))
+  if (min(tab) == 1){
+    stop("Population samples in pop.labels must have more than 1 individual.")    
+  }
+  
+  ## compute effect sizes (B matrix)
+  K <- object@K
+  mod.lm <- lm(Y ~ ., data = data.frame(X, object@U)) 
+  sm <- summary(mod.lm)
+  effect.size <- sapply(sm, FUN = function(x) x$coeff[1:(K + d + 1), 1])
+  rm(sm)
+  
+  X.exp <- cbind(rep(1.0, n), X, object@U)
+  Y.fit <- X.exp %*% effect.size
+  
+  X.pred <- cbind(rep(1.0, n), X.new, object@U)
+  Y.pred <- X.pred %*% effect.size
+  
+  L <- ncol(Y.fit)
+  
+  offset <- NULL
+  for (i in unique.labels){
+    l.fit <- prcomp(Y.fit[pop == i,], scale = TRUE)$sdev[1]^2
+    l.pred <- prcomp(rbind(Y.fit[pop.labels == i,], Y.pred[pop.labels == i,]), 
+                     scale = TRUE)$sdev[1]^2 
+    offset <- c(offset, (l.pred - l.fit)/L)
+  }
+  names(offset) <- unique.labels
+  return(offset)
+}
+)
+
 
 

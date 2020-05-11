@@ -74,6 +74,7 @@ exportMethods(
         z.scores,
         lfmm.pvalues,
         lfmm2.test,
+        genetic.offset,
         snmf.pvalues,
         cross.entropy,
         tracy.widom,
