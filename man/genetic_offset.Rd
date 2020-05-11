@@ -37,22 +37,22 @@ An object of class \code{lfmm2Class}.
 }
 
 \references{
-Caye K, Jumentier B, Lepeule J, Francois O. (2019). LFMM 2: fast and accurate inference of gene-environment associations in genome-wide studies. Molecular biology and evolution, 36(4), 852-860.
+Caye K, Jumentier B, Lepeule J, Francois O (2019). LFMM 2: fast and accurate inference of gene-environment associations in genome-wide studies. Molecular biology and evolution, 36(4), 852-860.
 }
 \examples{
 ### Example of offset prediction using lfmm2 ###
 
-# Simulation with 10 target loci, with effect sizes ranging between -10 an 10 
+# Simulation with 100 target loci, with effect sizes ranging between -10 an 10 
 # n = 100 individuals and L = 1000 loci
 
 X <- as.matrix(rnorm(100)) # environmental variable
 B <- rep(0, 1000) 
 target <- sample(1:1000, 100) # target loci
-B[target] <- runif(10, -10, +10) # effect sizes
+B[target] <- runif(100, -10, +10) # effect sizes
 
 # Creating hidden factors and loadings
 
-U <- t(tcrossprod(as.matrix(c(-1,0.5,1.5)), X)) + matrix(rnorm(300), ncol = 3)
+U <- t(tcrossprod(as.matrix(c(-1.25,0.5,1.25)), X)) + matrix(rnorm(300), ncol = 3)
 V <- matrix(rnorm(3000), ncol = 3)
 
 # Simulating a binarized matrix containing haploid genotypes 
@@ -71,9 +71,9 @@ mod2 <- lfmm2(input = Y, env = X, K = 3)
 pop <-  1 + (U[,1] > 0)
 
 g.offset <- genetic.offset(object = mod2, input = Y, 
-                           env = X, new.env = X + 2, 
+                           env = X, new.env = 2*X + 10, 
                            pop.labels = pop)
-g.offset 
+round(g.offset, digit = 3) 
 
 #rm(list = ls())
 }
