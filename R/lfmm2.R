@@ -209,7 +209,7 @@ setGeneric("genetic.offset", function(object,
                                       input, 
                                       env, 
                                       new.env, 
-                                      pop.labels) numeric);
+                                      pop.labels) matrix);
 setMethod("genetic.offset", "lfmm2Class",
           function(object, 
                    input, 
@@ -330,9 +330,9 @@ setMethod("genetic.offset", "lfmm2Class",
     l.fitpred <- c(l.fitpred, prcomp(rbind(Y.fit[pop.labels == i,], Y.pred[pop.labels == i,]), 
                      scale = TRUE)$sdev[1]^2)
   }
-  offset <- rbind((l.fitpred - l.fit)/L, (l.pred - l.fit)/L, l.fit/L, l.pred/L, l.fitpred/L)
+  offset <- rbind((l.fitpred - (l.pred + l.fit)/2)/L, l.fit/L, l.pred/L, l.fitpred/L)
   colnames(offset) <- unique.labels
-  rownames(offset) <- c("offset","diff","lfit","lpred","lfit.pred")
+  rownames(offset) <- c("offset","F.fit","F.pred","F.fitpred")
   
   return(offset)
 }

@@ -1,8 +1,8 @@
 \name{genetic.offset}
 \alias{genetic.offset}
 
-\title{Genetic offset for populations under new environments \code{lfmm2}.}
-\description{The function returns a vector of genetic offset estimates computed from specified population labels and new environments using predictions of the \code{lfmm2} fitted model. It takes an object of class \code{lfmm2Class} with the data that were used to adjust the LFMM, plus new environmental variables in the same format as the original ones. 
+\title{Population genetic offset under new environments \code{lfmm2}.}
+\description{The function returns genetic offset estimates computed from user-specified population labels and new environments based on predictions of the \code{lfmm2} model. It takes as input an object of class \code{lfmm2Class} together with the data that were used to adjust the LFMM, and a matrix of new environmental variables in the same format as the original ones. 
 }
 \usage{
 genetic.offset (object, input, env, new.env, pop.labels)
@@ -19,14 +19,14 @@ An object of class \code{lfmm2Class}.
 \item{env}{A matrix of environmental covariates or a character string containing a path to the environmental file. The environment matrix must be in the \code{\link{env}} format without missing values. All variables must be encoded as \code{numeric}.
 }
 
-\item{env}{A matrix of new environmental covariates or a character string containing a path to the new environmental data file. The new environment matrix must be in the \code{\link{env}} format without missing values, and of same dimension as the \code{env} matrix. All variables must be encoded as \code{numeric}.
+\item{new.env}{A matrix of new environmental covariates or a character string containing a path to the new environmental data file. The new environmental matrix must be in the \code{\link{env}} format without missing values, and of same dimension as the \code{env} matrix. All variables must be encoded as \code{numeric}.
 }
 
-\item{pop.labels}{A numeric or character vector providing a population label for each individual in the response matrix. 
+\item{pop.labels}{A numeric or character vector providing population labels for all rows (individuals) of the response matrix. 
 }
 }
 \value{
-\item{offset}{A vector of genetic offset values computed for each population.}
+\item{offset}{A matrix of genetic offset values computed for every population in \code{pop.labels}.}
 }
 \author{
     Olivier Francois
@@ -38,6 +38,8 @@ An object of class \code{lfmm2Class}.
 
 \references{
 Caye K, Jumentier B, Lepeule J, Francois O (2019). LFMM 2: fast and accurate inference of gene-environment associations in genome-wide studies. Molecular biology and evolution, 36(4), 852-860.
+
+Gain C, Francois O (2019). LEA 3: Factor models for population and ecological genomics in R.
 }
 \examples{
 ### Example of offset prediction using lfmm2 ###

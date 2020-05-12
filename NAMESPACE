@@ -1,6 +1,6 @@
 import(methods)
 
-importFrom("stats", "median", "pchisq", "qchisq", "runif", "lm", "glm", "family", "binomial")
+importFrom("stats", "median", "pchisq", "qchisq", "runif", "prcomp", "lm", "glm", "family", "binomial")
 importFrom("utils", "read.table", "unzip", "write.table", "zip")
 importFrom("graphics", "barplot")
 
