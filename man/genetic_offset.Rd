@@ -39,7 +39,7 @@ An object of class \code{lfmm2Class}.
 \references{
 Caye K, Jumentier B, Lepeule J, Francois O (2019). LFMM 2: fast and accurate inference of gene-environment associations in genome-wide studies. Molecular biology and evolution, 36(4), 852-860.
 
-Gain C, Francois O (2019). LEA 3: Factor models for population and ecological genomics in R.
+Gain C, Francois O (2020). LEA 3: Factor models for population and ecological genomics in R.
 }
 \examples{
 ### Example of offset prediction using lfmm2 ###
