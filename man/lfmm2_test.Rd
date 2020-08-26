@@ -2,8 +2,10 @@
 \alias{lfmm2.test}
 
 \title{P-values adjusted for latent factors computed by \code{lfmm2}.}
+
 \description{The function returns a vector of p-values for association between loci and environmental variables adjusted for latent factors computed by \code{lfmm2}. It takes an object of class \code{lfmm2Class} with the data that were used to adjust the LFMM. 
 }
+
 \usage{
 lfmm2.test (object, input, env, genomic.control, linear, family)
 }
@@ -22,19 +24,24 @@ An object of class \code{lfmm2Class}.
 \item{genomic.control}{
 A logical value. If \code{TRUE}, the p-values are recalibrated by using genomic control after correction for confounding. 
 }
+
 \item{linear}{A logical value indicating whether linear or generalized linear models should be used to perform the association tests. If \code{FALSE}, \code{family} should be provided in the next argument.
 }
+
 \item{family}{a \code{family} for generalized linear models used in the association tests. The default is binomial(link = "logit")), which requires that y is between 0 and 1. 
 }
 }
+
 \value{
 \item{pvalues}{A matrix of p-values for each locus and each environmental variable.}
 \item{zscores}{A matrix of z-scores for each locus and each environmental variable.}
 \item{gif}{A vector of genomic inflation factors computed for each environmental variable.}
 }
+
 \author{
     Olivier Francois
 }
+
 \seealso{
 \code{\link{lfmm.data}}
 \code{\link{lfmm2}}
@@ -43,6 +50,7 @@ A logical value. If \code{TRUE}, the p-values are recalibrated by using genomic 
 \references{
 Caye K, Jumentier B, Lepeule J, Francois O. (2019). LFMM 2: fast and accurate inference of gene-environment associations in genome-wide studies. Molecular biology and evolution, 36(4), 852-860.
 }
+
 \examples{
 ### Example of analysis using lfmm2 ###
 
@@ -79,6 +87,7 @@ plot(-log10(pv$pvalues), col = "grey", cex = .4, pch = 19)
 points(target, -log10(pv$pvalues[target]), col = "red")
 
 }
+
 \keyword{lfmm2}
 
 

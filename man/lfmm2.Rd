@@ -1,7 +1,7 @@
 \name{lfmm2}
 \alias{lfmm2}
 \alias{lfmm2.test,lfmm2Class-method}
-
+\alias{genetic.offset,lfmm2Class-method}
 
 
 

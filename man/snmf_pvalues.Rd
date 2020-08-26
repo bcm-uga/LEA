@@ -6,7 +6,7 @@
 Returns a vector of p-values computed from an \code{snmf} run.
 }
 \usage{
-snmf.pvalues (object, genomic.control, lambda, ploidy, entropy, K, run)
+snmf.pvalues (object, genomic.control, lambda, ploidy, entropy, fisher, K, run)
 }
 
 \arguments{
@@ -23,6 +23,8 @@ by rescaling the chi-squared test statistics using the \code{lambda} parameter.
 \item{ploidy}{An integer value among 1 or 2. Tests are implemented for haploids and diploids (to be extended to polypoids).
 }
 \item{entropy}{A Boolean value. If \code{TRUE}, the run of minimum entropy is used for computing the p-values.
+}
+\item{fisher}{A Boolean value. If \code{TRUE}, F-distributions are used to test the null-hypothesis, Chi-squared otherwise.
 }
 \item{K}{An integer value. The number of genetic clusters.
 }
