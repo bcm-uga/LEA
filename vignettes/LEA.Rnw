@@ -27,21 +27,20 @@ TIMC-IMAG UMR 5525, Grenoble, 38042, France.
 
 \section{Overview}
 {\tt LEA} is an {\tt R} package dedicated to landscape genomics and
-    ecological association tests \citep{Frichot_2015}. {\tt LEA} can run analyses of
-        population structure and genome-wide tests for local adaptation. 
-        The package includes statistical methods for estimating ancestry
+    ecological association tests \citep{Frichot_2015}. 
+    {\tt LEA} performs analyses of population structure and imputation of missing genotypes. It also runs genome-scans  for selection, and tests association of genotypes with environmental variables, and computes predictive values of genetic offsets based on new or future environments. 
+    The package includes factor methods for estimating ancestry
         coefficients from large genotypic matrices and for evaluating the
-        number of ancestral populations (snmf, pca). It performs statistical 
-        tests using latent factor mixed models for identifying
+        number of ancestral populations (snmf, pca). It implements latent factor mixed models for identifying
         genetic polymorphisms that exhibit high correlation with
-        environmental gradients (lfmm, lfmm2). {\tt LEA} is mainly based on optimized C programs
+        environmental gradients (lfmm, lfmm2). {\tt LEA} is mainly based on optimized programs
         that can scale with the dimension of large data sets.  
 
 
 \section{Introduction} 
 The goal of this tutorial is to give an overview of the main functionalities of the {\tt R} package {\tt LEA}. It will show the main steps of analysis, including 1) analysing population structure and preparing a genotypic matrix for genomewide association studies, 2) fitting GWAS latent factor mixed models to the data and extracting candidate regions of interest.    
 
-As some functions may take a few hours to analyse very large datasets, output files are written into text files that can be read by {\tt LEA} after each batch of runs (called a 'project'). We advise creating working directories containing genotypic data and covariables when starting {\tt LEA}. Note that two files with the same names but a different extension are assumed to contain the same data in distinct formats.
+As some functions may take a few hours to analyse very large data sets, output files are written into text files that can be read by {\tt LEA} after each batch of runs (called a 'project'). We advise creating working directories containing genotypic data and covariables when starting {\tt LEA}. Note that two files with the same names but a different extension are assumed to contain the same data in distinct formats.
 
 <<results='hide'>>=
 # creation of a directory for LEA analyses
@@ -373,7 +372,7 @@ Y <- matrix(as.numeric(Y > 0), ncol = L)
 @
 
 
-We fit an LFMM by using $K = 3$ latent factors. This value corresponds to the true value in the model, but is also easily recovered by a PCA screeplot. 
+We fit an LFMM by using $K = 3$ latent factors. This value corresponds to the true value in the model (Note: $K = 3$ could be easily recovered from a PCA screeplot). 
 
 <<>>=
 # Fitting an LFMM with K = 3 factors

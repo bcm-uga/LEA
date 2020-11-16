@@ -193,7 +193,7 @@ setMethod("lfmm2.test", "lfmm2Class",
               }
             }
             if (genomic.control){
-                gif <- apply(z_score^2, 2, median)/qchisq(0.5, df = 1, lower.tail = FALSE)
+                gif <- apply(z_score^2, 1, median)/qchisq(0.5, df = 1, lower.tail = FALSE)
                 p_value <- pchisq(z_score^2/gif, df = 1, lower.tail = FALSE)
             } else {
                 gif <- NULL
