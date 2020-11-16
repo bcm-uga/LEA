@@ -62,3 +62,4 @@ write.geno(tutorial.R,"genotypes.geno")
 output = create.dataset("genotypes.geno")
 }
 
+\keyword{snmf}

@@ -88,5 +88,4 @@ points(target, -log10(pv$pvalues[target]), col = "red")
 
 
 \keyword{lfmm2}
-\keyword{lfmm}
 \keyword{tutorial}
