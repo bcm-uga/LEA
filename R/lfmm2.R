@@ -126,6 +126,7 @@ setMethod("lfmm2.test", "lfmm2Class",
             ## Check input matrix   
             ## LEA  
             if (is.character(input)){
+              warning("Reading large input files with read.lfmm may be slow. See data.table::fread for fast import.")
               Y <- read.lfmm(input)
               lst.unique <- unique(as.numeric(Y))
               if (9 %in% lst.unique){
