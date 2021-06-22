@@ -126,7 +126,7 @@ setMethod("lfmm2.test", "lfmm2Class",
             ## Check input matrix   
             ## LEA  
             if (is.character(input)){
-              warning("Reading large input files with read.lfmm may be slow. See data.table::fread for fast import.")
+              warning("Reading large input files with 'read.lfmm()' may be slow. See 'data.table::fread()' for fast import.")
               Y <- read.lfmm(input)
               lst.unique <- unique(as.numeric(Y))
               if (9 %in% lst.unique){
@@ -227,6 +227,7 @@ setMethod("genetic.offset", "lfmm2Class",
   ## Check input response matrix 
   ## LEA  
   if (is.character(input)){
+    warning("Reading large input files with 'read.lfmm()' may be slow. See 'data.table::fread()' for fast import.")
     Y <- read.lfmm(input)
     lst.unique <- unique(as.numeric(Y))
     if (9 %in% lst.unique){
@@ -244,9 +245,11 @@ setMethod("genetic.offset", "lfmm2Class",
     Y[Y == 9] <- NA
     Y[Y == -9] <- NA
     if (anyNA(Y)) {
-      stop("The input matrix contains missing values: NA, 9 or -9 not allowed.")
-    }
+      stop("The input matrix contains missing values: NA, 9 or -9 not allowed. Use the 'write.geno()' and 'impute()' functions to impute them.")
+    lst.unique <- unique(as.numeric(Y))
+     }
   }
+  
   
   ## Check independent/covariate env matrix  
   ## LEA 
@@ -281,12 +284,18 @@ setMethod("genetic.offset", "lfmm2Class",
       stop("The new environmental matrix contains NA.")
     }
   }
-  
+            
+   
   d <-  ncol(X) #number of environmental variables
   d.new <-  ncol(X.new) #number of environmental variables
   if (d.new != d){
     stop("Number of columns in 'new.env' matrix is not equal to the number of columns in 'env' matrix")    
   }
+  
+  ## Checking ploidy
+  cat("Checking ploidy.","\n")
+  if (max(lst.unique) > 2) stop("Only haploid or diploid genomes are allowed. For polypoids, perform haploidization (phasing) 
+                                and create copies of individual environmental data.")
   
   n <-  nrow(X) #number of individuals
   n.new <-  nrow(X.new) #number of individuals
@@ -310,8 +319,15 @@ setMethod("genetic.offset", "lfmm2Class",
   unique.labels <- unique(pop.labels)
   tab <- sapply(unique.labels, FUN = function(x) sum(pop.labels == x))
   if (min(tab) == 1){
-    stop("Population samples in pop.labels must have more than 1 individual.")    
+    stop("Population samples in pop.labels must have more than one individual.")    
   }
+  
+  ### HAPLOIDIZATION/RANDOM PHASE TODO
+  ## Random phase and duplication (n -> 2n)
+  if (max(lst.unique) == 2)  cat("Random phase and duplication of samples (2n genomes).","\n")
+  
+  ### TO DO 
+  
   
   ## compute effect sizes (B matrix)
   K <- object@K
