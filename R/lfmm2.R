@@ -217,13 +217,15 @@ setGeneric("genetic.offset", function(object,
                                       input, 
                                       env, 
                                       new.env, 
-                                      pop.labels) matrix);
+                                      pop.labels,
+                                      pca = FALSE) matrix);
 setMethod("genetic.offset", "lfmm2Class",
           function(object, 
                    input, 
                    env, 
                    new.env, 
-                   pop.labels){
+                   pop.labels,
+                   pca){
   ## Check input response matrix 
   ## LEA  
   if (is.character(input)){
@@ -322,27 +324,34 @@ setMethod("genetic.offset", "lfmm2Class",
     stop("Population samples in pop.labels must have more than one individual.")    
   }
   
-  ### HAPLOIDIZATION/RANDOM PHASE TODO
-  ## Random phase and duplication (n -> 2n)
-  if (max(lst.unique) == 2)  cat("Random phase and duplication of samples (2n genomes).","\n")
+  ### HAPLOIDIZATION: RANDOM PHASE
+  ### Random phase and duplication (n -> 2n)
+  
+  if (max(lst.unique) == 2)  cat("Random phase and duplication of samples: Create two haploid genomes from each individual genome.","\n")
   
   ### TO DO 
-  
+  ### Dedoubler Y, X et X.new, pop.labels, U (object@U)
+  ### n <- 2*n
   
   ## compute effect sizes (B matrix)
+  U <- object@U
   K <- object@K
-  mod.lm <- lm(Y ~ ., data = data.frame(X, object@U)) 
+  mod.lm <- lm(Y ~ ., data = data.frame(X, U)) 
   sm <- summary(mod.lm)
   effect.size <- sapply(sm, FUN = function(x) x$coeff[1:(K + d + 1), 1])
   rm(sm)
   
-  X.exp <- cbind(rep(1.0, n), X, object@U)
+  X.exp <- cbind(rep(1.0, n), X, U)
   Y.fit <- X.exp %*% effect.size
   
-  X.pred <- cbind(rep(1.0, n), X.new, object@U)
+  X.pred <- cbind(rep(1.0, n), X.new, U)
   Y.pred <- X.pred %*% effect.size
   
   L <- ncol(Y.fit)
+  
+  ### Le calcul des offsets s'appuie sur l'ACP  de matrice Y et non sur la matrice Yst (deux populations)
+  ### implementer l'option 'coefficient de determination' 
+  ##  if (!pca) 'coefficient de determination' else
   
   l.fit <- NULL
   l.pred <- NULL

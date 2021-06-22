@@ -7,7 +7,7 @@
 }
 
 \usage{
-genetic.offset (object, input, env, new.env, pop.labels)
+genetic.offset (object, input, env, new.env, pop.labels, pca)
 }
 
 \arguments{
@@ -26,13 +26,16 @@ An object of class \code{lfmm2Class}.
 
 \item{pop.labels}{A numeric or character vector providing population labels for all rows (individuals) of the response matrix. 
 }
+
+\item{pca}{A boolean value indicating whether genetic offsets are computed from a PCA approximation or not (default value: \code{FALSE}). 
+}
 }
 
 \value{
 \item{offset}{A matrix of genetic offset values computed for every population in \code{pop.labels}.}
 }
 \author{
-    Olivier Francois
+    Olivier Francois, Clement Gain
 }
 \seealso{
 \code{\link{lfmm.data}}
@@ -40,7 +43,9 @@ An object of class \code{lfmm2Class}.
 }
 
 \references{
-Gain C, Francois O (2020). LEA 3: Factor models for population and ecological genomics in R.
+Gain C, Francois O (2021). LEA 3: Factor models in population genetics and ecological genomics with R. (2021). Molecular Ecology Resources, 
+doi.org/10.1111/1755-0998.13366. Free from Publisher
+
 }
 
 \examples{
