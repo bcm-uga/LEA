@@ -203,6 +203,9 @@ setMethod("lfmm2.test", "lfmm2Class",
             } else {
                 gif <- NULL
             }
+            if (anyNA(z_score)) {
+              warning("NA in significance values and z-scores. Check the input matrix for non-variable genomic sites.")
+            }
        res <- list(pvalues = p_value, zscores = z_score, gif = gif)
        return(res)
       }
