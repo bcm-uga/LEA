@@ -246,9 +246,9 @@ setMethod("genetic.offset", "lfmm2Class",
     Y <- as.matrix(input)
     Y[Y == 9] <- NA
     Y[Y == -9] <- NA
+    lst.unique <- unique(as.numeric(Y))
     if (anyNA(Y)) {
       stop("The input matrix contains missing values: NA, 9 or -9 not allowed. Use the 'write.geno()' and 'impute()' functions to impute them.")
-    lst.unique <- unique(as.numeric(Y))
      }
   }
   

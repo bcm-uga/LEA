@@ -76,8 +76,8 @@ Y <- matrix(as.numeric(Y > 0), ncol = 1000)
 
 mod2 <- lfmm2(input = Y, env = X, K = 3)
 
-# Computing genetic offset statistics for 2 populations, defined from latent factor 1
-pop <-  1 + (U[,1] > 0)
+# Computing genetic offset statistics for 2 populations, defined from PC1 of the genotype matrix
+pop <- 1 + (prcomp(Y, scale = TRUE)$x[,1] > 0)
 
 g.offset <- genetic.offset(object = mod2, input = Y, 
                            env = X, new.env = 2*X + 10, 
