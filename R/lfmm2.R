@@ -325,8 +325,8 @@ setMethod("genetic.offset", "lfmm2Class",
   l.fitpred <- NULL
   
   for (i in unique.labels){
-    l.fit <- c(l.fit, prcomp(Y.fit[pop == i,], scale = TRUE)$sdev[1]^2)
-    l.pred <- c(l.pred, prcomp(Y.pred[pop == i,], scale = TRUE)$sdev[1]^2)
+    l.fit <- c(l.fit, prcomp(Y.fit[pop.labels == i,], scale = TRUE)$sdev[1]^2)
+    l.pred <- c(l.pred, prcomp(Y.pred[pop.labels == i,], scale = TRUE)$sdev[1]^2)
     l.fitpred <- c(l.fitpred, prcomp(rbind(Y.fit[pop.labels == i,], Y.pred[pop.labels == i,]), 
                      scale = TRUE)$sdev[1]^2)
   }
