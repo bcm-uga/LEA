@@ -1,8 +1,9 @@
 import(methods)
 
-importFrom("stats", "median", "pchisq", "qchisq", "runif", "prcomp", "lm", "glm", "family", "binomial")
+importFrom("stats", "median", "pchisq", "qchisq", "runif", "prcomp", "lm", "glm", "family", "binomial", "pf", "qf")
 importFrom("utils", "read.table", "unzip", "write.table", "zip")
 importFrom("graphics", "barplot")
+
 
 useDynLib(LEA, .registration=TRUE, .fixes = "R_") 
 #.registration = TRUE, .fixes = "R_")
@@ -74,7 +75,6 @@ exportMethods(
         z.scores,
         lfmm.pvalues,
         lfmm2.test,
-        genetic.offset,
         snmf.pvalues,
         cross.entropy,
         tracy.widom,
@@ -82,6 +82,8 @@ exportMethods(
         barchart
 )
 
+exportMethods(genetic.offset)
+      
 #export(barplot.Qmatrix)
 #S3method(barplot.Qmatrix, "Qmatrix")
 

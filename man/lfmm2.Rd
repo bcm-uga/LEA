@@ -1,7 +1,7 @@
 \name{lfmm2}
 \alias{lfmm2}
 \alias{lfmm2.test,lfmm2Class-method}
-
+\alias{genetic.offset,lfmm2Class-method}
 
 
 
@@ -26,7 +26,7 @@ lfmm2 (input, env, K, lambda)
 }
 }
 \value{
-\code{lfmm2} returns an object of class \code{lfmm2Class} that contains $K$ estimated latent factors and their loadings.
+\code{lfmm2} returns an object of class \code{lfmm2Class} that contains $K$ estimated latent factors \code{@U} and their loadings  \code{@V}.
 
 The following method can be applied to an object of class \code{lfmm2Class}:
 
@@ -88,5 +88,4 @@ points(target, -log10(pv$pvalues[target]), col = "red")
 
 
 \keyword{lfmm2}
-\keyword{lfmm}
 \keyword{tutorial}

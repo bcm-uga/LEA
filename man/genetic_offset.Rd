@@ -1,11 +1,13 @@
 \name{genetic.offset}
 \alias{genetic.offset}
 
-\title{Population genetic offset under new environments \code{lfmm2}.}
-\description{The function returns genetic offset estimates computed from user-specified population labels and new environments based on predictions of the \code{lfmm2} model. It takes as input an object of class \code{lfmm2Class} together with the data that were used to adjust the LFMM, and a matrix of new environmental variables in the same format as the original ones. 
+\title{Population genetic offset under new environments.}
+
+\description{The function returns genetic offset estimates computed from user-specified population labels and new environments based on predictions of an \code{lfmm2} model. It takes as input an object of class \code{lfmm2Class} together with the data that were used to adjust the LFMM, and a matrix of new environmental variables in the same format as the original ones. 
 }
+
 \usage{
-genetic.offset (object, input, env, new.env, pop.labels)
+genetic.offset (object, input, env, new.env, pop.labels, pca)
 }
 
 \arguments{
@@ -24,12 +26,16 @@ An object of class \code{lfmm2Class}.
 
 \item{pop.labels}{A numeric or character vector providing population labels for all rows (individuals) of the response matrix. 
 }
+
+\item{pca}{A boolean value indicating whether genetic offsets are computed from a PCA approximation or not (default value: \code{FALSE}). 
 }
+}
+
 \value{
 \item{offset}{A matrix of genetic offset values computed for every population in \code{pop.labels}.}
 }
 \author{
-    Olivier Francois
+    Olivier Francois, Clement Gain
 }
 \seealso{
 \code{\link{lfmm.data}}
@@ -37,10 +43,11 @@ An object of class \code{lfmm2Class}.
 }
 
 \references{
-Caye K, Jumentier B, Lepeule J, Francois O (2019). LFMM 2: fast and accurate inference of gene-environment associations in genome-wide studies. Molecular biology and evolution, 36(4), 852-860.
+Gain C, Francois O (2021). LEA 3: Factor models in population genetics and ecological genomics with R. (2021). Molecular Ecology Resources, 
+doi.org/10.1111/1755-0998.13366. Free from Publisher
 
-Gain C, Francois O (2019). LEA 3: Factor models for population and ecological genomics in R.
 }
+
 \examples{
 ### Example of offset prediction using lfmm2 ###
 
@@ -69,8 +76,8 @@ Y <- matrix(as.numeric(Y > 0), ncol = 1000)
 
 mod2 <- lfmm2(input = Y, env = X, K = 3)
 
-# Computing genetic offsets for 2 populations, defined from latent factor 1
-pop <-  1 + (U[,1] > 0)
+# Computing genetic offset statistics for 2 populations, defined from PC1 of the genotype matrix
+pop <- 1 + (prcomp(Y, scale = TRUE)$x[,1] > 0)
 
 g.offset <- genetic.offset(object = mod2, input = Y, 
                            env = X, new.env = 2*X + 10, 
@@ -79,6 +86,7 @@ round(g.offset, digit = 3)
 
 #rm(list = ls())
 }
+
 \keyword{lfmm2}
 
 

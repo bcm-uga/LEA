@@ -126,6 +126,7 @@ setMethod("lfmm2.test", "lfmm2Class",
             ## Check input matrix   
             ## LEA  
             if (is.character(input)){
+              warning("Reading large input files with 'read.lfmm()' may be slow. See 'data.table::fread()' for fast import.")
               Y <- read.lfmm(input)
               lst.unique <- unique(as.numeric(Y))
               if (9 %in% lst.unique){
@@ -193,10 +194,17 @@ setMethod("lfmm2.test", "lfmm2Class",
               }
             }
             if (genomic.control){
-                gif <- apply(z_score^2, 2, median)/qchisq(0.5, df = 1, lower.tail = FALSE)
+              if (d == 1){
+                gif <- median(z_score^2)/qchisq(0.5, df = 1, lower.tail = FALSE)
+              } else {
+                gif <- apply(z_score^2, 1, median)/qchisq(0.5, df = 1, lower.tail = FALSE)
+              }
                 p_value <- pchisq(z_score^2/gif, df = 1, lower.tail = FALSE)
             } else {
                 gif <- NULL
+            }
+            if (anyNA(z_score)) {
+              warning("NA in significance values and z-scores. Check the input matrix for non-variable genomic sites.")
             }
        res <- list(pvalues = p_value, zscores = z_score, gif = gif)
        return(res)
@@ -209,16 +217,19 @@ setGeneric("genetic.offset", function(object,
                                       input, 
                                       env, 
                                       new.env, 
-                                      pop.labels) matrix);
+                                      pop.labels,
+                                      pca = FALSE) matrix);
 setMethod("genetic.offset", "lfmm2Class",
           function(object, 
                    input, 
                    env, 
                    new.env, 
-                   pop.labels){
+                   pop.labels,
+                   pca){
   ## Check input response matrix 
   ## LEA  
   if (is.character(input)){
+    warning("Reading large input files with 'read.lfmm()' may be slow. See 'data.table::fread()' for fast import.")
     Y <- read.lfmm(input)
     lst.unique <- unique(as.numeric(Y))
     if (9 %in% lst.unique){
@@ -235,10 +246,12 @@ setMethod("genetic.offset", "lfmm2Class",
     Y <- as.matrix(input)
     Y[Y == 9] <- NA
     Y[Y == -9] <- NA
+    lst.unique <- unique(as.numeric(Y))
     if (anyNA(Y)) {
-      stop("The input matrix contains missing values: NA, 9 or -9 not allowed.")
-    }
+      stop("The input matrix contains missing values: NA, 9 or -9 not allowed. Use the 'write.geno()' and 'impute()' functions to impute them.")
+     }
   }
+  
   
   ## Check independent/covariate env matrix  
   ## LEA 
@@ -273,12 +286,18 @@ setMethod("genetic.offset", "lfmm2Class",
       stop("The new environmental matrix contains NA.")
     }
   }
-  
+            
+   
   d <-  ncol(X) #number of environmental variables
   d.new <-  ncol(X.new) #number of environmental variables
   if (d.new != d){
     stop("Number of columns in 'new.env' matrix is not equal to the number of columns in 'env' matrix")    
   }
+  
+  ## Checking ploidy
+  cat("Checking ploidy.","\n")
+  if (max(lst.unique) > 2) stop("Only haploid or diploid genomes are allowed. For polypoids, perform haploidization (phasing) 
+                                and create copies of individual environmental data.")
   
   n <-  nrow(X) #number of individuals
   n.new <-  nrow(X.new) #number of individuals
@@ -302,23 +321,37 @@ setMethod("genetic.offset", "lfmm2Class",
   unique.labels <- unique(pop.labels)
   tab <- sapply(unique.labels, FUN = function(x) sum(pop.labels == x))
   if (min(tab) == 1){
-    stop("Population samples in pop.labels must have more than 1 individual.")    
+    stop("Population samples in pop.labels must have more than one individual.")    
   }
   
+  ### HAPLOIDIZATION: RANDOM PHASE
+  ### Random phase and duplication (n -> 2n)
+  
+  if (max(lst.unique) == 2)  cat("Random phase and duplication of samples: Create two haploid genomes from each individual genome.","\n")
+  
+  ### TO DO 
+  ### Dedoubler Y, X et X.new, pop.labels, U (object@U)
+  ### n <- 2*n
+  
   ## compute effect sizes (B matrix)
+  U <- object@U
   K <- object@K
-  mod.lm <- lm(Y ~ ., data = data.frame(X, object@U)) 
+  mod.lm <- lm(Y ~ ., data = data.frame(X, U)) 
   sm <- summary(mod.lm)
   effect.size <- sapply(sm, FUN = function(x) x$coeff[1:(K + d + 1), 1])
   rm(sm)
   
-  X.exp <- cbind(rep(1.0, n), X, object@U)
+  X.exp <- cbind(rep(1.0, n), X, U)
   Y.fit <- X.exp %*% effect.size
   
-  X.pred <- cbind(rep(1.0, n), X.new, object@U)
+  X.pred <- cbind(rep(1.0, n), X.new, U)
   Y.pred <- X.pred %*% effect.size
   
   L <- ncol(Y.fit)
+  
+  ### Le calcul des offsets s'appuie sur l'ACP  de matrice Y et non sur la matrice Yst (deux populations)
+  ### implementer l'option 'coefficient de determination' 
+  ##  if (!pca) 'coefficient de determination' else
   
   l.fit <- NULL
   l.pred <- NULL

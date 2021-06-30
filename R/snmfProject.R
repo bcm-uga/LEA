@@ -219,11 +219,16 @@ setMethod("cross.entropy", "snmfProject",
 
 
 # snmf-pvalues
-setGeneric("snmf.pvalues", function(object, genomic.control, lambda, ploidy, entropy,  K, run) list)
+setGeneric("snmf.pvalues", function(object, genomic.control, lambda, ploidy, entropy, fisher,  K, run) list)
 setMethod("snmf.pvalues", "snmfProject",
-          function(object, genomic.control, lambda, ploidy, entropy,  K, run) {
-            
-            # check for genomic control
+          function(object, genomic.control, lambda, ploidy, entropy, fisher, K, run) {
+           
+             # check for fisher test
+            if (missing(fisher)) {
+              fisher <- TRUE
+            }
+
+           # check for genomic control
             if (missing(genomic.control)) {
               genomic.control <- TRUE
             }
@@ -281,14 +286,21 @@ setMethod("snmf.pvalues", "snmfProject",
             
             fst[fst<0] <-  0.000001
             
-            zs <- sqrt(fst*(n-K)/(1-fst))
+            zsq <- fst*(n-K)/(1-fst)
             
-            if (genomic.control)
-              gif <- median(zs^2)/qchisq(0.5, df = K-1)
-            else
-              gif <- lambda
+            if (genomic.control) {
+              if (!fisher) {
+              gif <- median(zsq)/qchisq(0.5, df = K-1) } else {
+              gif <- median(zsq)/qf(0.5, df1 = K-1, df2 = n-K) }
+              }
+           else {
+              gif <- lambda }
             
-            snmf.pvalues <-  pchisq(zs^2/gif, df = K-1, lower.tail = FALSE)
+            if (!fisher) {
+              snmf.pvalues <-  pchisq(zsq/gif, df = K-1, lower.tail = FALSE)}
+            else {
+              snmf.pvalues <-  pf(zsq/gif, df1 = K-1, df2 = n-K, lower.tail = FALSE)
+            }
             
             return(list(pvalues = snmf.pvalues, GIF = gif))
           }
