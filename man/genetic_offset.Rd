@@ -11,9 +11,7 @@ genetic.offset (object, input, env, new.env, pop.labels, pca)
 }
 
 \arguments{
-\item{object}{
-An object of class \code{lfmm2Class}.
-}
+
 
 \item{input}{A genotypic matrix or a character string containing a path to the input file. The genotypic  matrix must be in the \code{\link{lfmm}{lfmm_format}} format without missing values (9 or \code{NA}). See \code{\link{impute}} for completion based on nonnegative matrix factorization and consider R packages for reading large matrices.
 }
@@ -27,12 +25,17 @@ An object of class \code{lfmm2Class}.
 \item{pop.labels}{A numeric or character vector providing population labels for all rows (individuals) of the response matrix. 
 }
 
+\item{K}{An integer corresponding to the number of latent factors 
+}
+
 \item{pca}{A boolean value indicating whether genetic offsets are computed from a PCA approximation or not (default value: \code{FALSE}). 
 }
+
+\item{candidate.loci}{A vector specifying which position in the genome has to be taken into account in the genetic offset computation (default value: all position)}
 }
 
 \value{
-\item{offset}{A matrix of genetic offset values computed for every population in \code{pop.labels}.}
+\item{offset}{A matrix or vector (depending on \code{pca} parameter) of genetic offset values computed for every population in \code{pop.labels}.}
 }
 \author{
     Olivier Francois, Clement Gain
@@ -74,14 +77,13 @@ Y <- matrix(as.numeric(Y > 0), ncol = 1000)
 # Fitting an LFMM with K = 3 factors #
 ######################################
 
-mod2 <- lfmm2(input = Y, env = X, K = 3)
 
 # Computing genetic offset statistics for 2 populations, defined from PC1 of the genotype matrix
 pop <- 1 + (prcomp(Y, scale = TRUE)$x[,1] > 0)
 
-g.offset <- genetic.offset(object = mod2, input = Y, 
+g.offset <- genetic.offset(input = Y, 
                            env = X, new.env = 2*X + 10, 
-                           pop.labels = pop)
+                           pop.labels = pop, K = 3)
 round(g.offset, digit = 3) 
 
 #rm(list = ls())
