@@ -7,7 +7,7 @@
 }
 
 \usage{
-genetic.offset (object, input, env, new.env, pop.labels, pca)
+genetic.offset (input, env, new.env, pop.labels, K, pca, candidate.loci)
 }
 
 \arguments{
@@ -22,39 +22,40 @@ genetic.offset (object, input, env, new.env, pop.labels, pca)
 \item{new.env}{A matrix of new environmental covariates or a character string containing a path to the new environmental data file. The new environmental matrix must be in the \code{\link{env}} format without missing values, and of same dimension as the \code{env} matrix. All variables must be encoded as \code{numeric}.
 }
 
-\item{pop.labels}{A numeric or character vector providing population labels for all rows (individuals) of the response matrix. 
-}
+\item{pop.labels}{A numeric or character vector providing population labels for all rows (individuals) of the response matrix.}
 
-\item{K}{An integer corresponding to the number of latent factors 
-}
+\item{K}{An integer corresponding to the number of latent factors.}
 
 \item{pca}{A boolean value indicating whether genetic offsets are computed from a PCA approximation or not (default value: \code{FALSE}). 
 }
 
-\item{candidate.loci}{A vector specifying which position in the genome has to be taken into account in the genetic offset computation (default value: all position)}
+\item{candidate.loci}{A vector specifying which loci (column label) in the genotype matrix are included in the computation of the genetic offset (default value: all positions).}
+
 }
 
 \value{
-\item{offset}{A matrix or vector (depending on \code{pca} parameter) of genetic offset values computed for every population in \code{pop.labels}.}
+\item{offset}{A matrix or vector (depending on the \code{pca} parameter) of genetic offset values computed for every population in \code{pop.labels}.}
 }
+
 \author{
     Olivier Francois, Clement Gain
 }
+
 \seealso{
 \code{\link{lfmm.data}}
 \code{\link{lfmm2}}
 }
 
 \references{
-Gain C, Francois O (2021). LEA 3: Factor models in population genetics and ecological genomics with R. (2021). Molecular Ecology Resources, 
-doi.org/10.1111/1755-0998.13366. Free from Publisher
-
+Gain C, Francois O (2021). LEA 3: Factor models in population genetics and ecological genomics with R.
+Molecular Ecology Resources. doi.org/10.1111/1755-0998.13366.
 }
 
 \examples{
 ### Example of offset prediction using lfmm2 ###
 
-# Simulation with 100 target loci, with effect sizes ranging between -10 an 10 
+# Simulation with 100 target loci
+# Effect sizes ranging between -10 an 10 
 # n = 100 individuals and L = 1000 loci
 
 X <- as.matrix(rnorm(100)) # environmental variable
@@ -62,28 +63,47 @@ B <- rep(0, 1000)
 target <- sample(1:1000, 100) # target loci
 B[target] <- runif(100, -10, +10) # effect sizes
 
-# Creating hidden factors and loadings
+# Creating hidden factors and their loadings
 
-U <- t(tcrossprod(as.matrix(c(-1.25,0.5,1.25)), X)) + matrix(rnorm(300), ncol = 3)
-V <- matrix(rnorm(3000), ncol = 3)
+U <- t(tcrossprod(as.matrix(c(-1.25,0.5,1.25)), X)) + 
+      matrix(rnorm(300), ncol = 3)
+      
+V <-  matrix(rnorm(3000), ncol = 3)
 
-# Simulating a binarized matrix containing haploid genotypes 
+# Simulating a binarized matrix of haploid genotypes 
 # Simulation performed with a generative LFMM
 
-Y <- tcrossprod(as.matrix(X), B) + tcrossprod(U, V) + matrix(rnorm(100000, sd = .5), nrow = 100)
-Y <- matrix(as.numeric(Y > 0), ncol = 1000)
+Y <- tcrossprod(as.matrix(X), B) + tcrossprod(U, V) + 
+      matrix(rnorm(100000, sd = .5), nrow = 100)
+      
+Y <-  matrix(as.numeric(Y > 0), ncol = 1000)
 
 ######################################
 # Fitting an LFMM with K = 3 factors #
 ######################################
 
 
-# Computing genetic offset statistics for 2 populations, defined from PC1 of the genotype matrix
+# Computing genetic offset statistics for 2 populations 
+# defined from PCA
+
 pop <- 1 + (prcomp(Y, scale = TRUE)$x[,1] > 0)
 
 g.offset <- genetic.offset(input = Y, 
                            env = X, new.env = 2*X + 10, 
                            pop.labels = pop, K = 3)
+round(g.offset, digit = 3) 
+
+
+
+# Computing genetic offset statistics for 2 populations, 
+# defined from ANOVA and  truly targeted loci
+
+g.offset <- genetic.offset(input = Y, 
+                           env = X, new.env = 2*X + 10, 
+                           pop.labels = pop, K = 3, 
+                           pca = FALSE, 
+                           candidate.loci = target)
+                           
 round(g.offset, digit = 3) 
 
 #rm(list = ls())

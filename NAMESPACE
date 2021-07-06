@@ -1,6 +1,6 @@
 import(methods)
 
-importFrom("stats", "median", "pchisq", "qchisq", "runif", "prcomp", "lm", "glm", "family", "binomial", "pf", "qf")
+importFrom("stats", "median", "pchisq", "qchisq", "runif", "rbinom", "prcomp", "lm", "glm", "family", "binomial", "pf", "qf")
 importFrom("utils", "read.table", "unzip", "write.table", "zip")
 importFrom("graphics", "barplot")
 
@@ -82,7 +82,7 @@ exportMethods(
         barchart
 )
 
-exportMethods(genetic.offset)
+export(genetic.offset)
       
 #export(barplot.Qmatrix)
 #S3method(barplot.Qmatrix, "Qmatrix")

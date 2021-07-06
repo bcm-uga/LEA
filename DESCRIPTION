@@ -1,7 +1,7 @@
 Package: LEA
 Title: LEA: an R package for Landscape and Ecological Association
         Studies
-Version: 3.5.1
+Version: 3.5.2
 Date: 2021-06-10
 Author: Eric Frichot <eric.frichot@gmail.com>, Olivier Francois
         <olivier.francois@grenoble-inp.fr>, Clement Gain 
@@ -23,13 +23,13 @@ Description: LEA is an R package dedicated to population genomics, landscape gen
         predictive values of genetic offsets based on new or future environments. 
        The package includes factor methods for estimating ancestry
         coefficients from large genotypic matrices and for evaluating the
-        number of ancestral populations (snmf, pca). It implements latent factor mixed models for identifying
+        number of ancestral populations (snmf, pca). 
         LEA is mainly based on optimized programs
         that can scale with the dimension of large data sets.
 License: GPL-3
 biocViews: Software, Statistical Method, Clustering, Regression
 URL: http://membres-timc.imag.fr/Olivier.Francois/lea.html
 NeedsCompilation: yes
-Packaged: 2020-11-16 17:49:47 UTC; olivier
+Packaged: 2021-07-06 17:49:47 UTC; olivier
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1

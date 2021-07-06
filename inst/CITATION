@@ -3,7 +3,7 @@ bibentry(bibtype = "Article",
     {A}ssociation studies",
     author = c(person("Eric", "Frichot"),
         person("Olivier", "Francois")),
-    year = 2014,
-    journal = "under review",
+    year = 2015,
+    journal = "Methods in Ecology and Evolution",
     url = "http://membres-timc.imag.fr/Olivier.Francois/lea.html"
 )
