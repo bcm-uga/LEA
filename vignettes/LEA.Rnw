@@ -27,8 +27,8 @@ TIMC-IMAG UMR 5525, Grenoble, 38042, France.
 
 \section{Overview}
 {\tt LEA} is an {\tt R} package dedicated to landscape genomics and
-    ecological association tests \citep{Frichot_2015}. 
-    {\tt LEA} performs analyses of population structure and imputation of missing genotypes. It also runs genome-scans  for selection, and tests association of genotypes with environmental variables, and computes predictive values of genetic offsets based on new or future environments. 
+    ecological association tests \citep{Frichot_2015, Gain_2021}. 
+    {\tt LEA} performs analyses of population structure and imputation of missing genotypes. It also runs genome scans for selection, tests association of genotypes with environmental variables, and computes predictive values of genetic offsets based on new or future environments. 
     The package includes factor methods for estimating ancestry
         coefficients from large genotypic matrices and for evaluating the
         number of ancestral populations (snmf, pca). It implements latent factor mixed models for identifying
@@ -334,7 +334,7 @@ for (alpha in c(.05,.1,.15,.2)) {
 
 \section{Ecological association tests using lfmm2}
 
-As an efficient alternative to the MCMC algorithm implemented in the {\tt lfmm()}, genome-wide association analysis can be performed using the {\tt lfmm2()} command. This function allows estimating $K$ latent factors (and effect sizes) in the same model as {\tt lfmm()}. The estimation algorithm is based on exact solutions of a least-squares minimization problem \citep{Caye_2019}.  For large data sets, {\tt lfmm2()} is much faster than the MCMC version. It also decouples the estimation of latent factor from the association tests, which allows implementing various type of tests including linear or generalized linear models. Let us consider a new example simulated from the an approximation of the LFMM model. The simulated genotypic matrix contains $n= 100$ individuals genotyped for $L = 1000$ loci, ten of which are truly associated with an environmental variable $X$.  
+As an efficient alternative to the MCMC algorithm implemented in the {\tt lfmm()}, genome-wide association analysis can be performed in {\tt LEA} by using the {\tt lfmm2()} command. This function allows estimating $K$ latent factors and the effect sizes corresponding to environmental variables in the same statistical model as with {\tt lfmm()}. For {\tt lfmm2()}, the estimation algorithm is based on exact solutions of a least-squares minimization problem \citep{Caye_2019}. For large data sets, {\tt lfmm2()} is much faster than the MCMC version \citep{Gain_2021}. The function also decouples the estimation of latent factors from the association tests, which allows implementing various types of tests including linear or generalized linear models. Let us consider an example simulated from the LFMM generative model. The simulated genotypic matrix contains $n= 100$ individuals genotyped for $L = 1000$ loci, ten of which are truly associated with an artificial environmental variable, $X$.  
 
 <<>>=
 # Simulate non-null effect sizes for 10 target loci 
@@ -350,7 +350,7 @@ target = sample(1:L, 10)
 B[target] = runif(10, -10, 10) 
 @
 
-The latent factors, {\bf U}, contained in an $n \times 3$ matrix, are random vectors created as follows. Correlations between the factors and environmental predictor $X$ are introduced in the simulation model.   
+The latent factors, {\bf U}, contained in an $n \times 3$ matrix, are random vectors created as follows. Correlations between the factors and environmental predictor, $X$, are introduced in the simulation model.   
 
 <<>>=
 # Create 3 hidden factors and their loadings
@@ -372,7 +372,7 @@ Y <- matrix(as.numeric(Y > 0), ncol = L)
 @
 
 
-We fit an LFMM by using $K = 3$ latent factors. This value corresponds to the true value in the model (Note: $K = 3$ could be easily recovered from a PCA screeplot). 
+We fit an LFMM by using $K = 3$ latent factors. This value corresponds to the true value in the model (note that $K = 3$ could be easily recovered from a PCA screeplot). 
 
 <<>>=
 # Fitting an LFMM with K = 3 factors
@@ -395,6 +395,12 @@ points(target, -log10(pv$pvalues[target]), col = "red")
 @
 \caption{Manhattan plot of $\log_{10}$ $p$-values for LFMM2 tests. The loci showing real associations are circled in red.}
 \end{figure}
+
+
+
+\section{Predictive Ecological Genomics: Genetic offsets}
+
+to be developed
 
 
 
