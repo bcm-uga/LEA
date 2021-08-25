@@ -235,7 +235,7 @@ genetic.offset <-  function(input,
             }
             
             if (!pca){
-              colnames(offset.r2) <- unique.labels
+              names(offset.r2) <- unique.labels
               return(offset.r2)
             } else {
               # 1 - F_LT = (1 - F_ST)/(1 - F_SL)
