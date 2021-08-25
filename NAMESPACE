@@ -30,6 +30,7 @@ export(vcf2lfmm)
 export(ancestrymap2lfmm)
 export(ancestrymap2geno)
 export(struct2geno)
+#export(haploidisation)
 
 
 # classes

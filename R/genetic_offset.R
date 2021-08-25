@@ -5,6 +5,62 @@ genetic.offset <-  function(input,
                             K,
                             pca = FALSE,
                             candidate.loci = NULL) {
+  
+  
+  haploidisation <- function(genotype, pop.labels, env, new.env){
+    
+    # internal function
+    #This function aims at generating a new haploid genotype matrix from a diploid genotype matrix
+    # It will also generate new matrices of env and new.env that will be twice the size of 
+    # the initial matrices.
+    
+    # store n and L values
+    n <- nrow(genotype)
+    L <- ncol(genotype)
+    
+    # Creation of a new matrix with 2*n individuals and L locus
+    haploid.genotype <- matrix(rep(0,(2*n*L)), nrow=2*n, ncol=L)
+    # New vector of pop.labels
+    haploid.pop.labels <- c()
+    # Haploid env matrices
+    haploid.env <- c()
+    haploid.new.env <- c()
+    
+    # For all diploid individuals, we will generate two diploid individual
+    for (i in seq(1,n)){
+      
+      current.individual <- genotype[i,]
+      
+      heterozygote.position <- current.individual == 1
+      homozygote.position <- current.individual == 2
+      random.vec <- rbinom(n=L, size=1, prob=0.5)
+      
+      # We will create two individuals following this logic : 
+      
+      # If at a given locus, diploid ind had 2 version of the derived allele
+      # Then at this given locus, the value for both haploid ind will be one
+      
+      # If at a given locus, diploid ind had 1 version of the derived allele
+      # Then we will affect randomly the 1 value to either the first or the second haploid ind
+      haploid.ind.1 <- homozygote.position + heterozygote.position*random.vec
+      haploid.ind.2 <- homozygote.position + (heterozygote.position - heterozygote.position*random.vec)
+      
+      haploid.genotype[(2*(i-1) + 1),] <- haploid.ind.1
+      haploid.genotype[2*i,] <- haploid.ind.2
+      
+      current.pop <- pop.labels[i]
+      haploid.pop.labels <- c(haploid.pop.labels, rep(current.pop, 2))
+      
+      current.env <- env[i,]
+      haploid.env <- rbind(haploid.env, current.env, current.env)
+      
+      current.new.env <- new.env[i,]
+      haploid.new.env <- rbind(haploid.new.env, current.new.env, current.new.env)
+    }
+    
+    return(list(haploid.genotype=haploid.genotype, haploid.pop.labels=haploid.pop.labels, haploid.env=haploid.env, haploid.new.env=haploid.new.env))
+  }
+  
             
             ## Check input response matrix 
             ## LEA  
@@ -190,59 +246,8 @@ genetic.offset <-  function(input,
               
               return(offset)
             }
-  
-haploidisation <- function(genotype, pop.labels, env, new.env){
-  
-  
-  #This function aims at generating a new haploid genotype matrix from a diploid genotype matrix
-  # It will also generate new matrices of env and new.env that will be twice the size of 
-  # the initial matrices.
-  
-  # store n and L values
-  n <- nrow(genotype)
-  L <- ncol(genotype)
-  
-  # Creation of a new matrix with 2*n individuals and L locus
-  haploid.genotype <- matrix(rep(0,(2*n*L)), nrow=2*n, ncol=L)
-  # New vector of pop.labels
-  haploid.pop.labels <- c()
-  # Haploid env matrices
-  haploid.env <- c()
-  haploid.new.env <- c()
-  
-  # For all diploid individuals, we will generate two diploid individual
-  for (i in seq(1,n)){
-    
-    current.individual <- genotype[i,]
-    
-    heterozygote.position <- current.individual == 1
-    homozygote.position <- current.individual == 2
-    random.vec <- rbinom(n=L, size=1, prob=0.5)
-    
-    # We will create two individuals following this logic : 
-    
-    # If at a given locus, diploid ind had 2 version of the derived allele
-    # Then at this given locus, the value for both haploid ind will be one
-    
-    # If at a given locus, diploid ind had 1 version of the derived allele
-    # Then we will affect randomly the 1 value to either the first or the second haploid ind
-    haploid.ind.1 <- homozygote.position + heterozygote.position*random.vec
-    haploid.ind.2 <- homozygote.position + (heterozygote.position - heterozygote.position*random.vec)
-    
-    haploid.genotype[(2*(i-1) + 1),] <- haploid.ind.1
-    haploid.genotype[2*i,] <- haploid.ind.2
-    
-    current.pop <- pop.labels[i]
-    haploid.pop.labels <- c(haploid.pop.labels, rep(current.pop, 2))
-    
-    current.env <- env[i,]
-    haploid.env <- rbind(haploid.env, current.env, current.env)
-    
-    current.new.env <- new.env[i,]
-    haploid.new.env <- rbind(haploid.new.env, current.new.env, current.new.env)
-  }
-  
-  return(list(haploid.genotype=haploid.genotype, haploid.pop.labels=haploid.pop.labels, haploid.env=haploid.env, haploid.new.env=haploid.new.env))
-}
 
 }
+
+
+
