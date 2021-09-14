@@ -127,9 +127,10 @@ struct2geno <- function(input.file, ploidy, FORMAT = 1, extra.row = 0, extra.col
   genotype[is.na(genotype)] <- 9
   lst.monomorphic <- apply(genotype, 2, FUN = function(x) {length(unique(x[x != 9]))})
   
-  if (sum(lst.monomorphic == 1) > 0) 
-    stop(paste("No polymorphism detected at locus", which(lst.monomorphic == 1 ), "\n", 
-               "Check and rerun.", sep=" "))
+  if (sum(lst.monomorphic == 1) > 0) {
+    warning("Monomorphic alleles generated during conversion were removed. \n")
+    genotype <- genotype[,lst.monomorphic > 1] 
+    }
 
 
   
