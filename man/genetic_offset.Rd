@@ -47,8 +47,7 @@ genetic.offset (input, env, new.env, pop.labels, K, pca, candidate.loci)
 }
 
 \references{
-Gain C, Francois O (2021). LEA 3: Factor models in population genetics and ecological genomics with R.
-Molecular Ecology Resources. doi.org/10.1111/1755-0998.13366.
+Gain C, Francois O. (2021). LEA 3: Factor models in population genetics and ecological genomics with R. Molecular Ecology Resources. doi.org/10.1111/1755-0998.13366.
 }
 
 \examples{

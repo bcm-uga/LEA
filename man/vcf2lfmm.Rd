@@ -4,7 +4,7 @@
 \title{Convert from \code{\link{vcf}} to \code{\link{lfmm}} format}
 \description{
 A function that converts from the \code{\link{vcf}} format to the 
-\code{\link{lfmm}} format.
+\code{\link{lfmm}} format. Note: This function may be obsolete. Conversion in accepted format such as \code{ped} can be obtained with the program \code{vcftools}.
 }
 \usage{
 vcf2lfmm(input.file, output.file = NULL, force = TRUE)

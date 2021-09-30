@@ -22,7 +22,7 @@
 
 
 \title{Fitting Latent Factor Mixed Models (MCMC algorithm)}
-\description{Latent Factor Mixed Models (LFMMs) are factor regression models in which the response variable is a genotypic matrix, and the explanatory variables are environmental measures of ecological interest or trait values. The \code{\link{lfmm}} function estimates latent factors and effect sizes based on an MCMC algorithm. The resulting object can be used in the function \code{\link{lfmm.pvalues}} to identify genetic polymorphisms exhibiting association with ecological gradients or phenotypes, while correcting for unobserved confounders. An exact and computationally efficient least-squares method is implemented in the function \code{\link{lfmm2}}.
+\description{Latent Factor Mixed Models (LFMMs) are factor regression models in which the response variable is a genotypic matrix, and the explanatory variables are environmental measures of ecological interest or trait values. The \code{\link{lfmm}} function estimates latent factors and effect sizes based on an MCMC algorithm. The resulting object can be used in the function \code{\link{lfmm.pvalues}} to identify genetic polymorphisms exhibiting association with ecological gradients or phenotypes, while correcting for unobserved confounders. An exact and computationally efficient least-squares method is implemented in the function \code{\link{lfmm2}} which should be the prefered option.
 }
 
 \usage{

@@ -6,7 +6,7 @@
 
 
 \title{Fitting Latent Factor Mixed Models (Least squares algorithm)}
-\description{Latent Factor Mixed Models (LFMMs) are factor regression models in which the response variable is a genotypic matrix, and the explanatory variables are environmental measures of ecological interest or trait values. The \code{\link{lfmm2}} function estimates latent factors based on an exact least-squares approach. The resulting object can be used by the function \code{\link{lfmm2.test}} to identify genetic polymorphisms exhibiting association with ecological gradients or phenotypes, while correcting for unobserved confounders. An MCMC estimation algorithm is implemented in the function \code{\link{lfmm}}.
+\description{Latent Factor Mixed Models (LFMMs) are factor regression models in which the response variable is a genotypic matrix, and the explanatory variables are environmental measures of ecological interest or trait values. The \code{\link{lfmm2}} function estimates latent factors based on an exact least-squares approach. The resulting object can be used by the function \code{\link{lfmm2.test}} to identify genetic polymorphisms exhibiting association with ecological gradients or phenotypes, while correcting for unobserved confounders. An MCMC estimation algorithm is implemented in the function \code{\link{lfmm}}, but this version should be prefered.
 }
 
 \usage{
@@ -47,6 +47,9 @@ The following method can be applied to an object of class \code{lfmm2Class}:
 }
 \references{
 Caye K, Jumentier B, Lepeule J, Francois O. (2019). LFMM 2: fast and accurate inference of gene-environment associations in genome-wide studies. Molecular biology and evolution, 36(4), 852-860.
+
+Gain C, Francois O. (2021). LEA 3: Factor models in population genetics and ecological genomics with R. Molecular Ecology Resources. doi: 10.1111/1755-0998.13366
+
 }
 \examples{
 ### Example of analysis using lfmm2 ###

@@ -280,7 +280,7 @@ lfmm <- function(input.file,
             }
         }    
     }
-    message("LFMM uses a very naive imputation method which has low power when 
-            genotypes are missing: See impute() for a better imputation method.")
+    message("lfmm uses a very naive imputation method which has low power when genotypes are missing: See impute() for a better imputation method.")
+    message("Note that lfmm has an improved estimation algorithm implemented in lfmm2, which should be the prefered option.")
     return(proj)
 } 
