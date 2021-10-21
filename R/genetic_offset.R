@@ -26,7 +26,7 @@ genetic.offset <-  function(input,
     haploid.env <- c()
     haploid.new.env <- c()
     
-    # For all diploid individuals, we will generate two diploid individual
+    # For all diploid individuals, we will generate two diploid individuals
     for (i in seq(1,n)){
       
       current.individual <- genotype[i,]
@@ -65,7 +65,7 @@ genetic.offset <-  function(input,
             ## Check input response matrix 
             ## LEA  
             if (is.character(input)){
-              warning("Reading large input files with 'read.lfmm()' may be slow. See 'data.table::fread()' for fast import.")
+              warning("Loading large input files with 'read.lfmm()' may be slow. See 'data.table::fread()' for fast import.")
               Y <- read.lfmm(input)
               lst.unique <- unique(as.numeric(Y))
               if (9 %in% lst.unique){
@@ -198,7 +198,6 @@ genetic.offset <-  function(input,
             X.pred <- cbind(rep(1.0, n), X.new, U)
             Y.pred <- X.pred %*% effect.size
             
-            L <- ncol(Y.fit)
             
             ### Le calcul des offsets s'appuie sur l'ACP  de matrice Y et non sur la matrice Yst (deux populations)
             ### implementer l'option 'coefficient de determination' 
@@ -214,23 +213,28 @@ genetic.offset <-  function(input,
             
             for (i in unique.labels){
               if (!pca){
+                
                 genome_current_pop <- Y.fit.pred[pop.labels.double==i,]
                 
                 #### Preparing data for the regression
                 # Count number of individuals
                 nb.ind <- dim(genome_current_pop)[1]/2
+                
                 # Labels for current and adapted population
                 pop.labels.current.futur <- c(rep(1, nb.ind), rep(2, nb.ind))
                 genome_current_pop <- scale(genome_current_pop)
                 
                 regression <- summary(lm(genome_current_pop ~ as.factor(as.numeric(pop.labels.current.futur))))
                 fst <- sapply(regression, FUN = function(smr) smr$r.squared)
+                
                 offset.r2 <- c(offset.r2, mean(fst[candidate.loci]))
-              }else{
+              } else {
+                
                 l.fit <- c(l.fit, prcomp(Y.fit[pop.labels == i, candidate.loci], scale = TRUE)$sdev[1]^2)
                 l.pred <- c(l.pred, prcomp(Y.pred[pop.labels == i, candidate.loci], scale = TRUE)$sdev[1]^2)
-                l.fitpred <- c(l.fitpred, prcomp(rbind(Y.fit[pop.labels == i, candidate.loci], Y.pred[pop.labels == i, candidate.loci]), 
-                                                 scale = TRUE)$sdev[1]^2)
+                l.fitpred <- c(l.fitpred, 
+                               prcomp(rbind(Y.fit[pop.labels == i, candidate.loci], 
+                                            Y.pred[pop.labels == i, candidate.loci]), scale = TRUE)$sdev[1]^2)
               }
             }
             
@@ -238,12 +242,13 @@ genetic.offset <-  function(input,
               names(offset.r2) <- unique.labels
               return(offset.r2)
             } else {
+              L <- length(candidate.loci)
               # 1 - F_LT = (1 - F_ST)/(1 - F_SL)
               offset <- 1 - (L - l.fitpred)/(L - (l.pred + l.fit)/2)
               
-              offset <- rbind(l.fitpred/L, offset,  l.fit/L, l.pred/L)
+              offset <- rbind(l.fitpred/L, offset)
               colnames(offset) <- unique.labels
-              rownames(offset) <- c("pca.offset", "Flt.offset", "F.fit","Fst.offset")
+              rownames(offset) <- c("pca.offset", "F.offset")
               
               return(offset)
             }
