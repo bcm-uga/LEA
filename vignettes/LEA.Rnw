@@ -400,7 +400,7 @@ points(target, -log10(pv$pvalues[target]), col = "red")
 
 \section{Predictive Ecological Genomics: Genetic offsets}
 
-to be developed
+to be developed, see example in help(genetic.offset)
 
 
 

@@ -2,7 +2,7 @@ genetic.offset <-  function(input,
                             env, 
                             new.env, 
                             pop.labels,
-                            K,
+                            K = NULL,
                             pca = FALSE,
                             candidate.loci = NULL) {
   
@@ -33,7 +33,7 @@ genetic.offset <-  function(input,
       
       heterozygote.position <- current.individual == 1
       homozygote.position <- current.individual == 2
-      random.vec <- rbinom(n=L, size=1, prob=0.5)
+      random.vec <- rbinom(n = L, size = 1, prob = 0.5)
       
       # We will create two individuals following this logic : 
       
@@ -123,6 +123,7 @@ genetic.offset <-  function(input,
               }
             }
             
+  
             ## Checking ploidy
             # cat("Checking ploidy.","\n")
             if (max(lst.unique) > 2) stop("Only haploid or diploid genomes are allowed. For polypoids, perform haploidization (phasing) 
@@ -140,15 +141,12 @@ genetic.offset <-  function(input,
               X <- haplo$haploid.env
               X.new <- haplo$haploid.new.env
             }
-            
-            
+  
             d <-  ncol(X) #number of environmental variables
             d.new <-  ncol(X.new) #number of environmental variables
             if (d.new != d){
-              stop("Number of columns in 'new.env' matrix is not equal to the number of columns in 'env' matrix")    
+                stop("Number of columns in 'new.env' matrix is not equal to the number of columns in 'env' matrix")    
             }
-            
-            
             
             n <-  nrow(X) #number of individuals
             n.new <-  nrow(X.new) #number of individuals
@@ -162,6 +160,15 @@ genetic.offset <-  function(input,
             
             if (n < d) {
               stop("The environmental covariate matrix contains more columns (d) than rows (n).")
+            }
+            
+            
+            ## Checking K
+            if (is.null(K)){
+              K <- n - d - 1
+            } else {
+              if (K < n - d - 1)
+              warning("Increasing K or using the NULL default may provide more accurate offset estimates.")    
             }
             
             ## Check candidate.loci

@@ -24,7 +24,7 @@ genetic.offset (input, env, new.env, pop.labels, K, pca, candidate.loci)
 
 \item{pop.labels}{A numeric or character vector providing population labels for all rows (individuals) of the response matrix.}
 
-\item{K}{An integer corresponding to the number of latent factors.}
+\item{K}{An integer corresponding to the number of latent factors. The \code{NULL} default takes K equal to the number of samples minus the number of environmental covariates.}
 
 \item{pca}{A boolean value indicating whether genetic offsets are computed from a PCA approximation or not (default value: \code{FALSE}). 
 }
@@ -78,7 +78,7 @@ Y <- tcrossprod(as.matrix(X), B) + tcrossprod(U, V) +
 Y <-  matrix(as.numeric(Y > 0), ncol = 1000)
 
 ######################################
-# Fitting an LFMM with K = 3 factors #
+# Fitting an LFMM with K = 98 factors#
 ######################################
 
 
@@ -89,7 +89,7 @@ pop <- 1 + (prcomp(Y, scale = TRUE)$x[,1] > 0)
 
 g.offset <- genetic.offset(input = Y, 
                            env = X, new.env = 2*X + 10, 
-                           pop.labels = pop, K = 3)
+                           pop.labels = pop)
 round(g.offset, digit = 3) 
 
 
@@ -99,7 +99,7 @@ round(g.offset, digit = 3)
 
 g.offset <- genetic.offset(input = Y, 
                            env = X, new.env = 2*X + 10, 
-                           pop.labels = pop, K = 3, 
+                           pop.labels = pop,
                            pca = FALSE, 
                            candidate.loci = target)
                            
