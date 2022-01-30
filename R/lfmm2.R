@@ -110,7 +110,9 @@ lfmm2 <- function(input,
 }
 
 
+            
 setGeneric("lfmm2.test", function(object, input, env, 
+                                  full = FALSE,
                                   genomic.control = TRUE, 
                                   linear = TRUE, 
                                   family = binomial(link = "logit")) matrix);
@@ -118,6 +120,7 @@ setMethod("lfmm2.test", "lfmm2Class",
           function(object, 
                    input,
                    env,
+                   full,
                    genomic.control, 
                    linear,
                    family
@@ -177,9 +180,35 @@ setMethod("lfmm2.test", "lfmm2Class",
             }
    
             p <- ncol(Y)
+            gif <-  NULL
             p_value <- NULL
             z_score <- NULL
+            f_score <- NULL           
+            r_squared <- NULL
             
+            if (full){
+              
+              ## a single p-value is returned (f-test)
+              ## Check linear models  
+              if (linear == FALSE){
+                stop("Option full == TRUE is available only for linear models.")
+              }
+              
+              ## partial regression 
+              mod_Y <- lm(Y ~ ., data = data.frame(object@U)) 
+              res_Y = mod_Y$residuals
+              mod_X = lm(X ~ ., data = data.frame(object@U))
+              res_X = mod_X$residuals
+              
+              mod_lm =  lm(res_Y ~ res_X)
+              sm = summary(mod_lm)
+              r_squared <- sapply(sm, FUN = function(x) x$adj.r.squared)
+              f_score <- sapply(sm, FUN = function(x) x$fstat[1])
+              p_value <- sapply(sm, FUN = function(x) pf(x$fstat[1], x$fstat[2], x$fstat[3], low = F))
+              
+            } else {
+            
+            ## All p-values returned    
             if (linear){
               mod_lm <- lm(Y ~ ., data = data.frame(X, object@U)) 
               sm <- summary(mod_lm)
@@ -193,20 +222,37 @@ setMethod("lfmm2.test", "lfmm2Class",
               z_score <- rbind(z_score, sm$coeff[2:(d + 1), 3])
               }
             }
+            
+            }
+              
+              
             if (genomic.control){
+              
+            if (!full){
+              
               if (d == 1){
                 gif <- median(z_score^2)/qchisq(0.5, df = 1, lower.tail = FALSE)
               } else {
                 gif <- apply(z_score^2, 1, median)/qchisq(0.5, df = 1, lower.tail = FALSE)
               }
                 p_value <- pchisq(z_score^2/gif, df = 1, lower.tail = FALSE)
+                
             } else {
-                gif <- NULL
+              
+              gif <- median(f_score)/qf(0.5, d, n - d - 1, lower.tail = FALSE)
+              p_value <- pf(f_score/gif, d, n - d - 1, lower.tail = FALSE)
             }
-            if (anyNA(z_score)) {
+            
+            }
+            
+            if (!full & anyNA(z_score)) {
               warning("NA in significance values and z-scores. Check the input matrix for non-variable genomic sites.")
             }
-       res <- list(pvalues = p_value, zscores = z_score, gif = gif)
+            if (full & anyNA(r_squared)) {
+              warning("NA in significance values and R-squared. Check the input matrix for non-variable genomic sites.")
+            }
+            
+       res <- list(pvalues = p_value, zscores = z_score, fscores = f_score, adj.r.squared = r_squared,  gif = gif)
        return(res)
       }
 )

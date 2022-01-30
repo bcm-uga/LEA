@@ -3,11 +3,10 @@
 
 \title{P-values adjusted for latent factors computed by \code{lfmm2}.}
 
-\description{The function returns a vector of p-values for association between loci and environmental variables adjusted for latent factors computed by \code{lfmm2}. It takes an object of class \code{lfmm2Class} with the data that were used to adjust the LFMM. 
-}
+\description{The function returns a vector of p-values for association between loci and environmental variables adjusted for latent factors computed by \code{lfmm2}. As input, it takes an object of class \code{lfmm2Class} with the data that were used to adjust the LFMM. If \code{\link{full}} is set to \code{FALSE}, the function computes significance values (p-values) for each environmental variable, otherwise it returns p-values for the full set of environmental variables.}
 
 \usage{
-lfmm2.test (object, input, env, genomic.control, linear, family)
+lfmm2.test (object, input, env, full, genomic.control, linear, family)
 }
 
 \arguments{
@@ -21,6 +20,9 @@ An object of class \code{lfmm2Class}.
 \item{env}{A matrix of environmental covariates or a character string containing a path to the environmental file. The environment matrix must be in the \code{\link{env}} format without missing values. Variables must be encoded as \code{numeric}.
 }
 
+\item{full}{
+A logical value. If \code{TRUE}, p-values are computed for the full set of environmental variables (a single value at each locus). If \code{FALSE}, p-values are computed for each environmental variable (as many values as environmental variable at each locus).}
+
 \item{genomic.control}{
 A logical value. If \code{TRUE}, the p-values are recalibrated by using genomic control after correction for confounding. 
 }
@@ -33,9 +35,11 @@ A logical value. If \code{TRUE}, the p-values are recalibrated by using genomic 
 }
 
 \value{
-\item{pvalues}{A matrix of p-values for each locus and each environmental variable.}
-\item{zscores}{A matrix of z-scores for each locus and each environmental variable.}
-\item{gif}{A vector of genomic inflation factors computed for each environmental variable.}
+\item{pvalues}{If \code{full} is set to \code{FALSE}, a matrix of p-values for all loci and for each environmental variable. Otherwise a vector of p-values for all loci (all environmental variables are included in the model).}
+\item{zscores}{If \code{full} is set to \code{FALSE}, a matrix of z-scores for each locus and each environmental variable.}
+\item{fscores}{If \code{full} is set to \code{TRUE}, a vector of f-scores for each locus.}
+\item{adj.r.squared}{If \code{full} is set to \code{TRUE}, a vector of R squared values or variances explained by all environmental variables for all loci. The values are uncalibrated.}
+\item{gif}{If \code{full} is set to \code{FALSE}, a vector of genomic inflation factors computed for each environmental variable. A single genomic inflation factor otherwise.}
 }
 
 \author{
