@@ -3,7 +3,7 @@
 
 \title{P-values adjusted for latent factors computed by \code{lfmm2}.}
 
-\description{The function returns a vector of p-values for association between loci and environmental variables adjusted for latent factors computed by \code{lfmm2}. As input, it takes an object of class \code{lfmm2Class} with the data that were used to adjust the LFMM. If \code{\link{full}} is set to \code{FALSE}, the function computes significance values (p-values) for each environmental variable, otherwise it returns p-values for the full set of environmental variables.}
+\description{The function returns a vector of p-values for association between loci and environmental variables adjusted for latent factors computed by \code{lfmm2}. As input, it takes an object of class \code{lfmm2Class} with the data that were used to adjust the LFMM. If \code{full} is set to \code{FALSE}, the function computes significance values (p-values) for each environmental variable, otherwise it returns p-values for the full set of environmental variables.}
 
 \usage{
 lfmm2.test (object, input, env, full, genomic.control, linear, family)

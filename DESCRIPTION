@@ -12,20 +12,20 @@ Depends: R (>= 3.3.0), methods, stats, utils, graphics
 Suggests: knitr
 Description: LEA is an R package dedicated to population genomics, landscape genomics and
         genotype-environment association tests. LEA can run analyses of
-        population structure and genome-wide tests for local adaptation. 
+        population structure and genome-wide tests for local adaptation, 
+        and also performs imputation of missing genotypes. 
         The package includes statistical methods for estimating ancestry
         coefficients from large genotypic matrices and for evaluating the
         number of ancestral populations (snmf, pca). It performs statistical 
         tests using latent factor mixed models for identifying
         genetic polymorphisms that exhibit association with
         environmental gradients or phenotypic traits (lfmm2). 
-         {\tt LEA} also performs imputation of missing genotypes, and computes 
-        predictive values of genetic offsets based on new or future environments. 
+        In addition, LEA computes values of genetic offset based on new or predicted environments. 
        The package includes factor methods for estimating ancestry
         coefficients from large genotypic matrices and for evaluating the
         number of ancestral populations (snmf, pca). 
         LEA is mainly based on optimized programs
-        that can scale with the dimension of large data sets.
+        that can scale with the dimensions of large data sets.
 License: GPL-3
 biocViews: Software, Statistical Method, Clustering, Regression
 URL: http://membres-timc.imag.fr/Olivier.Francois/lea.html
