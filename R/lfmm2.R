@@ -204,7 +204,7 @@ setMethod("lfmm2.test", "lfmm2Class",
               sm = summary(mod_lm)
               r_squared <- sapply(sm, FUN = function(x) x$adj.r.squared)
               f_score <- sapply(sm, FUN = function(x) x$fstat[1])
-              p_value <- sapply(sm, FUN = function(x) pf(x$fstat[1], x$fstat[2], x$fstat[3], low = F))
+              p_value <- sapply(sm, FUN = function(x) pf(x$fstat[1], x$fstat[2], x$fstat[3], lower.tail = F))
               
             } else {
             
