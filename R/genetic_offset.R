@@ -1,30 +1,30 @@
 genetic.offset <-  function(input, 
                             env, 
-                            new.env, 
+                            pred.env, 
                             pop.labels,
                             K = NULL,
                             pca = FALSE,
                             candidate.loci = NULL) {
   
   
-  haploidisation <- function(genotype, pop.labels, env, new.env){
+  haploidisation <- function(genotype, pop.labels, env, pred.env){
     
     # internal function
-    #This function aims at generating a new haploid genotype matrix from a diploid genotype matrix
-    # It will also generate new matrices of env and new.env that will be twice the size of 
+    # This function aims at generating a new haploid genotype matrix from a diploid genotype matrix
+    # It will also generate pred matrices of env and pred.env that will be twice the size of 
     # the initial matrices.
     
     # store n and L values
     n <- nrow(genotype)
     L <- ncol(genotype)
     
-    # Creation of a new matrix with 2*n individuals and L locus
+    # Creation of a pred matrix with 2*n individuals and L locus
     haploid.genotype <- matrix(rep(0,(2*n*L)), nrow=2*n, ncol=L)
-    # New vector of pop.labels
+    # pred vector of pop.labels
     haploid.pop.labels <- c()
     # Haploid env matrices
     haploid.env <- c()
-    haploid.new.env <- c()
+    haploid.pred.env <- c()
     
     # For all diploid individuals, we will generate two diploid individuals
     for (i in seq(1,n)){
@@ -54,11 +54,11 @@ genetic.offset <-  function(input,
       current.env <- env[i,]
       haploid.env <- rbind(haploid.env, current.env, current.env)
       
-      current.new.env <- new.env[i,]
-      haploid.new.env <- rbind(haploid.new.env, current.new.env, current.new.env)
+      current.pred.env <- pred.env[i,]
+      haploid.pred.env <- rbind(haploid.pred.env, current.pred.env, current.pred.env)
     }
     
-    return(list(haploid.genotype=haploid.genotype, haploid.pop.labels=haploid.pop.labels, haploid.env=haploid.env, haploid.new.env=haploid.new.env))
+    return(list(haploid.genotype=haploid.genotype, haploid.pop.labels=haploid.pop.labels, haploid.env=haploid.env, haploid.pred.env=haploid.pred.env))
   }
   
             
@@ -94,7 +94,7 @@ genetic.offset <-  function(input,
             if (is.character(env)){
               X <- read.env(env)
               if (anyNA(X)){
-                stop("'env' file contains missing data (NA).")
+                stop("'env' file contains missing data (NA's).")
               }
             } else {
               if (is.null(env)){
@@ -102,24 +102,24 @@ genetic.offset <-  function(input,
               }
               X <- as.matrix(env)
               if (anyNA(X)) {
-                stop("The environmental matrix contains NA.")
+                stop("The environmental matrix contains NA's.")
               }
             }
             
-            ## Check new.env matrix  
+            ## Check pred.env matrix  
             ## LEA 
-            if (is.character(new.env)){
-              X.new <- read.env(new.env)
-              if (anyNA(X.new)){
-                stop("'new.env' file contains missing data (NA).")
+            if (is.character(pred.env)){
+              X.pred <- read.env(pred.env)
+              if (anyNA(X.pred)){
+                stop("The 'pred.env' environmental data file contains missing data (NA's).")
               }
             } else {
-              if (is.null(new.env)){
-                stop("NULL value for argument 'new.env'.")
+              if (is.null(pred.env)){
+                stop("NULL value for argument 'pred.env'.")
               }
-              X.new <- as.matrix(new.env)
-              if (anyNA(X.new)) {
-                stop("The new environmental matrix contains NA.")
+              X.pred <- as.matrix(pred.env)
+              if (anyNA(X.pred)) {
+                stop("The predicted environmental data contain NA's.")
               }
             }
             
@@ -135,24 +135,15 @@ genetic.offset <-  function(input,
             if (max(lst.unique) == 2){
               cat("Random phase and duplication of samples: 
                   Creating two haploid genomes from each individual genome.","\n")
-              haplo <- haploidisation(Y, pop.labels, X, X.new)
+              haplo <- haploidisation(Y, pop.labels, X, X.pred)
               Y <- haplo$haploid.genotype
               pop.labels <- haplo$haploid.pop.labels
               X <- haplo$haploid.env
-              X.new <- haplo$haploid.new.env
+              X.pred <- haplo$haploid.pred.env
             }
   
             d <-  ncol(X) #number of environmental variables
-            d.new <-  ncol(X.new) #number of environmental variables
-            if (d.new != d){
-                stop("Number of columns in 'new.env' matrix is not equal to the number of columns in 'env' matrix")    
-            }
-            
             n <-  nrow(X) #number of individuals
-            n.new <-  nrow(X.new) #number of individuals
-            if (n.new != n){
-              stop("Number of rows in 'new.env' matrix is not equal to the number of rows in 'env' matrix")    
-            }
             
             if (nrow(Y) != n){
               stop("Number of rows in the input matrix not equal to the number of rows in the 'env' matrix")    
@@ -162,6 +153,19 @@ genetic.offset <-  function(input,
               stop("The environmental covariate matrix contains more columns (d) than rows (n).")
             }
             
+            
+            d.pred <-  ncol(X.pred) #number of environmental variables in the predicted environmental data
+            if (d.pred != d){
+                stop("Number of columns in 'pred.env' matrix is not equal to the number of columns in 'env' matrix")    
+            }
+            
+  
+            n.pred <-  nrow(X.pred) #number of individuals  in the predicted environmental data
+            if (n.pred != n){
+              stop("Number of rows in 'pred.env' matrix is not equal to the number of rows in 'env' matrix")    
+            }
+            
+
             
             ## Checking K
             if (is.null(K)){
@@ -202,7 +206,7 @@ genetic.offset <-  function(input,
             X.exp <- cbind(rep(1.0, n), X, U)
             Y.fit <- X.exp %*% effect.size
             
-            X.pred <- cbind(rep(1.0, n), X.new, U)
+            X.pred <- cbind(rep(1.0, n), X.pred, U)
             Y.pred <- X.pred %*% effect.size
             
             

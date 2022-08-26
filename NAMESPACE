@@ -83,7 +83,9 @@ exportMethods(
         barchart
 )
 
+# other functions
 export(genetic.offset)
+export(genetic.gap)
       
 #export(barplot.Qmatrix)
 #S3method(barplot.Qmatrix, "Qmatrix")
