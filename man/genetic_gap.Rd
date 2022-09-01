@@ -51,8 +51,6 @@ genetic.gap (input, env, new.env, pred.env, K, candidate.loci)
 
 \references{
 Gain C, Francois O. (2021). LEA 3: Factor models in population genetics and ecological genomics with R. Molecular Ecology Resources. Molecular Ecology Resources 21 (8), 2738-2748. doi.org/10.1111/1755-0998.13366.
-
-Gain C, Francois O. (2022). Genetic gap.
 }
 
 \examples{
@@ -64,12 +62,20 @@ Y <- offset_example$geno
 X <- offset_example$env
 X.pred <- offset_example$env.pred
 
+#PCA of the genotype data suggests k = 2 factors
 plot(prcomp(Y), col = "blue")
+
 g.gap <- genetic.gap(input = Y, 
                            env = X, 
                            pred.env = X.pred,
-                           K = 3)
+                           K = 2)
+                           
+# return the squared root of the genetic gap for each sample location
 round(g.gap$distance, digit = 3) 
+
+# plot the squared root of the genetic gap vs Euclidean environmental distance
+dist.env = sqrt(diag((X - X.pred) %*% t(X - X.pred)))
+plot(dist.env, g.gap$distance,  cex = .6)
 
 #rm(list = ls())
 }
