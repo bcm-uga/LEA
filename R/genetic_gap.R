@@ -134,7 +134,7 @@ genetic.gap <-  function(input,
   rm(sm)
   
   M = (X.new - X.pred)  %*% B
-  D = diag(M %*% t(M))/nrow(B) 
+  D = diag(M %*% t(M))/ncol(B) 
   
   eig <- eigen(cov(t(B)))
   
