@@ -74,8 +74,15 @@ g.gap <- genetic.gap(input = Y,
 round(g.gap$distance, digit = 3) 
 
 # plot the squared root of the genetic gap vs Euclidean environmental distance
-dist.env = sqrt(diag((X - X.pred) %*% t(X - X.pred)))
+Delta = X - X.pred
+dist.env = sqrt( rowSums(Delta^2) )  
 plot(dist.env, g.gap$distance,  cex = .6)
+
+# Only two dimensions of the environmental space influence the genetic gap
+plot(1:4, g.gap$eigenvalues, type = "h", col = "orange", lwd = 10, xlab="Axes")
+
+# Mainly the first two variables
+g.gap$vectors[,1:2]
 
 #rm(list = ls())
 }
