@@ -3,6 +3,7 @@ genetic.gap <-  function(input,
                          new.env = NULL, 
                          pred.env,
                          K = NULL,
+                         scale = FALSE,
                          candidate.loci = NULL) {
   
   ## Check input response matrix 
@@ -62,8 +63,6 @@ genetic.gap <-  function(input,
   
   ## Check pred.env matrix  
   ## LEA 
-  
-  
   if (is.character(pred.env)){
     X.pred <- read.env(pred.env)
     if (anyNA(X.pred)){
@@ -110,11 +109,22 @@ genetic.gap <-  function(input,
   }
 
   
-  
   ## Check K
   if (is.null(K)){
     stop("Null value for the number of factor in the LFMM.")  
   } 
+  
+  ##scale option
+  if (scale == TRUE){
+     m.x <- apply(X, 2, mean)
+     sd.x <- apply(X, 2, sd)
+     if (sum(sd.x == 0) > 0){
+       stop("Error with scale = TRUE: Impossible to standardize a null column (locus).")  
+     } 
+     X <- t(t(X) - m.x) %*% diag(1/sd.x)
+     X.new <- t(t(X.new) - m.x) %*% diag(1/sd.x)
+     X.pred <- t(t(X.pred) - m.x) %*% diag(1/sd.x)
+  }   
   
   ## Check candidate.loci
   if (is.null(candidate.loci)){

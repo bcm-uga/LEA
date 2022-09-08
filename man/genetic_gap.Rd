@@ -7,7 +7,7 @@
 }
 
 \usage{
-genetic.gap (input, env, new.env, pred.env, K, candidate.loci)
+genetic.gap (input, env, new.env, pred.env, K, scale, candidate.loci)
 }
 
 \arguments{
@@ -27,6 +27,8 @@ genetic.gap (input, env, new.env, pred.env, K, candidate.loci)
 
 \item{K}{An integer corresponding to the number of latent factors in the LFMM. It could be estimated from the elbow point in the PCA screeplot for the \code{geno} (genotype) matrix.}
 
+\item{scale}{A logical value indicating whether the environmental data are scale or not. If \code{scale == TRUE}, then all environmental matrices are centered and scaled from the columwise mean and standard deviations of the \code{env} matrix. This option should be used only to evaluate the relative importance of environmental variables with the eigenvalues of the covariance matrix of effect sizes when the environmental data have different scales.}
+
 \item{candidate.loci}{A vector specifying which loci (column label) in the genotype matrix are included in the computation of the genetic offset (default value: all positions).}
 }
 
@@ -35,9 +37,9 @@ genetic.gap (input, env, new.env, pred.env, K, candidate.loci)
 }
 \item{distance}{A vector of environmental distance values computed for every sample location in \code{new.env} and \code{pred.env}. The distances correspond to the squared root of the offset measures. 
 }
-\item{eigenvalues}{Eigenvalues of the covariance matrix of LFMM effect sizes.}
+\item{eigenvalues}{Eigenvalues of the covariance matrix of LFMM effect sizes. They represent the relative importance of combinations of environmental variables described in \code{vectors} when the environmental data have similar scales. To be used with \code{scale == TRUE}.}
 
-\item{vectors}{Eigenvectors of the covariance matrix of LFMM effect sizes.}
+\item{vectors}{Eigenvectors of the covariance matrix of LFMM effect sizes representing combinations of environmental variablessorted by importance (\code{eigenvalues}).}
 }
 
 \author{
@@ -78,11 +80,22 @@ Delta = X - X.pred
 dist.env = sqrt( rowSums(Delta^2) )  
 plot(dist.env, g.gap$distance,  cex = .6)
 
+# with scaled variables
+g.gap.scaled <- genetic.gap(input = Y, 
+                           env = X, 
+                           pred.env = X.pred,
+                           scale = TRUE,
+                           K = 2)
+                           
+# Scaling does not change genetic gaps
+plot(g.gap$offset, g.gap.scaled$offset,  cex = .6)                           
+                           
+# But scaling is useful for evaluating the relative importance of environmental variables
 # Only two dimensions of the environmental space influence the genetic gap
-plot(1:4, g.gap$eigenvalues, type = "h", col = "orange", lwd = 10, xlab="Axes")
+barplot(g.gap.scaled$eigenvalues, col = "orange", xlab = "Axes", ylab = "Eigenvalues")
 
-# Mainly the first two variables
-g.gap$vectors[,1:2]
+# The loadings for the first two variables indicate their relative contribution to local adaptation
+g.gap.scaled$vectors[,1:2]
 
 #rm(list = ls())
 }
