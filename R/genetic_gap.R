@@ -131,7 +131,9 @@ genetic.gap <-  function(input,
     candidate.loci <- seq(1, ncol(Y))
   } else {
     if (sum(!as.numeric(candidate.loci)) > 0 | max(candidate.loci) > ncol(Y)){
-      stop("candidate.loci must be encoded as numeric values not exceeding the total number of columns in the genotype matrix.")}
+      stop("candidate.loci must be encoded as numeric values not exceeding the total number of columns 
+           in the genotype matrix.")}
+    Y <- Y[,candidate.loci]
   }
   
   object <- lfmm2(input = Y, env = X, K = K)
