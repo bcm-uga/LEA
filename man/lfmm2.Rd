@@ -10,7 +10,7 @@
 }
 
 \usage{
-lfmm2 (input, env, K, lambda)
+lfmm2 (input, env, K, lambda, effect.sizes)
 }
 
 \arguments{
@@ -24,14 +24,18 @@ lfmm2 (input, env, K, lambda)
 \item{lambda}{
     A positive numeric value for a ridge regularization parameter. The default value is set to 1e-5.
 }
+\item{effect.sizes}{ 
+    A logical value that indicates whether the matrix of effect sizes should be returned or not. The default value is set to \code{FALSE} for saving memory space. 
 }
+}
+
 \value{
 \code{lfmm2} returns an object of class \code{lfmm2Class} that contains $K$ estimated latent factors \code{@U} and their loadings  \code{@V}.
 
 The following method can be applied to an object of class \code{lfmm2Class}:
 
 \item{\code{\link{lfmm2.test}}}{
-     P-values adjusted for latent factors computed by lfmm2.
+     P-values adjusted for the $K$ latent factors computed by lfmm2.
 }
 }
 \author{
@@ -45,6 +49,7 @@ The following method can be applied to an object of class \code{lfmm2Class}:
 \code{\link{lfmm}}
 \link{tutorial}
 }
+
 \references{
 Caye K, Jumentier B, Lepeule J, Francois O. (2019). LFMM 2: fast and accurate inference of gene-environment associations in genome-wide studies. Molecular biology and evolution, 36(4), 852-860.
 
@@ -87,6 +92,7 @@ pv <- lfmm2.test(object = mod2, input = Y, env = X, linear = TRUE)
 plot(-log10(pv$pvalues), col = "grey", cex = .4, pch = 19)
 points(target, -log10(pv$pvalues[target]), col = "red")
 
+#rm(list = ls())
 }
 
 

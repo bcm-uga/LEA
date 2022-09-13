@@ -137,12 +137,12 @@ genetic.gap <-  function(input,
   }
   
   if (length(K) == 1){
-    object <- lfmm2(input = Y, env = X, K = K)
+    object <- lfmm2(input = Y, env = X, K = K, effect.sizes = TRUE)
     B <- object@B
     } else {
       B <- 0
       for (k in K){
-        object <- lfmm2(input = Y, env = X, K = k)
+        object <- lfmm2(input = Y, env = X, K = k, effect.sizes = TRUE)
         B <- B + object@B
       }
       B <- B/length(K)

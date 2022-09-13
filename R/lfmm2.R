@@ -11,7 +11,8 @@ setClass("lfmm2Class",
 lfmm2 <- function(input,
                   env, 
                   K, 
-                  lambda = 1e-5){
+                  lambda = 1e-5,
+                  effect.sizes = FALSE){
 
 ## Check input response matrix 
 ## LEA  
@@ -105,7 +106,12 @@ lfmm2 <- function(input,
     V <- svk$v[,1:K]
 
 # compute environmental effect sizes 
-    B <- (t(Ys - W) %*% Xs) %*% solve(t(Xs) %*% Xs + diag(lambda, nrow = d, ncol = d)) 
+    if (effect.sizes){
+    B <- (t(Ys - W) %*% Xs) %*% solve(t(Xs) %*% Xs + diag(lambda, nrow = d, ncol = d))
+    B <- as.matrix(B)
+    } else
+    {B <-  matrix(NA)}
+    
     
 
     obj <- new("lfmm2Class")
