@@ -2,6 +2,7 @@
 setClass("lfmm2Class",
          slots = c(K = "integer", 
                    lambda = "numeric",
+                   B = "matrix",
                    U = "matrix",
                    V = "matrix"
                    )
@@ -70,10 +71,14 @@ lfmm2 <- function(input,
   if (n < d) {
     stop("The environmental covariate matrix X contains more columns (d) than rows (n).")
   }
+  
+# centering  
+  Xs <- scale(X, scale = FALSE)
+  Ys <- scale(Y, scale = FALSE)
 
 # run SVD of X: X = Q Sigma R
   
-    svx <- svd(x = scale(X, scale = FALSE), nu = n)
+    svx <- svd(x = Xs, nu = n)
     Q <- svx$u
     
     d_lambda <- c(sqrt(lambda/(lambda + svx$d)), rep(1, n-d))
@@ -82,7 +87,7 @@ lfmm2 <- function(input,
     D  <- diag(d_lambda)
  
 # run SVD of modified Y    
-    svk <- svd(D %*% t(Q) %*% scale(Y, scale = FALSE), nu = K)
+    svk <- svd(D %*% t(Q) %*% Ys, nu = K)
 
     if (K > 1) {
       Sigma_k <- diag(svk$d[1:K])
@@ -99,9 +104,14 @@ lfmm2 <- function(input,
     #U <- Q %*% D_inv %*% svk$u %*% Sigma_k
     V <- svk$v[,1:K]
 
+# compute environmental effect sizes 
+    B <- (t(Ys - W) %*% Xs) %*% solve(t(Xs) %*% Xs + diag(lambda, nrow = d, ncol = d)) 
+    
+
     obj <- new("lfmm2Class")
     obj@K <- as.integer(K)
     obj@lambda <- as.numeric(lambda)
+    obj@B <- as.matrix(B)
     obj@U <- as.matrix(U)
     obj@V <- as.matrix(V)
 

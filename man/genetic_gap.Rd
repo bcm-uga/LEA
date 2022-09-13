@@ -25,7 +25,7 @@ genetic.gap (input, env, new.env, pred.env, K, scale, candidate.loci)
 \item{pred.env}{A matrix of predicted (new) environmental covariates or a character string containing a path to the predicted environmental data file. The predicted environmental matrix must be in the \code{\link{env}} format without missing values, and of same dimension as the \code{new.env} matrix. All variables must be encoded as \code{numeric} and sampled at the same locations as for the \code{new.env} matrix. Predicted environmental covariates typically result from bioclimatic models (eg, worldclim). 
 }
 
-\item{K}{An integer corresponding to the number of latent factors in the LFMM. It could be estimated from the elbow point in the PCA screeplot for the \code{geno} (genotype) matrix.}
+\item{K}{An integer or a sequence of integers corresponding to the number of latent factors in the LFMM. The number of latent factors  could be estimated from the elbow point in the PCA screeplot for the genotype matrix. For a sequence of values, an average prediction will be returned.}
 
 \item{scale}{A logical value indicating whether the environmental data are scale or not. If \code{scale == TRUE}, then all environmental matrices are centered and scaled from the columwise mean and standard deviations of the \code{env} matrix. This option should be used only to evaluate the relative importance of environmental variables with the eigenvalues of the covariance matrix of effect sizes when the environmental data have different scales.}
 

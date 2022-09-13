@@ -136,19 +136,22 @@ genetic.gap <-  function(input,
     Y <- Y[,candidate.loci]
   }
   
-  object <- lfmm2(input = Y, env = X, K = K)
+  if (length(K) == 1){
+    object <- lfmm2(input = Y, env = X, K = K)
+    B <- object@B
+    } else {
+      B <- 0
+      for (k in K){
+        object <- lfmm2(input = Y, env = X, K = k)
+        B <- B + object@B
+      }
+      B <- B/length(K)
+    }
   
-  ## compute effect sizes (B matrix)
-  U <- object@U
-  mod.lm <- lm(Y ~ ., data = data.frame(X, U)) 
-  sm <- summary(mod.lm)
-  B <- sapply(sm, FUN = function(x) x$coeff[2:(d + 1), 1])
-  rm(sm)
+  M = (X.new - X.pred)  %*% t(B)
+  D = diag(M %*% t(M))/nrow(B) 
   
-  M = (X.new - X.pred)  %*% B
-  D = diag(M %*% t(M))/ncol(B) 
-  
-  eig <- eigen(cov(t(B)))
+  eig <- eigen(cov(B))
   
   return(list(offset = D, distance = sqrt(D), eigenvalues = eig$values, vectors = eig$vectors))
   

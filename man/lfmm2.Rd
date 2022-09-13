@@ -19,7 +19,7 @@ lfmm2 (input, env, K, lambda)
 \item{env}{A matrix of environmental covariates or a character string containing a path to the environmental file. The environment matrix must be in the \code{\link{env}} format without missing values. Response variables must be encoded as \code{numeric}.
 }
 \item{K}{
-    An integer corresponding to the number of latent factors. 
+    An integer corresponding to the number of latent factors.  The number of latent factors  could be estimated from the elbow point in the PCA screeplot for the genotype matrix.
 }
 \item{lambda}{
     A positive numeric value for a ridge regularization parameter. The default value is set to 1e-5.
