@@ -36,3 +36,5 @@ R/as_qmatrix.R
 
 man/barplot.Qmatrix.Rd
 man/as.qmatrix.R
+
+genotype*

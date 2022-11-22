@@ -2,6 +2,7 @@
 setClass("lfmm2Class",
          slots = c(K = "integer", 
                    lambda = "numeric",
+                   B = "matrix",
                    U = "matrix",
                    V = "matrix"
                    )
@@ -10,7 +11,8 @@ setClass("lfmm2Class",
 lfmm2 <- function(input,
                   env, 
                   K, 
-                  lambda = 1e-5){
+                  lambda = 1e-5,
+                  effect.sizes = FALSE){
 
 ## Check input response matrix 
 ## LEA  
@@ -70,10 +72,14 @@ lfmm2 <- function(input,
   if (n < d) {
     stop("The environmental covariate matrix X contains more columns (d) than rows (n).")
   }
+  
+# centering  
+  Xs <- scale(X, scale = FALSE)
+  Ys <- scale(Y, scale = FALSE)
 
 # run SVD of X: X = Q Sigma R
   
-    svx <- svd(x = scale(X, scale = FALSE), nu = n)
+    svx <- svd(x = Xs, nu = n)
     Q <- svx$u
     
     d_lambda <- c(sqrt(lambda/(lambda + svx$d)), rep(1, n-d))
@@ -82,7 +88,7 @@ lfmm2 <- function(input,
     D  <- diag(d_lambda)
  
 # run SVD of modified Y    
-    svk <- svd(D %*% t(Q) %*% scale(Y, scale = FALSE), nu = K)
+    svk <- svd(D %*% t(Q) %*% Ys, nu = K)
 
     if (K > 1) {
       Sigma_k <- diag(svk$d[1:K])
@@ -99,9 +105,19 @@ lfmm2 <- function(input,
     #U <- Q %*% D_inv %*% svk$u %*% Sigma_k
     V <- svk$v[,1:K]
 
+# compute environmental effect sizes 
+    if (effect.sizes){
+    B <- (t(Ys - W) %*% Xs) %*% solve(t(Xs) %*% Xs + diag(lambda, nrow = d, ncol = d))
+    B <- as.matrix(B)
+    } else
+    {B <-  matrix(NA)}
+    
+    
+
     obj <- new("lfmm2Class")
     obj@K <- as.integer(K)
     obj@lambda <- as.numeric(lambda)
+    obj@B <- as.matrix(B)
     obj@U <- as.matrix(U)
     obj@V <- as.matrix(V)
 
@@ -204,7 +220,7 @@ setMethod("lfmm2.test", "lfmm2Class",
               sm = summary(mod_lm)
               r_squared <- sapply(sm, FUN = function(x) x$adj.r.squared)
               f_score <- sapply(sm, FUN = function(x) x$fstat[1])
-              p_value <- sapply(sm, FUN = function(x) pf(x$fstat[1], x$fstat[2], x$fstat[3], low = F))
+              p_value <- sapply(sm, FUN = function(x) pf(x$fstat[1], x$fstat[2], x$fstat[3], lower.tail = F))
               
             } else {
             
