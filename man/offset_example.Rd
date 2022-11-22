@@ -17,5 +17,5 @@ A matrix with 4 correlated environmental variables measured for 200 genotyped in
 A matrix with the same 4 variables predicted for the 200 individuals after environmental change.
 }
 }
-\usage{offset_example}
+%\usage{offset_example}
 \keyword{offset_example}

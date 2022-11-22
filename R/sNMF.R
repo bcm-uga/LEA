@@ -123,9 +123,7 @@ snmf <- function(input.file,
             Q.output.file = paste(dir, tmp, "_r", re ,".",k, ".Q", sep="")
             # G file
             G.output.file = paste(dir, tmp, "_r", re ,".",k, ".G", sep="")
-
-            # TODO on peut aussi tester que le fichier n est pas déjà 
-            # existant 
+            #
             snmfClass.file = paste(dir, tmp, "_r", re ,".",k, ".snmfClass", 
                 sep="")
 

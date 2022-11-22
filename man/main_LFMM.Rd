@@ -1,15 +1,15 @@
 \name{lfmm}
 \alias{lfmm}
-\alias{load.lfmmProject}
-\alias{remove.lfmmProject}
-\alias{load.lfmmProject,character-method}
-\alias{remove.lfmmProject,character-method}
-\alias{import.lfmmProject}
-\alias{import.lfmmProject,character-method}
-\alias{export.lfmmProject}
-\alias{export.lfmmProject,character-method}
-\alias{combine.lfmmProject}
-\alias{combine.lfmmProject,character,character-method}
+%\alias{load.lfmmProject}
+%\alias{load.lfmmProject,character-method}
+%\alias{remove.lfmmProject}
+%\alias{remove.lfmmProject,character-method}
+%\alias{import.lfmmProject}
+%\alias{import.lfmmProject,character-method}
+%\alias{export.lfmmProject}
+%\alias{export.lfmmProject,character-method}
+%\alias{combine.lfmmProject}
+%\alias{combine.lfmmProject,character,character-method}
 \alias{show,lfmmProject-method}
 \alias{show,lfmmClass-method}
 \alias{summary,lfmmProject-method}
@@ -19,6 +19,8 @@
 \alias{mlog10p.values,lfmmProject-method}
 \alias{plot,lfmmProject-method}
 \alias{lfmm.pvalues,lfmmProject-method}
+
+
 
 
 \title{Fitting Latent Factor Mixed Models (MCMC algorithm)}
@@ -216,72 +218,7 @@ for (alpha in c(.05,.1,.15,.2)) {
     print(paste("FDR:", estimated.FDR, "True Positive Rate:", estimated.TPR))
 }
 
-###################
-# Post-treatments #
-###################
-
-# show the project
-show(project)
-
-# summary of the project
-summary(project)
-
-# get the z-scores for the 2nd run for K = 6
-z = z.scores(project, K = 6, run = 2)
-
-# get the p-values for K = 6 and run 2
-p = lfmm.pvalues(project, K = 6, run = 2)
-
-##########################
-# Manage an lfmm project #
-##########################
-
-# All the runs of lfmm for a given file are 
-# automatically saved into an lfmm project directory and a file.
-# The name of the lfmmProject file is the concatenation of 
-# the name of the input file and the environment file 
-# with a .lfmmProject extension ("genotypes_gradient.lfmmProject").
-# The name of the lfmmProject directory is the same name as
-# the lfmmProject file with a .lfmm extension ("genotypes_gradient.lfmm/")
-# There is a unique lfmm Project for each input file.
-
-# An lfmmProject can be loaded in an R session as follows
-project = load.lfmmProject("genotypes_gradients.lfmmProject")
-
-# An lfmmProject can be exported to be imported in another directory
-# or in another computer as follows
-export.lfmmProject("genotypes_gradients.lfmmProject")
-
-#ifndef windows
-dir.create("test", showWarnings = TRUE)
-#import
-newProject = import.lfmmProject("genotypes_gradients_lfmmProject.zip", "test")
-
-# combine projects
-combinedProject <- combine.lfmmProject(
-                  "genotypes_gradients.lfmmProject", 
-                  "test/genotypes_gradients.lfmmProject"
-                  )
-
-# remove
-remove.lfmmProject("test/genotypes_gradients.lfmmProject")
-#endif
-
-#ifdef windows
-# remove
-remove.lfmmProject("genotypes_gradients.lfmmProject")
-
-#import
-newProject = import.lfmmProject("genotypes_gradients_lfmmProject.zip")
-#endif
-
-
-# An lfmmProject can be removed as follows.
-# Caution: All the files associated with the project will be removed.
-remove.lfmmProject("genotypes_gradients.lfmmProject")
-
 }
-
 
 \keyword{lfmm}
 \keyword{lfmm2}

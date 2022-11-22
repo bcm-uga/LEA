@@ -1,7 +1,8 @@
 \name{z.scores}
 \alias{z.scores}
+\alias{lfmmClass-method}
 
-\title{z-scores from a lfmm run}
+\title{z-scores from an lfmm run}
 \description{
 Return the \code{lfmm} output matrix of zscores for the chosen runs with K
 latent factors, the d-th variable and the all option. For an example, see
@@ -56,8 +57,8 @@ write.env(tutorial.C, "gradients.env")
 # runs of lfmm #
 ################
 
-# main options, K: (the number of latent factors), 
-#           CPU: the number of CPUs.
+# main options, K: the number of latent factors, 
+# CPU: the number of CPUs.
 
 # Toy runs with K = 3 and 2 repetitions.
 # around 15 seconds per run.
@@ -68,11 +69,11 @@ project = lfmm("genotypes.lfmm", "gradients.env", K = 3, repetitions = 2,
 # get the z-scores for all runs for K = 3
 z = z.scores(project, K = 3)
 
-# get the z-scores for the 2nd run for K =3
+# get the z-scores for the 2nd run for K = 3
 z = z.scores(project, K = 3, run = 2)
 
-# remove
-remove.lfmmProject("genotypes_gradients.lfmmProject")
+%# remove
+%remove.lfmmProject("genotypes_gradients.lfmmProject")
 }
 
 

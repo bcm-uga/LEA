@@ -29,7 +29,7 @@ setGeneric("getRuns.snmfProject", function(object, ...)
     standardGeneric("getRuns.snmfProject"));
 setMethod("getRuns.snmfProject", "snmfProject",
     function(object, K) {
-        # check of K
+        #check of K
         if (missing(K)) {
             K = object@K;
         } else if (!(all(K %in% object@K))) {
@@ -76,7 +76,7 @@ setGeneric("G",  function(object, K, run) matrix)
 setMethod("G", "snmfProject",
     function(object, K, run) {
         
-        # check of K
+        #check K
         if (missing(K)) {
             # if only one, that is the one
             if (length(unique(object@K)) == 1) {
@@ -126,7 +126,7 @@ setGeneric("Q",  function(object, K, run) matrix)
 setMethod("Q", "snmfProject",
     function(object, K, run) {
         
-        # check of K
+        #check K
         if (missing(K)) {
             # if only one, that is the one
             if (length(unique(object@K)) == 1) {
@@ -172,7 +172,7 @@ setGeneric("cross.entropy", function(object, K, run) vector)
 setMethod("cross.entropy", "snmfProject",
     function(object, K, run) {
 
-        # check of K
+        #check of K
         if (missing(K)) {
             # if only one, that is the one
             if (length(unique(object@K)) == 1) {

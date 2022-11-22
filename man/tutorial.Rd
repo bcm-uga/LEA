@@ -16,5 +16,5 @@ A genotypic matrix for 50 individuals genotyped at 400 SNPs. The last 50 SNPs ar
 An environmental variable measured for 50 individuals.
 }
 }
-\usage{tutorial}
+%\usage{tutorial}
 \keyword{tutorial}

@@ -97,8 +97,8 @@ setGeneric("getRuns.lfmmProject", function(object, k, d, all)
     standardGeneric("getRuns.lfmmProject"));
 setMethod("getRuns.lfmmProject", "lfmmProject",
     function(object, k, d, all) {
-        
-        # check of k
+         
+        #check of k
         if (missing(k)) {
             k = object@K
         } else if (!(all(k %in% object@K))) {
@@ -250,12 +250,12 @@ setMethod("summary", "lfmmProject",
 )
 
 
-# cFR
+#cFR
 #setGeneric("cFDR", function(object, percentage, k, d, all, cutoff) vector)
 #setMethod("cFDR", c("lfmmProject", "numeric"),
 #    function(object, percentage, k, d, all, cutoff) {
 #
-#        # check of k
+#        #check of k
 #        if (missing(k) && length(unique(object@K)) == 1) {
 #            k = object@K
 #        } else if (missing(k) || !k %in% object@K) {
@@ -315,7 +315,7 @@ setMethod("summary", "lfmmProject",
 setGeneric("mlog10p.values", function(object, K, d, all, run) vector)
 setMethod("mlog10p.values", "lfmmProject",
     function(object, K, d, all, run) {
-        # check of k
+        #check of k
         if (missing(K)) {
             if (length(unique(object@K)) == 1) {
                 K = unique(object@K)
@@ -381,7 +381,7 @@ setMethod("mlog10p.values", "lfmmProject",
 setGeneric("p.values", function(object, K, d, all, run) vector)
 setMethod("p.values", "lfmmProject",
     function(object, K, d, all, run) {
-        # check of k
+        #check of k
         if (missing(K)) {
             if (length(unique(object@K)) == 1) {
                 K = unique(object@K)
@@ -448,7 +448,7 @@ setMethod("p.values", "lfmmProject",
 setGeneric("z.scores", function(object, K, d, all, run) vector)
 setMethod("z.scores", "lfmmProject",
     function(object, K, d, all, run) {
-        # check of k
+        #check of k
         if (missing(K)) {
             if (length(unique(object@K)) == 1) {
                 K = unique(object@K)
