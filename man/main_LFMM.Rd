@@ -1,15 +1,15 @@
 \name{lfmm}
 \alias{lfmm}
-%\alias{load.lfmmProject}
-%\alias{load.lfmmProject,character-method}
-%\alias{remove.lfmmProject}
-%\alias{remove.lfmmProject,character-method}
-%\alias{import.lfmmProject}
-%\alias{import.lfmmProject,character-method}
-%\alias{export.lfmmProject}
-%\alias{export.lfmmProject,character-method}
-%\alias{combine.lfmmProject}
-%\alias{combine.lfmmProject,character,character-method}
+\alias{load.lfmmProject}
+\alias{load.lfmmProject,character-method}
+\alias{remove.lfmmProject}
+\alias{remove.lfmmProject,character-method}
+\alias{import.lfmmProject}
+\alias{import.lfmmProject,character-method}
+\alias{export.lfmmProject}
+\alias{export.lfmmProject,character-method}
+\alias{combine.lfmmProject}
+\alias{combine.lfmmProject,character,character-method}
 \alias{show,lfmmProject-method}
 \alias{show,lfmmClass-method}
 \alias{summary,lfmmProject-method}
@@ -218,6 +218,9 @@ for (alpha in c(.05,.1,.15,.2)) {
     print(paste("FDR:", estimated.FDR, "True Positive Rate:", estimated.TPR))
 }
 
+
+# remove project
+remove.lfmmProject("genotypes_gradients.lfmmProject")
 }
 
 \keyword{lfmm}

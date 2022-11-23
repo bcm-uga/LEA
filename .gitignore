@@ -14,6 +14,7 @@ dat.*
 *.geno
 *.env
 *Project
+*.zip
 
 LEA.pdf
 
@@ -38,3 +39,4 @@ man/barplot.Qmatrix.Rd
 man/as.qmatrix.R
 
 genotype*
+gradient*
