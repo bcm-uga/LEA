@@ -17,7 +17,6 @@
 */
 #include <R.h>
 #include <R_ext/Lapack.h>
-#include <R_ext/BLAS.h>
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -69,7 +68,7 @@ void sylvester(double *A, double *B, double *C, double *X, int M, int N)
         dtrsyl_(&trana, &tranb, (int *) (&isgn), (int *) (&m),
                 (int *) (&n), (double *) A, (int *) (&m),
                 (double *) B, (int *) (&n), (double *) C,
-                (int *) (&m), (double *) (&scale), (int *) (&info) FCLEN FCLEN);
+                (int *) (&m), (double *) (&scale), (int *) (&info) FCONE FCONE);
 
         // Ct (cw,MxN) = QA (cw, MxM) * C (cw, MxN) 
         for (m1 = 0; m1 < M; m1++) {
@@ -115,8 +114,8 @@ void schur(double *A, double *Q, int M)
                (int *) (&n), (int *) (&sdim), (double *) wr,
                (double *) wi, (double *) Q, (int *) (&n),
                (double *) work, (int *) (&lwork), 0,
-               (int *) (&info) FCLEN FCLEN);
-
+               (int *) (&info) FCONE FCONE);
+        
         Free(wr);
         Free(wi);
         Free(work);

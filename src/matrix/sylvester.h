@@ -12,7 +12,7 @@
 
 /**
  * compute the sylvester solution of AX + XB = C
- * TO CHECK
+ * TO CHECK
  * 
  * @param A     a matrix (of size MxM)
  * @param B     a matrix (of size NxN)
