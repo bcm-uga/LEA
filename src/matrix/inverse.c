@@ -1,6 +1,6 @@
 /*
     matrix, file: inverse.c
-    Copyright (C) 2012 Eric Frichot
+    Copyright (C) 2012 Eric Frichot / 2022 Olivier Francois
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -39,7 +39,8 @@ void fast_inverse(double *A, int D, double *inv)
         copy_vect(A, inv, D * D);
 
         dgetrf_((int *) (&Dp), (int *) (&Dp), (double *) inv,
-                (int *) (&Dp), (int *) pivot, (int *) (&info));
+                (int *) (&Dp), (int *) pivot, 
+                (int *) (&info) FCONE);
         dgetri_((int *) (&Dp), (double *) inv, (int *) (&Dp),
                 (int *) pivot, (double *) tmp, (int *) (&size),
                 (int *) (&info));
