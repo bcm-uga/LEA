@@ -53,7 +53,8 @@ void diagonalize(double *cov, int N, int K, double *val, double *vect)
                 (int *) (&ul), (double *) (&abstol), (int *) (&M),
                 (double *) valp, (double *) vectp, (int *) (&n),
                 (int *) supp, (double *) work, (int *) (&lwork),
-                (int *) iwork, (int *) (&liwork), (int *) (&info));
+                (int *) iwork, (int *) (&liwork), 
+                (int *) (&info) FCONE FCONE FCONE);
 
         // copy results
         for (k = 0; k < K; k++) {

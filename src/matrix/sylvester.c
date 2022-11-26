@@ -1,6 +1,6 @@
 /*
     LFMM, file: sylvester.c
-    Copyright (C) 2012 Eric Frichot
+    Copyright (C) 2012 Eric Frichot / modified 2022 / Olivier Francois
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
