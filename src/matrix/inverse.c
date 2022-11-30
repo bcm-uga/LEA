@@ -40,7 +40,7 @@ void fast_inverse(double *A, int D, double *inv)
 
         dgetrf_((int *) (&Dp), (int *) (&Dp), (double *) inv,
                 (int *) (&Dp), (int *) pivot, 
-                (int *) (&info) FCONE);
+                (int *) (&info));
         dgetri_((int *) (&Dp), (double *) inv, (int *) (&Dp),
                 (int *) pivot, (double *) tmp, (int *) (&size),
                 (int *) (&info));
