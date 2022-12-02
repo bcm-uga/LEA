@@ -147,7 +147,7 @@ genetic.gap <-  function(input,
       B <- B/length(K)
     }
   
-  B = B[candidate.loci,]
+  B = as.matrix(B[candidate.loci,])
   M = (X.new - X.pred)  %*% t(B)
   D = diag(M %*% t(M))/nrow(B) 
   
