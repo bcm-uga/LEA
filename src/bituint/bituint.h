@@ -137,7 +137,7 @@ static const bituint mask[SIZEUINT] = {
         0x4000000000000000,
         0x8000000000000000
 };
-#elif defined(__arm64__)
+#elif defined(__arm64__) || defined(__aarch64__)
 // ARM64
 typedef uint_fast64_t bituint;
 #define SIZEUINT 64
