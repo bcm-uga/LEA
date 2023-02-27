@@ -77,8 +77,8 @@ g.gap <- genetic.gap(input = Y,
                            pred.env = X.pred,
                            K = 2)
                            
-# return the squared root of the genetic gap for each sample location
-round(g.gap$distance, digit = 3) 
+# return the values of the offset (genetic gap) for each sample location
+round(g.gap$offset, digit = 3) 
 
 # plot the squared root of the genetic gap vs Euclidean environmental distance
 Delta = X - X.pred
