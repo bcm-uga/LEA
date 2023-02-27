@@ -3,7 +3,7 @@
 
 \title{Genetic gap: genetic offset and genetic distance between environments.}
 
-\description{The function returns genetic gap estimates computed from grids of new and predicted environments. The estimates are based on the covariance matrix of effect sizes obtained from an \code{lfmm2} model. It takes as input the data that are used to adjust the LFMM, a matrix of environmental variables measured at new locations (new.env) or at the same locations as in the LFMM estimates (new.env = env is accepted), and a matrix of predicted environmental variables for the new locations (pred.env) in the same format as the new.env ones. 
+\description{The function returns estimates of the geometric genetic offset (genetic gap) computed from grids of new and predicted environments. The estimates are based on the covariance matrix of effect sizes obtained from an \code{lfmm2} model. The function takes as input the data that are used to adjust the LFMM, a matrix of environmental variables measured at new locations (new.env) or at the same locations as in the LFMM estimates (new.env = env is accepted), and a matrix of predicted environmental variables for the new locations (pred.env) in the same format as the new.env ones. 
 }
 
 \usage{
@@ -27,15 +27,15 @@ genetic.gap (input, env, new.env, pred.env, K, scale, candidate.loci)
 
 \item{K}{An integer or a sequence of integers corresponding to the number of latent factors in the LFMM. The number of latent factors  could be estimated from the elbow point in the PCA screeplot for the genotype matrix. For a sequence of values, an average prediction will be returned.}
 
-\item{scale}{A logical value indicating whether the environmental data are scale or not. If \code{scale == TRUE}, then all environmental matrices are centered and scaled from the columwise mean and standard deviations of the \code{env} matrix. This option should be used only to evaluate the relative importance of environmental variables with the eigenvalues of the covariance matrix of effect sizes when the environmental data have different scales.}
+\item{scale}{A logical value indicating whether the environmental data are scaled or not. If \code{scale == TRUE}, then all environmental matrices are centered and scaled from the columwise mean and standard deviations of the \code{env} matrix. This option should be used only to evaluate the relative importance of environmental variables with the eigenvalues of the covariance matrix of effect sizes when the environmental data have different scales.}
 
-\item{candidate.loci}{A vector specifying which loci (column label) in the genotype matrix are included in the computation of the genetic offset (default value: all positions).}
+\item{candidate.loci}{A vector specifying which loci (column label) in the genotype matrix are included in the computation of the genetic offset. The default value includes all loci.}
 }
 
 \value{
-\item{offset}{A vector of genetic gap values computed for every sample location in \code{new.env} and \code{pred.env}.
+\item{offset}{A vector of genomic offset values computed for every sample location in \code{new.env} and \code{pred.env}. The genomic offset is the genetic gap defined in (Gain et al. 2023).
 }
-\item{distance}{A vector of environmental distance values computed for every sample location in \code{new.env} and \code{pred.env}. The distances correspond to the squared root of the offset measures. 
+\item{distance}{A vector of environmental distance values computed for every sample location in \code{new.env} and \code{pred.env}. The distances to an estimate of the risk of nonadaptedness that includes correction for confounding factors and analyzes multiple predictors simultaneously (modified version of RONA). 
 }
 \item{eigenvalues}{Eigenvalues of the covariance matrix of LFMM effect sizes. They represent the relative importance of combinations of environmental variables described in \code{vectors} when the environmental data have similar scales. To be used with \code{scale == TRUE}.}
 
@@ -52,11 +52,14 @@ genetic.gap (input, env, new.env, pred.env, K, scale, candidate.loci)
 }
 
 \references{
+Gain, C., et al. (2023). A quantitative theory for genomic offset statistics. bioRxiv, 10.1101/2023.01.02.522469.
+
+
 Gain C, Francois O. (2021). LEA 3: Factor models in population genetics and ecological genomics with R. Molecular Ecology Resources. Molecular Ecology Resources 21 (8), 2738-2748. doi.org/10.1111/1755-0998.13366.
 }
 
 \examples{
-### Example of genetic gap computation using lfmm2 ###
+### Example of genetic offset computation using lfmm2 ###
 
 data("offset_example")
 
@@ -66,6 +69,8 @@ X.pred <- offset_example$env.pred
 
 #PCA of the genotype data suggests k = 2 factors
 plot(prcomp(Y), col = "blue")
+
+## genetic gap
 
 g.gap <- genetic.gap(input = Y, 
                            env = X, 
@@ -78,7 +83,11 @@ round(g.gap$distance, digit = 3)
 # plot the squared root of the genetic gap vs Euclidean environmental distance
 Delta = X - X.pred
 dist.env = sqrt( rowSums(Delta^2) )  
-plot(dist.env, g.gap$distance,  cex = .6)
+plot(dist.env, sqrt(g.gap$offset),  cex = .6)
+
+
+# plot RONA vs the genetic gap 
+plot(g.gap$offset, g.gap$distance,  cex = .6)
 
 # with scaled variables
 g.gap.scaled <- genetic.gap(input = Y, 

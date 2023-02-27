@@ -148,12 +148,15 @@ genetic.gap <-  function(input,
     }
   
   B = as.matrix(B[candidate.loci,])
-  M = (X.new - X.pred)  %*% t(B)
-  D = diag(M %*% t(M))/nrow(B) 
+  #M = (X.new - X.pred)  %*% t(B)
+  #D = diag(M %*% t(M))/nrow(B) 
+  
+  gg = rowsums(((X.new - X.pred)  %*% t(B))^2)/nrow(B) 
+  rona = rowsums(abs((X.new - X.pred)  %*% t(B)))/nrow(B)
   
   eig <- eigen(cov(B))
   
-  return(list(offset = D, distance = sqrt(D), eigenvalues = eig$values, vectors = eig$vectors))
+  return(list(offset = D, distance = rona, eigenvalues = eig$values, vectors = eig$vectors))
   
 }
 

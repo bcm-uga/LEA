@@ -436,9 +436,9 @@ points(target, -log10(pv$pvalues[target]), col = "red")
 
 
 Genomic offset is a genome-based approach to assess the maladaptation of populations to abrupt alteration of their habitat.
-Genomic offset statistics use environmental and genomic data to predict shifts in adaptive traits without direct observations of those traits. By relying on GEA models, they are based on differences in allelic frequencies for two sets of conditions in an ecological niche. 
+Genomic offset statistics use environmental and genomic data to predict shifts in adaptive traits without direct observations of those traits. By relying on GEA models, genomic offset statistics are based on differences in allelic frequencies for two sets of conditions in an ecological niche. 
 
-The {\tt R} package {\tt LEA} implements the genetic gap approach, which estimates are based on the covariance matrix of effect sizes obtained from an LFMM \citep{Gain_2022}.
+The {\tt R} package {\tt LEA} implements a geometric statistic to estimate genomic offset (genetic gap), based on the covariance matrix of effect sizes obtained from an LFMM \citep{Gain_2023}. The same function can also compute a modified version of the risk of nonadaptedness (RONA) that includes correction for confounding factors and performs a multivariate analysis of environmental effects.  
 
 The {\tt genetic.gap()} function takes as input the environmental and genomic data that are used to adjust the LFMM. It also requires a matrix of environmental predictors measured at new locations (new.env), and a matrix of predicted environmental variables for the new locations (pred.env) in the same format as the new.env ones. New locations at not necessarily new, as they could be taken as sample locations (new.env = env).
 
@@ -451,7 +451,7 @@ X <- offset_example$env
 X.pred <- offset_example$env.pred
 @
 
-Below, we compute the genetic gap at each sample locations, using all genomic loci in the genotype matrix. Note that the {\tt candidate.loci = TRUE} option allows us to use any subset of loci, in particular those  being above the significance level in the GEA analysis.  
+Below, we compute the geometric offset (genetic gap) at each sample locations, using all genomic loci in the genotype matrix. Note that the {\tt candidate.loci = TRUE} option allows us to use any subset of loci, in particular those  being above the significance level in the GEA analysis.  
 
 <<>>=
 g.gap.scaled <- genetic.gap(input = Y, 
