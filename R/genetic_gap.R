@@ -151,8 +151,8 @@ genetic.gap <-  function(input,
   #M = (X.new - X.pred)  %*% t(B)
   #D = diag(M %*% t(M))/nrow(B) 
   
-  gg = rowsums(((X.new - X.pred)  %*% t(B))^2)/nrow(B) 
-  rona = rowsums(abs((X.new - X.pred)  %*% t(B)))/nrow(B)
+  gg = rowSums(((X.new - X.pred)  %*% t(B))^2)/nrow(B) 
+  rona = rowSums(abs((X.new - X.pred)  %*% t(B)))/nrow(B)
   
   eig <- eigen(cov(B))
   
