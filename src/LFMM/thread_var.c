@@ -32,7 +32,7 @@
 // thrd_var
 
 void thrd_var(LFMM_param param, LFMM_GS_param GS_param,
-              void (*fct) (), double *res, double *res2)
+              void (*fct) (Multithreading_lfmm_var), double *res, double *res2)
 {
         pthread_t *thread;      // pointer to a group of threads
         int i;
