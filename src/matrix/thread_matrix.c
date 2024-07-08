@@ -31,7 +31,7 @@
 // thread_fct_matrix
 
 void thread_fct_matrix(double *A, double *B, double *C, int K, int M, int N,
-                       double alpha, int num_thrd, void (*fct) ())
+                       double alpha, int num_thrd, void (*fct) (Multithreading_matrix))
 {
         pthread_t *thread;      // pointer to a group of threads
         int i;
