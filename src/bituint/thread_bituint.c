@@ -32,7 +32,7 @@
 // thread_fct_bituint
 
 void thread_fct_bituint(bituint * X, double *A, double *B, int K, int Mc,
-                        int Mp, int N, int num_thrd, void (*fct) ())
+                        int Mp, int N, int num_thrd, void (*fct) (Multithreading_bituint))
 {
         pthread_t *thread;      // pointer to a group of threads
         int i;
