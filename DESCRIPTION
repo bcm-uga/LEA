@@ -1,7 +1,7 @@
 Package: LEA
 Title: LEA: an R package for Landscape and Ecological Association
         Studies
-Version: 3.17.1
+Version: 3.17.2
 Date: 2024-07-10
 Author: Eric Frichot <eric.frichot@gmail.com>, Olivier Francois
         <olivier.francois@grenoble-inp.fr>, Clement Gain 
