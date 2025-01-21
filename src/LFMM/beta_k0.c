@@ -34,8 +34,8 @@ void calc_beta_k0(double *C, float *R, double *beta, double *CCt,
                   double *var_beta, int M, int N, int D, double *var_res)
 {
         int i, j, d, d2;
-        double *m_beta = (double *)Calloc(M * D * sizeof(double), double);
-        double *inv_CCt = (double *)Calloc(D * D * sizeof(double), double);
+        double *m_beta = (double *) calloc(M * D , sizeof(double));
+        double *inv_CCt = (double *) calloc(D * D , sizeof(double));
         double res, tmp;
 
         // init beta

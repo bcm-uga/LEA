@@ -62,7 +62,7 @@ void ped2geno(char *input_file, char *output_file, int *N, int *M)
         *N = nb_lines(input_file, nb);
 
         // allocate_memory
-        data = (int *)Calloc((*N) * (*M) *  sizeof(int), int);
+        data = (int *) calloc((*N) * (*M) , sizeof(int) );
 
         // read in ancestrymap format
         read_ped(input_file, *N, *M, data);
@@ -87,7 +87,7 @@ void ped2lfmm(char *input_file, char *output_file, int *N, int *M)
         *N = nb_lines(input_file, nb);
 
         // allocate memory
-        data = (int *)Calloc((*N) * (*M) *  sizeof(int), int);
+        data = (int *) calloc((*N) * (*M) , sizeof(int));
 
         // read in ancestrymap format
         read_ped(input_file, *N, *M, data);
@@ -110,8 +110,8 @@ void read_ped(char *input_file, int N, int M, int *data)
         char *ref;
 
         // allocate memory
-        szbuff = (char *)Calloc(max_char_per_line *  sizeof(char), char);
-        ref = (char *)Calloc(M *  sizeof(char), char);
+        szbuff = (char *) calloc(max_char_per_line ,  sizeof(char));
+        ref = (char *) calloc(M , sizeof(char));
 
         // init reference allele
         for (i = 0; i < M; i++)

@@ -1,6 +1,7 @@
 /*
    bituint, file: bituint.c
    Copyright (C) 2013 François Mathieu, Eric Frichot
+   Fixed 2025 Olivier François
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,9 +24,23 @@
 #include "bituint.h"
 
 // init_mat
+void init_mat_bituint(bituint **dat, int N, int Mc, int *Mp) {
+  *Mp = ceil(((double)Mc) / SIZEUINT);
+  *dat = (bituint *) calloc(N * (*Mp), sizeof(bituint));
+  /*if (*dat == NULL) {
+    // Handle memory allocation failure
+    perror("Memory allocation failed");
+    exit(EXIT_FAILURE);
+  }*/
+}
+
+
+/* 
+// init_mat
 
 void init_mat_bituint(bituint ** dat, int N, int Mc, int *Mp)
 {
         *Mp = ceil(((double)Mc) / SIZEUINT);
-        *dat = (bituint *) Calloc(N * (*Mp) * sizeof(bituint), bituint);
+        *dat = (bituint *) calloc(N * (*Mp) * sizeof(bituint), bituint);
 }
+*/

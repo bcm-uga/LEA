@@ -33,18 +33,18 @@ void diagonalize(double *cov, int N, int K, double *val, double *vect)
         long int n = (long int)N;
         long int M = (long int)K;
         double abstol = 1e-10;
-        long int *supp = (long int *)Calloc(2 * N *  sizeof(long int), long int);
+        long int *supp = (long int *) calloc(2 * N,  sizeof(long int));
         long int lwork = 26 * N;
-        double *work = (double *)Calloc(lwork * sizeof(double), double);
+        double *work = (double *) calloc(lwork , sizeof(double));
         long int liwork = 10 * N;
-        long int *iwork = (long int *)Calloc(liwork * sizeof(double), double);
+        long int *iwork = (long int *) calloc(liwork, sizeof(double));
         long int info;
         double vl = 0.0, vu = 0.0;
         char jobz = 'V', range = 'I', uplo = 'U';
         long int il = (long int)N - K + 1;
         long int ul = (long int)N;
-        double *valp = (double *)Calloc(N * sizeof(double), double);
-        double *vectp = (double *)Calloc(N * N * sizeof(double), double);
+        double *valp = (double *) calloc(N , sizeof(double));
+        double *vectp = (double *) calloc(N * N , sizeof(double));
         int i, k;
 
         dsyevr_((char *)(&jobz), (char *)(&range), (char *)(&uplo),

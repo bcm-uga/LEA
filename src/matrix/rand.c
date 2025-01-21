@@ -68,7 +68,7 @@ int compare_double(void const *a, void const *b)
 
 double median(double *p, int n)
 {
-        double *copy = (double *)Calloc(n * sizeof(double), double);
+        double *copy = (double *) calloc(n , sizeof(double));
         int i;
         double res;
 
@@ -285,7 +285,7 @@ void mvn_rand(double *mu, double *L, int D, double *y)
 {
 
         int i, j;
-        double *x = (double *)Calloc(D *  sizeof(double), double);
+        double *x = (double *) calloc(D ,  sizeof(double));
 
         for (i = 0; i < D; i++)
                 x[i] = rand_normal_r();

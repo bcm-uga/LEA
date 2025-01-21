@@ -68,22 +68,22 @@ void crossEntropy(char *input_file, char *input_file_I, char *input_file_Q,
         N = nb_cols_geno(input_file);
         M = nb_lines(input_file, N);
         max_char_per_line = 5 * N;
-        szbuff = (char *)Calloc(5 * N * sizeof(char), char);
-        szbuffI = (char *)Calloc(5 * N * sizeof(char), char);
+        szbuff = (char *) calloc(5 * N , sizeof(char));
+        szbuffI = (char *) calloc(5 * N , sizeof(char));
 
         // write command line summary
         print_summary_ce(N, M, K, m, input_file, input_file_Q, input_file_F,
                          input_file_I);
 
         // memory allocation
-        qfc = (long double *)Calloc(nc * sizeof(long double), long double);
-        X = (int *)Calloc(N * sizeof(int), int);
-        I = (int *)Calloc(N * sizeof(int), int);
+        qfc = (long double *) calloc(nc , sizeof(long double));
+        X = (int *) calloc(N , sizeof(int));
+        I = (int *) calloc(N , sizeof(int));
 
         // read of Q and F
-        Q = (double *)Calloc(N * K * sizeof(double), double);
+        Q = (double *) calloc(N * K , sizeof(double));
         read_data_double(input_file_Q, N, K, Q);
-        F = (double *)Calloc(K * nc * M * sizeof(double), double);
+        F = (double *) calloc(K * nc * M , sizeof(double));
         read_data_double(input_file_F, nc * M, K, F);
 
         // open files 

@@ -66,10 +66,10 @@ void sNMF(sNMF_param param)
 	L = param->L;
 	param->Mc = param->L * param->nc;
 	// memory allocation
-	param->temp1 = Calloc(K * K * sizeof(double), double);
-	param->tempQ = Calloc(n * K * sizeof(double), double);
-	param->temp3 = Calloc(n * K * sizeof(double), double);
-	param->Y = Calloc(K * n * sizeof(double), double);
+	param->temp1 = calloc(K * K , sizeof(double));
+	param->tempQ = calloc(n * K , sizeof(double));
+	param->temp3 = calloc(n * K , sizeof(double));
+	param->Y = calloc(K * n , sizeof(double));
 
 	if (param->I == -1) 
 		param->I = imin(10000, L/10);
@@ -93,7 +93,7 @@ void sNMF(sNMF_param param)
 	// memory allocation
 	Mc = param->nc*L;
 	init_mat_bituint(&(param->X), n, Mc, &(param->Mp));
-        param->Q = (double *) Calloc(n * K * sizeof(double), double);      // of size NxK
+        param->Q = (double *) calloc(n * K, sizeof(double));      // of size NxK
 
 	// read of genotypic data
 	read_geno_bituint(param->data_file, n, L, param->Mp, param->nc, param->X);
@@ -114,7 +114,7 @@ void sNMF(sNMF_param param)
 			Rprintf("Initialization of Q with a random subset of %d SNPs:\n", param->I);
 			Mci = param->nc * param->I;
 			init_mat_bituint(&(param->X), n, Mci, &(param->Mp));
-        		param->F = (double *) Calloc(K * Mci * sizeof(double), double);     // of size McxK
+        		param->F = (double *) calloc(K * Mci , sizeof(double));     // of size McxK
 			// save L
 			L = param->L;
 			param->L = param->I;
@@ -137,7 +137,7 @@ void sNMF(sNMF_param param)
 	} 
 
 	// memory allocation
-        param->F = (double *) Calloc(K * Mc * sizeof(double), double);     // of size McxK
+        param->F = (double *) calloc(K * Mc , sizeof(double));     // of size McxK
 
 	// parameter estimation
 	Rprintf("\nMain algorithm:\n");

@@ -37,7 +37,7 @@ void thread_fct_bituint(bituint * X, double *A, double *B, int K, int Mc,
         pthread_t *thread;      // pointer to a group of threads
         int i;
 
-        thread = (pthread_t *) Calloc(num_thrd *  sizeof(pthread_t), pthread_t);
+        thread = (pthread_t *) calloc(num_thrd ,  sizeof(pthread_t));
         Multithreading_bituint *Ma =
             (Multithreading_bituint *) malloc(num_thrd *
                                               sizeof(Multithreading_bituint));
@@ -69,7 +69,7 @@ void thread_fct_bituint(bituint * X, double *A, double *B, int K, int Mc,
         /* main thread works on slice 0 so everybody is busy
          * main thread does everything if thread number is specified as 1*/
         Ma[0] =
-            (Multithreading_bituint) Calloc(1 *  sizeof(multithreading_bituint), multithreading_bituint);
+            (Multithreading_bituint) calloc(1 ,  sizeof(multithreading_bituint));
         Ma[0]->X = X;
         Ma[0]->A = A;
         Ma[0]->B = B;

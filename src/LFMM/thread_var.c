@@ -38,7 +38,7 @@ void thrd_var(LFMM_param param, LFMM_GS_param GS_param,
         int i;
         int num_thrd = param->num_thrd;
 
-        thread = (pthread_t *) Calloc(param->num_thrd *  sizeof(pthread_t), pthread_t);
+        thread = (pthread_t *) calloc(param->num_thrd ,  sizeof(pthread_t));
         Multithreading_lfmm_var *Ma =
             (Multithreading_lfmm_var *) malloc(param->num_thrd *
                                                sizeof(Multithreading_lfmm_var));

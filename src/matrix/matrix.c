@@ -73,7 +73,7 @@ int compare(const void *a, const void *b)
 
 void sort_index(double *data, int *index, int n)
 {
-        double **pointers = (double **)Calloc(n * sizeof(double *), double *);
+        double **pointers = (double **) calloc(n , sizeof(double *));
         int i;
 
         // create a table of pointers 

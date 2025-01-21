@@ -90,28 +90,28 @@ void LFMM(LFMM_param param)
 
         // allocate data memory
         // the memory is free with free_param_lfmm in the main 
-        param->U = (double *)Calloc(K * n * sizeof(double), double);
-        param->V = (double *)Calloc(K * L * sizeof(double), double);
-        param->alpha_U = (double *)Calloc(K * sizeof(double), double);
-        param->alpha_V = (double *)Calloc(K * sizeof(double), double);
+        param->U = (double *) calloc(K * n , sizeof(double));
+        param->V = (double *) calloc(K * L , sizeof(double));
+        param->alpha_U = (double *) calloc(K , sizeof(double));
+        param->alpha_V = (double *) calloc(K , sizeof(double));
         if (param->all) {
                 mD = D + 1;
         } else {
                 mD = 2;
         }
         param->mD = mD;
-        param->beta = (double *)Calloc(mD * L * sizeof(double), double);
-        param->alpha_beta = (double *)Calloc(mD * sizeof(double), double);
-        perc_var = (double *)Calloc(mD + K + 1 * sizeof(double), double);
+        param->beta = (double *) calloc(mD * L , sizeof(double));
+        param->alpha_beta = (double *) calloc(mD , sizeof(double));
+        perc_var = (double *) calloc(mD + K + 1 , sizeof(double));
 
         // read of the variable file
-        param->C = (double *)Calloc(n * D * sizeof(double), double);
+        param->C = (double *) calloc(n * D , sizeof(double));
         read_data_double(param->cov_file, n, D, param->C);
         normalize_cov(param->C, n, D);
         Rprintf("Read variable file:\n \t%s\t\tOK.\n\n", param->cov_file);
 
         // read of the data file
-        param->dat = (float *)Calloc(n * L * sizeof(float), float);
+        param->dat = (float *) calloc(n * L , sizeof(float));
         read_data_float(param->input_file, n, L, param->dat);
 
         // check that the data matrix has no constant column
@@ -119,7 +119,7 @@ void LFMM(LFMM_param param)
 
         // creation of the missing data matrix
         if (param->missing_data) {
-                param->I = (int *)Calloc(n * L * sizeof(int), int);
+                param->I = (int *) calloc(n * L , sizeof(int));
                 create_I(param->dat, param->I, n, L);
                 inputation_freq(param->dat, param->I, n, L);
         }
@@ -139,8 +139,8 @@ void LFMM(LFMM_param param)
         // all covariables at the same time
         if (param->all) {
                 // allocate memory
-                param->zscore = (double *)Calloc(L * D * sizeof(double), double);
-                param->mC = (double *)Calloc(n * mD * sizeof(double), double);
+                param->zscore = (double *) calloc(L * D , sizeof(double));
+                param->mC = (double *) calloc(n * mD , sizeof(double));
 
                 Rprintf("\n<<<<\n\t Analyse for all variables.\n\n");
                 // create mC from C
@@ -161,8 +161,8 @@ void LFMM(LFMM_param param)
                 // only with covariable nd
         } else if (param->nd) {
                 // allocate memory
-                param->zscore = (double *)Calloc(L * sizeof(double), double);
-                param->mC = (double *)Calloc(n * mD * sizeof(double), double);   // (N,K)
+                param->zscore = (double *) calloc(L , sizeof(double));
+                param->mC = (double *) calloc(n * mD , sizeof(double));   // (N,K)
                 param->nd -= 1; // modify nd to be the index of C column 
 
                 Rprintf("\n<<<<\n\t Analyse for variable %d\n\n", param->nd + 1);
@@ -185,8 +185,8 @@ void LFMM(LFMM_param param)
                 // each covariable sequentially
         } else {
                 // allocate memory
-                param->zscore = (double *)Calloc(L * sizeof(double), double);
-                param->mC = (double *)Calloc(n * mD * sizeof(double), double);   // (N,K)
+                param->zscore = (double *) calloc(L , sizeof(double));
+                param->mC = (double *) calloc(n * mD , sizeof(double));   // (N,K)
                 // for each variable
                 for (d = 0; d < param->D; d++) {
                         Rprintf("\n<<<<\n\t Analyse for variable %d\n\n", d + 1);

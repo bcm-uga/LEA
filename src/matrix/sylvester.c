@@ -1,6 +1,6 @@
 /*
     LFMM, file: sylvester.c
-    Copyright (C) 2012 Eric Frichot / modified 2022 / Olivier Francois
+    Copyright (C) 2012 Eric Frichot / modified 2022 / Olivier François
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,9 +30,9 @@
 
 void sylvester(double *A, double *B, double *C, double *X, int M, int N)
 {
-        double *QA = (double *)Calloc(M * M * sizeof(double), double);
-        double *QB = (double *)Calloc(N * N * sizeof(double), double);
-        double *Ct = (double *)Calloc(M * N * sizeof(double), double);
+        double *QA = (double *) calloc(M * M , sizeof(double));
+        double *QB = (double *) calloc(N * N , sizeof(double));
+        double *Ct = (double *) calloc(M * N , sizeof(double));
 
         int m1, m2, n1, n2;
         long int isgn = 1;
@@ -99,9 +99,9 @@ void sylvester(double *A, double *B, double *C, double *X, int M, int N)
 
 void schur(double *A, double *Q, int M)
 {
-        double *wr = (double *)Calloc(M * sizeof(double), double);
-        double *wi = (double *)Calloc(M * sizeof(double), double);
-        double *work = (double *)Calloc(3 * M * sizeof(double), double);
+        double *wr = (double *) calloc(M , sizeof(double));
+        double *wi = (double *) calloc(M , sizeof(double));
+        double *work = (double *) calloc(3 * M , sizeof(double));
         long int lwork = 3 * M;
         long int info;
         long int sdim = 0;

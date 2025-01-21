@@ -37,12 +37,12 @@ void thread_fct_snmf(bituint *R, double *out, double *Q, double *F,
 	pthread_t *thread;	// pointer to a group of threads
 	int i;
 
-	thread = (pthread_t *) Calloc(num_thrd *  sizeof(pthread_t), pthread_t);
-	Matrix_snmf *Ma = (Matrix_snmf *) Calloc(num_thrd *  sizeof(Matrix_snmf), Matrix_snmf);
+	thread = (pthread_t *) calloc(num_thrd ,  sizeof(pthread_t));
+	Matrix_snmf *Ma = (Matrix_snmf *) calloc(num_thrd , sizeof(Matrix_snmf));
 
 	/* this for loop not entered if threadd number is specified as 1 */
 	for (i = 1; i < num_thrd; i++) {
-		Ma[i] = (Matrix_snmf) Calloc(1 *  sizeof(matrix_snmf), matrix_snmf);
+		Ma[i] = (Matrix_snmf) calloc(1 ,  sizeof(matrix_snmf));
 		Ma[i]->R = R;
 		Ma[i]->out = out;
 		Ma[i]->Q = Q;
@@ -65,7 +65,7 @@ void thread_fct_snmf(bituint *R, double *out, double *Q, double *F,
 
 	/* main thread works on slice 0 so everybody is busy
 	 * main thread does everything if thread number is specified as 1*/
-	Ma[0] = (Matrix_snmf) Calloc(1 *  sizeof(matrix_snmf), matrix_snmf);
+	Ma[0] = (Matrix_snmf) calloc(1 , sizeof(matrix_snmf));
 	Ma[0]->R = R;
 	Ma[0]->out = out;
 	Ma[0]->Q = Q;

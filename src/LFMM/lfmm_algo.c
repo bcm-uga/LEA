@@ -39,7 +39,7 @@ void lfmm_emcmc(LFMM_param param)
 {
         // GS structure allocation
         LFMM_GS_param GS_param =
-            (LFMM_GS_param) Calloc(1 * sizeof(lfmm_GS_param), lfmm_GS_param);
+            (LFMM_GS_param) calloc(1 , sizeof(lfmm_GS_param));
 
         // temporary parameters
         int i, j, n;
@@ -218,17 +218,17 @@ void calc_dp_deviance(LFMM_param param, LFMM_GS_param GS_param,
 
 void allocate_all(LFMM_GS_param GS_param, int N, int M, int K, int D)
 {
-        GS_param->m_beta = (double *)Calloc(D * M *  sizeof(double), double);
-        GS_param->inv_cov_beta = (double *)Calloc(D * D *  sizeof(double), double);
-        GS_param->m_U = (double *)Calloc(K * N *  sizeof(double), double);
-        GS_param->inv_cov_U = (double *)Calloc(K * K *  sizeof(double), double);
-        GS_param->m_V = (double *)Calloc(K * M *  sizeof(double), double);
-        GS_param->inv_cov_V = (double *)Calloc(K * K *  sizeof(double), double);
+        GS_param->m_beta = (double *) calloc(D * M , sizeof(double));
+        GS_param->inv_cov_beta = (double *) calloc(D * D , sizeof(double));
+        GS_param->m_U = (double *) calloc(K * N ,  sizeof(double));
+        GS_param->inv_cov_U = (double *) calloc(K * K , sizeof(double));
+        GS_param->m_V = (double *) calloc(K * M ,  sizeof(double));
+        GS_param->inv_cov_V = (double *) calloc(K * K , sizeof(double));
 
-        GS_param->mean_U = (double *)Calloc(K * N * sizeof(double), double);
-        GS_param->mean_V = (double *)Calloc(K * M * sizeof(double), double);
-        GS_param->sum = (double *)Calloc(D * M * sizeof(double), double);
-        GS_param->sum2 = (double *)Calloc(D * M * sizeof(double), double);
+        GS_param->mean_U = (double *) calloc(K * N , sizeof(double));
+        GS_param->mean_V = (double *) calloc(K * M , sizeof(double));
+        GS_param->sum = (double *) calloc(D * M , sizeof(double));
+        GS_param->sum2 = (double *) calloc(D * M , sizeof(double));
 }
 
 // free_all

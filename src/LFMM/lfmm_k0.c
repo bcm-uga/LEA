@@ -51,8 +51,8 @@ void lfmm_k0(LFMM_param param)
         double perc_var;
 
         // allocate memory
-        var_beta = (double *)Calloc(D * M *  sizeof(double), double);
-        CCt = (double *)Calloc(D * D * sizeof(double), double);
+        var_beta = (double *) calloc(D * M ,  sizeof(double));
+        CCt = (double *) calloc(D * D , sizeof(double));
 
         // input missing dat
         if (missing_data)

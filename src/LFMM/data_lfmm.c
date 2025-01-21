@@ -48,7 +48,7 @@ void rand_matrix(double *A, double *m_A, double *inv_cov_A, double alpha_R,
         double *mu;
         double *y;
         // allocate memory
-        double *L = (double *)Calloc(K * K * sizeof(double), double);
+        double *L = (double *) calloc(K * K , sizeof(double));
 
         // cholesky of inv_cov_U
         cholesky(inv_cov_A, K, L);
@@ -63,8 +63,8 @@ void rand_matrix(double *A, double *m_A, double *inv_cov_A, double alpha_R,
         } else {
 #endif
                 // allocate memory
-                mu = (double *)Calloc(K * sizeof(double), double);
-                y = (double *)Calloc(K * sizeof(double), double);
+                mu = (double *) calloc(K , sizeof(double));
+                y = (double *) calloc(K , sizeof(double));
                 for (i = 0; i < N; i++) {
                         for (k = 0; k < K; k++) {
                                 // inv_cov_A %*% m_A
@@ -100,7 +100,7 @@ void create_inv_cov(double *inv_cov, double *alpha, double alpha_R,
 {
         int k1, k2, j;
         // allocate memory
-        double *tmp2 = (double *)Calloc(K * K * sizeof(double), double);
+        double *tmp2 = (double *) calloc(K * K , sizeof(double));
 
 #ifndef WIN32
         // multi-threaded non windows version
@@ -163,7 +163,7 @@ void create_m(double *A, float *R, double *B, double *C, double *m,
 #endif
                 // uni-threaded or windows version
                 // allocate memory 
-                tmp_i = (double *)Calloc(M *  sizeof(double), double);
+                tmp_i = (double *) calloc(M , sizeof(double));
 
                 for (i = 0; i < N; i++) {
                         // calculate tmp_i = R - B'C
@@ -200,7 +200,7 @@ void create_m(double *A, float *R, double *B, double *C, double *m,
 
 void quantiles(double *dist, double *prob, int n, int p, double *res)
 {
-        int *index = (int *)Calloc(n * sizeof(int), int);
+        int *index = (int *) calloc(n , sizeof(int));
         int j, jm, jp;
 
         sort_index(dist, index, n);
@@ -219,11 +219,11 @@ double lambda(double *p, int n)
 {
         //  qchisq(.5, df=1)/ median(qchisq(p.values, df=1))
         // double dot5 = 0.4549364;
-        double *qchisq = (double *)Calloc(41 * sizeof(double), double);
+        double *qchisq = (double *) calloc(41 , sizeof(double));
         int i;
-        double *pp = (double *)Calloc(41 * sizeof(double), double);
-        double *q = (double *)Calloc(41 * sizeof(double), double);
-        double *dist = (double *)Calloc(n * sizeof(double), double);
+        double *pp = (double *) calloc(41 ,sizeof(double));
+        double *q = (double *) calloc(41 , sizeof(double));
+        double *dist = (double *) calloc(n , sizeof(double));
         double res;
 
         pp[0] = 0.5;
@@ -254,7 +254,7 @@ double lambda(double *p, int n)
 
 void pvalue_qvalue(double *pvalues, double *qvalues, int n)
 {
-        int *index = (int *)Calloc(n * sizeof(int), int);
+        int *index = (int *) calloc(n , sizeof(int));
         int i;
 
         // sort pvalue table
@@ -276,8 +276,8 @@ void zscore_calc(double *zscore, double *sum, double *sum2, int n, int cur,
 {
         int i;
         double var;
-        double *r = (double *)Calloc(n * (D - 1) * sizeof(double), double);
-        double *m = (double *)Calloc(n * (D - 1) * sizeof(double), double);
+        double *r = (double *) calloc(n * (D - 1) , sizeof(double));
+        double *m = (double *) calloc(n * (D - 1) , sizeof(double));
 
         for (i = n; i < D * n; i++) {
                 // calculate var beta
@@ -379,8 +379,8 @@ void write_zscore_double(char *output_file, int M, double *zscore, int D,
         int d;
         char zscore_file[512];
         char dic_file[512];
-        double *pvalues = (double *)Calloc(M * sizeof(double), double);
-        // double* qvalues = (double *)Calloc(M * sizeof(double), double);
+        double *pvalues = (double *) calloc(M , sizeof(double));
+        // double* qvalues = (double *) calloc(M , sizeof(double));
 
         if (all) {
                 // DIC file

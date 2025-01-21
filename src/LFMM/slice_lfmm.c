@@ -57,7 +57,7 @@ void slice_m(void *G)
            int i, j, k, d;
 
            // allocate memory
-           double *tmp_i = (double *) Calloc(M *  sizeof(double), double);
+           double *tmp_i = (double *) calloc(M ,  sizeof(double));
          */
 
         /*
@@ -90,7 +90,7 @@ void slice_m(void *G)
                 from = (s * nb_data) / num_thrd;        // note that this 'slicing' works fine
                 to = ((s + 1) * nb_data) / num_thrd;    // even if SIZE is not divisible by num_thrd
 
-                tmp_i = (double *)Calloc(M *  sizeof(double), double);
+                tmp_i = (double *) calloc(M ,  sizeof(double));
 
                 for (i = from; i < to; i++) {
                         // calculate tmp_i = R - B'C
@@ -118,7 +118,7 @@ void slice_m(void *G)
                 from = (s * nb_data) / num_thrd;        // note that this 'slicing' works fine
                 to = ((s + 1) * nb_data) / num_thrd;    // even if SIZE is not divisible by num_thrd
 
-                tmp_j = (double *)Calloc(N *  sizeof(double), double);
+                tmp_j = (double *) calloc(N ,  sizeof(double));
 
                 for (j = from; j < to; j++) {
                         // calculate tmp_i = R - B'C
@@ -162,8 +162,8 @@ void slice_rand(void *G)
         int i, k, kp;
 
         // allocate memory
-        double *mu = (double *)Calloc(K * sizeof(double), double);
-        double *y = (double *)Calloc(K * sizeof(double), double);
+        double *mu = (double *) calloc(K , sizeof(double));
+        double *y = (double *) calloc(K , sizeof(double));
 
         for (i = from; i < to; i++) {
                 for (k = 0; k < K; k++) {

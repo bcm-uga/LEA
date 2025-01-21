@@ -56,7 +56,8 @@ int nb_cols_vcf(char *file)
 	fclose(File);
 	
         File = fopen_read(file);
-        szbuff = (char *)Calloc(2 * max * sizeof(char), char);
+        /*szbuff = (char *)Calloc(2 * max * sizeof(char), char);*/
+        szbuff = (char *) calloc(2 * max , sizeof(char));
         token = fgets(szbuff, 2 * max, File);
 
 	// skip comment lines
@@ -90,7 +91,8 @@ void vcf2geno(char *input_file, char *output_file, int *N, int *M,
 {
 	// temporary variables
 	int i, j, jp, jt;
-	char **infos = (char **)Calloc(9 * sizeof(char *), char *);
+  char **infos = (char **) calloc(9, sizeof(char *));
+	/*char **infos = (char **)Calloc(9 * sizeof(char *), char *);*/
 
 	// file management
 	FILE *input_File=NULL;
@@ -114,10 +116,12 @@ void vcf2geno(char *input_file, char *output_file, int *N, int *M,
 	
 	// init tmp mem
 	for (i = 0; i < 9; i++)
-		infos[i] = (char *)Calloc(512 * sizeof(char), char);
+		infos[i] = (char *) calloc(512, sizeof(char));
 	max_char_per_line = 1000 * (*N) + 20;
-	szbuff = (char *)Calloc(max_char_per_line * sizeof(char), char);
-	allele = (int *)Calloc(*N * sizeof(int), int);
+	/*szbuff = (char *)Calloc(max_char_per_line * sizeof(char), char);*/
+	szbuff = (char *) calloc(max_char_per_line, sizeof(char));
+	/*allele = (int *)Calloc(*N * sizeof(int), int);*/
+	allele = (int *) calloc(*N, sizeof(int));
 
 	// open files
 	input_File = fopen_read(input_file);

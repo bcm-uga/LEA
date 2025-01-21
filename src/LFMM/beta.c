@@ -76,7 +76,7 @@ void update_alpha_beta(LFMM_param param)
         //int a = (int)(epsilon) + M/2;
         int a = (int)1 + M / 2;
         // allocate memory
-        double *bb = (double *)Calloc(D * sizeof(double), double);
+        double *bb = (double *) calloc(D, sizeof(double));
 
         // b = 1/2 * sum(sum(beta.^2));
         dble_sum2(beta, D, M, bb, b_epsilon);   // beta(K,M)

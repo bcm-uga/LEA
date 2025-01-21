@@ -60,10 +60,10 @@ void pca(char* input_file, char *output_eva_file, char *output_eve_file,
 		output_eve_file, output_sdev_file, output_x_file);
 
 	// allocate memory 
-	data = (double *) Calloc(N * M *  sizeof(double), double);
-	cov = (double *) Calloc(N * N *  sizeof(double), double);
-	val = (double *) Calloc(N *  sizeof(double), double);
-	vect = (double *) Calloc(N * (*K) *  sizeof(double), double);
+	data = (double *) calloc(N * M ,  sizeof(double));
+	cov = (double *) calloc(N * N ,  sizeof(double));
+	val = (double *) calloc(N ,  sizeof(double));
+	vect = (double *) calloc(N * (*K) ,  sizeof(double));
 	
 	// read input_file
 	read_data_double(input_file, N, M, data);

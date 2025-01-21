@@ -38,7 +38,7 @@ void thread_fct_lfmm(float *R, double *A, double *B, double *C, double *m,
         pthread_t *thread;      // pointer to a group of threads
         int i;
 
-        thread = (pthread_t *) Calloc(num_thrd *  sizeof(pthread_t), pthread_t);
+        thread = (pthread_t *) calloc(num_thrd,  sizeof(pthread_t));
         Multithreading_lfmm *Ma =
             (Multithreading_lfmm *) malloc(num_thrd *
                                            sizeof(Multithreading_lfmm));
@@ -75,7 +75,7 @@ void thread_fct_lfmm(float *R, double *A, double *B, double *C, double *m,
 
         /* main thread works on slice 0 so everybody is busy
          * main thread does everything if threadd number is specified as 1*/
-        Ma[0] = (Multithreading_lfmm) Calloc(1 *  sizeof(multithreading_lfmm), multithreading_lfmm);
+        Ma[0] = (Multithreading_lfmm) calloc(1 ,  sizeof(multithreading_lfmm));
         Ma[0]->R = R;
         Ma[0]->A = A;
         Ma[0]->B = B;

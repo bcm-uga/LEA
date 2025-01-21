@@ -37,7 +37,7 @@ void read_data_float(char *file_data, int N, int M, float *dat)
         char *token;
 
         // allocate memory
-        szbuff = (char *)Calloc(max_char_per_line *  sizeof(char), char);
+        szbuff = (char *) calloc(max_char_per_line ,  sizeof(char));
 
         // open file
         m_File = fopen_read(file_data);

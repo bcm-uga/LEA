@@ -50,7 +50,7 @@ void tracyWidom(char *input_file, char *output_file)
         print_summary_tracyWidom(N, input_file, output_file);
 
         // allocate memory 
-        values = (double *)Calloc(N *  sizeof(double), double);
+        values = (double *) calloc(N ,  sizeof(double));
 
         // read input_file
         read_data_double(input_file, N, 1, values);
@@ -59,10 +59,10 @@ void tracyWidom(char *input_file, char *output_file)
         clean_sort(&values, &N);
 
         // allocate memory
-        pvalues = (double *)Calloc(N *  sizeof(double), double);
-        twstat = (double *)Calloc(N *  sizeof(double), double);
-        effectn = (double *)Calloc(N *  sizeof(double), double);
-        percentage = (double *)Calloc(N *  sizeof(double), double);
+        pvalues = (double *) calloc(N ,  sizeof(double));
+        twstat = (double *) calloc(N ,  sizeof(double));
+        effectn = (double *) calloc(N ,  sizeof(double));
+        percentage = (double *) calloc(N ,  sizeof(double));
 
         // calculate tracy-widom values
         tw(values, pvalues, twstat, effectn, N);
@@ -205,7 +205,7 @@ void clean_zeros(double **values, int *M)
         i++;
         if (i < *M) {
                 *M = i;
-                new = (double *)Calloc(*M *  sizeof(double), double);
+                new = (double *) calloc(*M ,  sizeof(double));
                 for (i = 0; i < *M; i++)
                         new[i] = (*values)[i];
                 tmp = *values;

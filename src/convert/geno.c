@@ -30,7 +30,7 @@ void read_geno(char *input_file, int *data, int N, int M)
 {
         FILE *m_File = NULL;
         int j = 0;
-        char *szbuff = (char *)Calloc(5 * N * sizeof(char), char);
+        char *szbuff = (char *) calloc(5 * N , sizeof(char));
         int max_char_per_line = 5 * N;
         int warning = 0;
 

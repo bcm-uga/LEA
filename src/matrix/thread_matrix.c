@@ -36,7 +36,7 @@ void thread_fct_matrix(double *A, double *B, double *C, int K, int M, int N,
         pthread_t *thread;      // pointer to a group of threads
         int i;
 
-        thread = (pthread_t *) Calloc(num_thrd *  sizeof(pthread_t), pthread_t);
+        thread = (pthread_t *) calloc(num_thrd ,  sizeof(pthread_t));
         Multithreading_matrix *Ma =
             (Multithreading_matrix *) malloc(num_thrd *
                                              sizeof(Multithreading_matrix));
@@ -68,7 +68,7 @@ void thread_fct_matrix(double *A, double *B, double *C, int K, int M, int N,
         /* main thread works on slice 0 so everybody is busy
          * main thread does everything if thread number is specified as 1*/
         Ma[0] =
-            (Multithreading_matrix) Calloc(1 *  sizeof(multithreading_matrix), multithreading_matrix);
+            (Multithreading_matrix) calloc(1 ,  sizeof(multithreading_matrix));
         Ma[0]->A = A;
         Ma[0]->B = B;
         Ma[0]->C = C;

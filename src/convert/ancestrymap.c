@@ -49,7 +49,7 @@ void ancestrymap2geno(char *input_file, char *output_file, int *N, int *M)
         *M = (int)tmp;
 
         // allocate_memory
-        data = (int *)Calloc((*N) * (*M) *  sizeof(int), int);
+        data = (int *) calloc((*N) * (*M) ,  sizeof(int));
 
         // read in ancestrymap format
         read_ancestrymap(input_file, *N, *M, data);
@@ -80,7 +80,7 @@ void ancestrymap2lfmm(char *input_file, char *output_file, int *N, int *M)
         *M = (int)tmp;
 
         // allocate memory
-        data = (int *)Calloc((*N) * (*M) *  sizeof(int), int);
+        data = (int *) calloc((*N) * (*M) , sizeof(int));
 
         // read in ancestrymap format
         read_ancestrymap(input_file, *N, *M, data);

@@ -35,9 +35,9 @@ void read_geno_bituint(char *file_data, int N, int M, int Mp, int nc,
         FILE *m_File = NULL;
         int j = 0;
         int max_char_per_line = 10 * N;
-        char *szbuff = (char *)Calloc(max_char_per_line * sizeof(char), char);
-        int *I = (int *)Calloc(N * sizeof(int), int);
-        double *nb = (double *)Calloc(nc * sizeof(double), double);
+        char *szbuff = (char *) calloc(max_char_per_line, sizeof(char));
+        int *I = (int *) calloc(N , sizeof(int));
+        double *nb = (double *) calloc(nc , sizeof(double));
 
         // open file
         m_File = fopen_read(file_data);
@@ -213,7 +213,7 @@ void select_geno_bituint(bituint * X, bituint * Xi, int N, int M, int Mi,
         int i, ji, j, jd, jm, jc, c, jdi, jmi, jci;
 
         // select Mi columns among 
-        int *col = (int *)Calloc(Mi * sizeof(int), int);
+        int *col = (int *) calloc(Mi , sizeof(int));
         rand_k_among_n(col, Mi, M);
 
         // for all in the select values

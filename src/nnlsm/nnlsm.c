@@ -30,27 +30,27 @@
 
 Nnlsm_param allocate_nnlsm(int N, int K)
 {
-	Nnlsm_param param = (Nnlsm_param) Calloc(1 *  sizeof(nnlsm_param), nnlsm_param);
+	Nnlsm_param param = (Nnlsm_param)  calloc(1, sizeof(nnlsm_param));
 
-	param->P = (int *)Calloc(N * sizeof(int), int);
-	param->Ninf = (int *)Calloc(N * sizeof(int), int);
-	param->PassiveSet = (int *)Calloc(N*K * sizeof(int), int);
-	param->NonOptSet = (int *)Calloc(N*K * sizeof(int), int);
-	param->InfeaSet = (int *)Calloc(N*K * sizeof(int), int);
-	param->NotGood = (int *)Calloc(N * sizeof(int), int);
-	param->Cols3Ix = (int *)Calloc(N * sizeof(int), int);
-	param->subX = (double *)Calloc(N*K * sizeof(double), double);
-	param->subY = (double *)Calloc(N*K * sizeof(double), double);
-	param->subAtB = (double *)Calloc(N*K * sizeof(double), double);
-	param->subPassiveSet = (int *)Calloc(N*K * sizeof(int), int);
-	param->selectK = (int *)Calloc(K * sizeof(int), int);
-	param->selectN = (int *)Calloc(N * sizeof(int), int);
-	param->breaks = (int *)Calloc(N * sizeof(int), int);
-	param->sortIx = (int *)Calloc(N * sizeof(int), int);
-	param->sAtA = (double *)Calloc(K*K * sizeof(double), double);
-	param->inVsAtA = (double *)Calloc(K*K * sizeof(double), double);
-        param->tempSortIx = (int *)Calloc(N * sizeof(int), int);
-        param->Y = (double *)Calloc(K*N * sizeof(double), double);
+	param->P = (int *) calloc(N , sizeof(int));
+	param->Ninf = (int *) calloc(N , sizeof(int));
+	param->PassiveSet = (int *) calloc(N*K , sizeof(int));
+	param->NonOptSet = (int *) calloc(N*K , sizeof(int));
+	param->InfeaSet = (int *) calloc(N*K , sizeof(int));
+	param->NotGood = (int *) calloc(N , sizeof(int));
+	param->Cols3Ix = (int *) calloc(N , sizeof(int));
+	param->subX = (double *) calloc(N*K , sizeof(double));
+	param->subY = (double *) calloc(N*K , sizeof(double));
+	param->subAtB = (double *) calloc(N*K , sizeof(double));
+	param->subPassiveSet = (int *) calloc(N*K , sizeof(int));
+	param->selectK = (int *) calloc(K , sizeof(int));
+	param->selectN = (int *) calloc(N , sizeof(int));
+	param->breaks = (int *) calloc(N , sizeof(int));
+	param->sortIx = (int *) calloc(N , sizeof(int));
+	param->sAtA = (double *) calloc(K*K , sizeof(double));
+	param->inVsAtA = (double *) calloc(K*K , sizeof(double));
+        param->tempSortIx = (int *) calloc(N , sizeof(int));
+        param->Y = (double *) calloc(K*N , sizeof(double));
 
 	return param;
 }

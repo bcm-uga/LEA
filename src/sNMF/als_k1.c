@@ -34,7 +34,7 @@ void ALS_k1(sNMF_param param)
 	int nc = param->nc;
 	int N = param->n;
 	int M = param->L;
-	int *count_nc = (int *) Calloc(param->nc * sizeof(int), int);
+	int *count_nc = (int *) calloc(param->nc ,sizeof(int));
 	double *F = param->F;
 
 	// calculate Q

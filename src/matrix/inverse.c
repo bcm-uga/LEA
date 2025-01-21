@@ -30,8 +30,8 @@
 
 void fast_inverse(double *A, int D, double *inv)
 {
-        long int *pivot = (long int *)Calloc(D + 1 * sizeof(long int), long int);
-        double *tmp = (double *)Calloc(D * D * sizeof(double), double);
+        long int *pivot = (long int *) calloc(D + 1 , sizeof(long int));
+        double *tmp = (double *) calloc(D * D , sizeof(double));
         long int info;
         long int Dp = (long int)D;
         long int size = Dp * Dp;
@@ -55,7 +55,7 @@ double detrm(double *a, int k)
 {
         double s = 1, det = 0;
         int i, j, m, n, c;
-        double *b = (double *)Calloc((k - 1) * (k - 1) * sizeof(double), double);
+        double *b = (double *) calloc((k - 1) * (k - 1) , sizeof(double));
 
         if (k == 1) {
                 Free(b);
@@ -93,8 +93,8 @@ double detrm(double *a, int k)
 
 void cofact(double *num, int f, double *inv)
 {
-        double *b = (double *)Calloc((f - 1) * (f - 1) * sizeof(double), double);
-        double *fac = (double *)Calloc(f * f * sizeof(double), double);
+        double *b = (double *) calloc((f - 1) * (f - 1) , sizeof(double));
+        double *fac = (double *) calloc(f * f, sizeof(double));
         int p, q, m, n, i, j;
 
         for (q = 0; q < f; q++) {
@@ -132,7 +132,7 @@ void trans(double *num, double *fac, int r, double *inv)
 {
         int i, j;
         double d;
-        double *b = (double *)Calloc(r * r * sizeof(double), double);
+        double *b = (double *) calloc(r * r , sizeof(double));
 
         for (i = 0; i < r; i++) {
                 for (j = 0; j < r; j++) {
