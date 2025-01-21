@@ -2,7 +2,7 @@
 .Rproj.user
 .Rhistory
 .RData
-.Rproj
+
 
 src/*.o
 *.o
