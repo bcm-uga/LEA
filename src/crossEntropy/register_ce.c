@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -141,6 +141,6 @@ void analyse_param_ce(int argc, char *argv[], int *m,
                 strcpy(input_file_I, tmp_file);
                 strcat(input_file_I, "_I.geno");
         }
-        Free(tmp_file);
+        free(tmp_file);
 
 }

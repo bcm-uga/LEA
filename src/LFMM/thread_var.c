@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -66,7 +66,7 @@ void thrd_var(LFMM_param param, LFMM_GS_param GS_param,
                 if (pthread_create
                     (&thread[i], NULL, (void *)fct, (void *)Ma[i])) {
                         perror("Can't create thread");
-                        Free(thread);
+                        free(thread);
                         error(NULL);
                 }
         }
@@ -108,9 +108,9 @@ void thrd_var(LFMM_param param, LFMM_GS_param GS_param,
         }
 
         for (i = 0; i < num_thrd; i++)
-                Free(Ma[i]);
-        Free(Ma);
-        Free(thread);
+                free(Ma[i]);
+        free(Ma);
+        free(thread);
 }
 
 // slice_mean

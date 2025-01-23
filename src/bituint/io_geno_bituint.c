@@ -4,7 +4,7 @@
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
+   the free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
@@ -57,9 +57,9 @@ void read_geno_bituint(char *file_data, int N, int M, int Mp, int nc,
         fclose(m_File);
 
         // free memory
-        Free(nb);
-        Free(szbuff);
-        Free(I);
+        free(nb);
+        free(szbuff);
+        free(I);
 }
 
 // fill_line_geno_bituint
@@ -238,5 +238,5 @@ void select_geno_bituint(bituint * X, bituint * Xi, int N, int M, int Mi,
         }
 
         // free memory
-        Free(col);
+        free(col);
 }

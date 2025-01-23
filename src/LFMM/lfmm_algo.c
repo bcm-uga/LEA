@@ -4,7 +4,7 @@
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
+   the free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
@@ -154,7 +154,7 @@ void lfmm_emcmc(LFMM_param param)
 
         // free memory
         free_all(GS_param);
-        Free(GS_param);
+        free(GS_param);
 }
 
 // update_sums
@@ -235,16 +235,16 @@ void allocate_all(LFMM_GS_param GS_param, int N, int M, int K, int D)
 
 void free_all(LFMM_GS_param GS_param)
 {
-        Free(GS_param->m_beta);
-        Free(GS_param->inv_cov_beta);
-        Free(GS_param->m_U);
-        Free(GS_param->inv_cov_U);
-        Free(GS_param->m_V);
-        Free(GS_param->inv_cov_V);
-        Free(GS_param->mean_U);
-        Free(GS_param->mean_V);
-        Free(GS_param->sum2);
-        Free(GS_param->sum);
+        free(GS_param->m_beta);
+        free(GS_param->inv_cov_beta);
+        free(GS_param->m_U);
+        free(GS_param->inv_cov_U);
+        free(GS_param->m_V);
+        free(GS_param->inv_cov_V);
+        free(GS_param->mean_U);
+        free(GS_param->mean_V);
+        free(GS_param->sum2);
+        free(GS_param->sum);
 }
 
 // update_alpha_R

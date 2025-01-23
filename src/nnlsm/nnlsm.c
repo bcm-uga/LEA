@@ -4,7 +4,7 @@
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
+   the free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
@@ -59,25 +59,25 @@ Nnlsm_param allocate_nnlsm(int N, int K)
 
 void free_nnlsm(Nnlsm_param param)
 {
-	Free(param->P);
-	Free(param->Ninf);
-	Free(param->PassiveSet);
-	Free(param->NonOptSet);
-	Free(param->InfeaSet);
-	Free(param->NotGood);
-	Free(param->Cols3Ix);
-	Free(param->subX);
-	Free(param->subY);
-	Free(param->subAtB);
-	Free(param->subPassiveSet);
-	Free(param->selectK);
-	Free(param->selectN);
-	Free(param->breaks);
-	Free(param->sortIx);
-	Free(param->sAtA);
-	Free(param->inVsAtA);
-	Free(param->tempSortIx);
-	Free(param->Y);
+	free(param->P);
+	free(param->Ninf);
+	free(param->PassiveSet);
+	free(param->NonOptSet);
+	free(param->InfeaSet);
+	free(param->NotGood);
+	free(param->Cols3Ix);
+	free(param->subX);
+	free(param->subY);
+	free(param->subAtB);
+	free(param->subPassiveSet);
+	free(param->selectK);
+	free(param->selectN);
+	free(param->breaks);
+	free(param->sortIx);
+	free(param->sAtA);
+	free(param->inVsAtA);
+	free(param->tempSortIx);
+	free(param->Y);
 }
 
 // nnlsm_blockpivot

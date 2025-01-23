@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -84,7 +84,7 @@ double median(double *p, int n)
                     (copy[(int)floor(n / 2) - 1] +
                      copy[(int)ceil(n / 2) - 1]) / 2.0;
 
-        Free(copy);
+        free(copy);
 
         return res;
 
@@ -297,7 +297,7 @@ void mvn_rand(double *mu, double *L, int D, double *y)
                 }
         }
 
-        Free(x);
+        free(x);
 }
 
 // rand_exp

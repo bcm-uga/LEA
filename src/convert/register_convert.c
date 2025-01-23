@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -40,7 +40,7 @@ void analyse_param_convert(int argc, char *argv[], char *input, char *output,
                 strcpy(output, tmp_file);
                 strcat(output, ".");
                 strcat(output, type);
-                Free(tmp_file);
+                free(tmp_file);
         } else if (argc != 3) {
                 Rprintf("ERROR: commmand line format incorrect.\n\n"
                        "HELP: %s input_file [output_file]\n", argv[0]);

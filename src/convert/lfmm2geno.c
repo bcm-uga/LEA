@@ -4,7 +4,7 @@
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
+ *     the free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
  *
  *     This program is distributed in the hope that it will be useful,
@@ -47,5 +47,5 @@ void lfmm2geno(char *input_file, char *output_file, int *N, int *M)
         write_geno(output_file, *N, *M, data);
 
         // free memory
-        Free(data);
+        free(data);
 }

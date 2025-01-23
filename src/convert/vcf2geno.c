@@ -4,7 +4,7 @@
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
+ *     the free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
  *
  *     This program is distributed in the hope that it will be useful,
@@ -78,7 +78,7 @@ int nb_cols_vcf(char *file)
 
 	// close and free
 	fclose(File);
-	Free(szbuff);
+	free(szbuff);
 
 	// remove the 9 information elements
 	return N - 9;
@@ -175,10 +175,10 @@ void vcf2geno(char *input_file, char *output_file, int *N, int *M,
 
 	// free memory
 	for (i = 0; i < 9; i++)
-	Free(infos[i]);
-	Free(infos);
-	Free(szbuff);
-	Free(allele);
+	free(infos[i]);
+	free(infos);
+	free(szbuff);
+	free(allele);
 }
 
 // fill_line_vcf

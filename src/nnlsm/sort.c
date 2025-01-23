@@ -4,7 +4,7 @@
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
+   the free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
@@ -36,7 +36,7 @@ void sortCols(int* breaks, int* sortIx, int* X, int K, int N, Nnlsm_param param)
 	breaks[0] = 1;
 	// recursive call
 	sortColsRec(breaks, sortIx, X, K, N, 0, N, 0,tempSortIx);
-	//Free(tempSortIx);
+	//free(tempSortIx);
 }
 
 // sortColsRec
@@ -71,7 +71,7 @@ void sortColsRec(int* breaks, int* sortIx, int* X, int K, int N, int startN,
 	if (il != ir) {
 		// Internal Error. This property should be always verified.
 		Rprintf("Internal error: il != ir, in sortColsRec\n");
-		//Free(tempSortIx);
+		//free(tempSortIx);
 		error(NULL);
 	}
 	// add a break (ie true) at the index where the value (false/true) change

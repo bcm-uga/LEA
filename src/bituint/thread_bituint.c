@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -61,7 +61,7 @@ void thread_fct_bituint(bituint * X, double *A, double *B, int K, int Mc,
                 if (pthread_create
                     (&thread[i], NULL, (void *)fct, (void *)Ma[i])) {
                         perror("Can't create thread");
-                        Free(thread);
+                        free(thread);
                         error(NULL);
                 }
         }
@@ -87,9 +87,9 @@ void thread_fct_bituint(bituint * X, double *A, double *B, int K, int Mc,
                 pthread_join(thread[i], NULL);
 
         for (i = 0; i < num_thrd; i++)
-                Free(Ma[i]);
-        Free(Ma);
-        Free(thread);
+                free(Ma[i]);
+        free(Ma);
+        free(thread);
 }
 
 #endif

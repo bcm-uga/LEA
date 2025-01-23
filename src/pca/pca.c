@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -97,8 +97,8 @@ void pca(char* input_file, char *output_eva_file, char *output_eve_file,
 	write_data_double(output_x_file, N, *K, vect);
 
 	// free memory
-	Free(data);
-	Free(cov);
-	Free(val);
-	Free(vect);
+	free(data);
+	free(cov);
+	free(val);
+	free(vect);
 }

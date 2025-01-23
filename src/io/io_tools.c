@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -35,7 +35,7 @@ void change_ext(char *input, char *output, char *ext)
                 tmp_file = remove_ext(input, '.', '/');
                 strcpy(output, tmp_file);
                 strcat(output, ext);
-                Free(tmp_file);
+                free(tmp_file);
         }
 }
 
@@ -128,7 +128,7 @@ int nb_cols_lfmm(char *file)
         }
 
         fclose(fp);
-        Free(szbuff);
+        free(szbuff);
 
         return cols;
 }
@@ -148,7 +148,7 @@ int nb_lines(char *file, int M)
                 lines++;
 
         fclose(fp);
-        Free(szbuff);
+        free(szbuff);
 
         return lines;
 }

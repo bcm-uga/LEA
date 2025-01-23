@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -45,8 +45,8 @@ void fast_inverse(double *A, int D, double *inv)
                 (int *) pivot, (double *) tmp, (int *) (&size),
                 (int *) (&info));
 
-        Free(tmp);
-        Free(pivot);
+        free(tmp);
+        free(pivot);
 }
 
 // detrm (from the web)
@@ -58,7 +58,7 @@ double detrm(double *a, int k)
         double *b = (double *) calloc((k - 1) * (k - 1) , sizeof(double));
 
         if (k == 1) {
-                Free(b);
+                free(b);
                 return (a[0]);
         } else {
                 det = 0;
@@ -85,7 +85,7 @@ double detrm(double *a, int k)
                 }
         }
 
-        Free(b);
+        free(b);
         return (det);
 }
 
@@ -122,8 +122,8 @@ void cofact(double *num, int f, double *inv)
         }
 
         trans(num, fac, f, inv);
-        Free(b);
-        Free(fac);
+        free(b);
+        free(fac);
 }
 
 // trans (from the web)
@@ -148,5 +148,5 @@ void trans(double *num, double *fac, int r, double *inv)
                 }
         }
 
-        Free(b);
+        free(b);
 }

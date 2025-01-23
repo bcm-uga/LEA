@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -238,7 +238,7 @@ void analyse_param_lfmm(int argc, char *argv[], LFMM_param param)
         tmp_file = remove_ext(param->input_file, '.', '/');
         if (!strcmp(param->output_file, ""))
                 strcpy(param->output_file, tmp_file);
-        Free(tmp_file);
+        free(tmp_file);
 }
 
 // free_param 
@@ -247,35 +247,35 @@ void free_param_lfmm(LFMM_param param)
 {
         // alpha_beta
         if (param->alpha_beta)
-                Free(param->alpha_beta);
+                free(param->alpha_beta);
         // alpha_U
         if (param->alpha_U)
-                Free(param->alpha_U);
+                free(param->alpha_U);
         // alpha_V
         if (param->alpha_V)
-                Free(param->alpha_V);
+                free(param->alpha_V);
         // I
         if (param->I)
-                Free(param->I);
+                free(param->I);
         // U
         if (param->U)
-                Free(param->U);
+                free(param->U);
         // V
         if (param->V)
-                Free(param->V);
+                free(param->V);
         // dat
         if (param->dat)
-                Free(param->dat);
+                free(param->dat);
         // beta
         if (param->beta)
-                Free(param->beta);
+                free(param->beta);
         // C
         if (param->C)
-                Free(param->C);
+                free(param->C);
         // mC
         if (param->mC)
-                Free(param->mC);
+                free(param->mC);
         // zscore
         if (param->zscore)
-                Free(param->zscore);
+                free(param->zscore);
 }

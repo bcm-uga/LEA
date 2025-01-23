@@ -4,7 +4,7 @@
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
+   the free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
@@ -87,7 +87,7 @@ void sort_index(double *data, int *index, int n)
         for (i = 0; i < n; i++)
                 index[i] = pointers[i] - data;
 
-        Free(pointers);
+        free(pointers);
 }
 
 // imin

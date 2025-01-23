@@ -4,7 +4,7 @@
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
+   the free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
@@ -109,7 +109,7 @@ void slice_m(void *G)
                 }
 
                 // free memory
-                Free(tmp_i);
+                free(tmp_i);
 
         } else {
                 nb_data = M;
@@ -137,7 +137,7 @@ void slice_m(void *G)
                 }
 
                 // free memory
-                Free(tmp_j);
+                free(tmp_j);
         }
 
 }
@@ -181,8 +181,8 @@ void slice_rand(void *G)
                         A[k * N + i] = y[k];
         }
         // free memory
-        Free(mu);
-        Free(y);
+        free(mu);
+        free(y);
 }
 
 // slice_inv_cov

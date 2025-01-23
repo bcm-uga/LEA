@@ -3,7 +3,7 @@
  * Frichot
  * 
  * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
+ * under the terms of the GNU General Public License as published by the free
  * Software Foundation, either version 3 of the License, or (at your option)
  * any later version.
  * 
@@ -78,11 +78,11 @@ void tracyWidom(char *input_file, char *output_file)
                               percentage);
 
         // free memory
-        Free(values);
-        Free(pvalues);
-        Free(twstat);
-        Free(effectn);
-        Free(percentage);
+        free(values);
+        free(pvalues);
+        free(twstat);
+        free(effectn);
+        free(percentage);
 }
 
 // write_data_tracyWidom
@@ -210,7 +210,7 @@ void clean_zeros(double **values, int *M)
                         new[i] = (*values)[i];
                 tmp = *values;
                 *values = new;
-                Free(tmp);
+                free(tmp);
         }
 }
 

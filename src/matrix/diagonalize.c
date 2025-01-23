@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -67,9 +67,9 @@ void diagonalize(double *cov, int N, int K, double *val, double *vect)
                 for (i = 0; i < N; i++)
                         vect[i * K + k] = vectp[(K - (k + 1)) * N + i];
 
-        Free(valp);
-        Free(vectp);
-        Free(supp);
-        Free(work);
-        Free(iwork);
+        free(valp);
+        free(vectp);
+        free(supp);
+        free(work);
+        free(iwork);
 }

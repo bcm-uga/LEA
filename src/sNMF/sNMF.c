@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -81,7 +81,7 @@ void sNMF(sNMF_param param)
 	        tmp_file = remove_ext(param->input_file,'.','/');
                 strcpy(param->data_file, tmp_file);
 	        strcat(param->data_file, "_I.geno");
-	        Free(tmp_file);
+	        free(tmp_file);
 		// create file with masked genotypes
 		Rprintf("\n <<<<<< createDataSet program\n\n");
 		createDataSet(param->input_file, param->seed, param->pourcentage, 
@@ -126,8 +126,8 @@ void sNMF(sNMF_param param)
 			// calc init of Q_res
 			ALS(param);
 			// free memory
-			Free(param->F);
-			Free(param->X);
+			free(param->F);
+			free(param->X);
 			// put back the parameters
 			param->X = X;
 			param->Mp = Mp;

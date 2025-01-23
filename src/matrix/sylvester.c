@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -90,9 +90,9 @@ void sylvester(double *A, double *B, double *C, double *X, int M, int N)
                 }
         }
 
-        Free(QA);
-        Free(QB);
-        Free(Ct);
+        free(QA);
+        free(QB);
+        free(Ct);
 }
 
 // schur
@@ -116,7 +116,7 @@ void schur(double *A, double *Q, int M)
                (double *) work, (int *) (&lwork), 0,
                (int *) (&info)  FCONE FCONE);
         
-        Free(wr);
-        Free(wi);
-        Free(work);
+        free(wr);
+        free(wi);
+        free(work);
 }

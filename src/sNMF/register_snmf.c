@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -181,7 +181,7 @@ void analyse_param_snmf(int argc, char *argv[], sNMF_param param)
                 strcat(param->output_file_F,tmp);
                 strcat(param->output_file_F,".G");
 	}
-        Free(tmp_file);
+        free(tmp_file);
 }
 
 // init_param_snmf
@@ -211,27 +211,27 @@ void free_param_snmf (sNMF_param param)
 {
 	// Q
 	if (param->Q)
-		Free(param->Q);
+		free(param->Q);
 	// F
 	if (param->F)
-		Free(param->F);
+		free(param->F);
 	// X
 	if (param->X)
-		Free(param->X);
+		free(param->X);
 	// Xi
 	if (param->Xi)
-		Free(param->Xi);
+		free(param->Xi);
 	// temp1
 	if (param->temp1)
-		Free(param->temp1);
+		free(param->temp1);
 	// tempQ
 	if (param->tempQ)
-		Free(param->tempQ);
+		free(param->tempQ);
 	// temp3
 	if (param->temp3)
-		Free(param->temp3);
+		free(param->temp3);
 	// Y
 	if (param->Y)
-		Free(param->Y);
+		free(param->Y);
 }
 

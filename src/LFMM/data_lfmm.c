@@ -4,7 +4,7 @@
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
+   the free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
@@ -84,13 +84,13 @@ void rand_matrix(double *A, double *m_A, double *inv_cov_A, double alpha_R,
                         }
                 }
                 // free memory
-                Free(mu);
-                Free(y);
+                free(mu);
+                free(y);
 #ifndef WIN32
         }
 #endif
         // free memory
-        Free(L);
+        free(L);
 }
 
 // create_inv_cov
@@ -139,7 +139,7 @@ void create_inv_cov(double *inv_cov, double *alpha, double alpha_R,
                 fast_inverse(tmp2, K, inv_cov);
         }
         // free memory
-        Free(tmp2);
+        free(tmp2);
 }
 
 // create_m
@@ -190,7 +190,7 @@ void create_m(double *A, float *R, double *B, double *C, double *m,
                         }
                 }
                 // free memory
-                Free(tmp_i);
+                free(tmp_i);
 #ifndef WIN32
         }
 #endif
@@ -210,7 +210,7 @@ void quantiles(double *dist, double *prob, int n, int p, double *res)
                 res[j] = (dist[index[jm]] + dist[index[jp]]) / 2;
         }
 
-        Free(index);
+        free(index);
 }
 
 // lambda
@@ -242,10 +242,10 @@ double lambda(double *p, int n)
 
         res = median(qchisq, 41);
 
-        Free(qchisq);
-        Free(pp);
-        Free(q);
-        Free(dist);
+        free(qchisq);
+        free(pp);
+        free(q);
+        free(dist);
 
         return res;
 }
@@ -266,7 +266,7 @@ void pvalue_qvalue(double *pvalues, double *qvalues, int n)
                 if (qvalues[index[i]] > 1.0)
                         qvalues[index[i]] = 1.0;
         }
-        Free(index);
+        free(index);
 }
 
 // zscore_calc
@@ -291,8 +291,8 @@ void zscore_calc(double *zscore, double *sum, double *sum2, int n, int cur,
                 m[i - n] = sum[i] / cur;
         }
 
-        Free(r);
-        Free(m);
+        free(r);
+        free(m);
 }
 
 // update_sum
@@ -508,8 +508,8 @@ void write_zscore_double(char *output_file, int M, double *zscore, int D,
                 Rprintf("\t-------------------------\n");
         }
 
-        Free(pvalues);
-        // Free(qvalues);
+        free(pvalues);
+        // free(qvalues);
 }
 
 // var_data
