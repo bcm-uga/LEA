@@ -116,7 +116,7 @@ int nb_cols_lfmm(char *file)
 
         // open file
         fp = fopen_read(file);
-        szbuff = (char *)Calloc(2 * cols * sizeof(char), char);
+        szbuff = (char *) calloc(2 * cols , sizeof(char));
         // read first line
         token = fgets(szbuff, 2 * cols, fp);
         cols = 0;
@@ -140,7 +140,7 @@ int nb_lines(char *file, int M)
         FILE *fp = fopen_read(file);
         int lines = 0;
         int max_char_per_line = 20 * M + 10;
-        char *szbuff = (char *)Calloc(max_char_per_line * sizeof(char), char);
+        char *szbuff = (char *) calloc(max_char_per_line, sizeof(char));
 
         // while not end of file
         while (fgets(szbuff, max_char_per_line, fp))
