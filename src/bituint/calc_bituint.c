@@ -46,7 +46,7 @@ void tBtX(double *A, bituint * X, double *B, int K, int Mp, int Mc,
 #ifndef WIN32
         // multi-threaded non windows version
         if (num_thrd > 1) {
-                thread_fct_bituint(X, A, B, K, Mc, Mp, N, num_thrd, (void (*)(void *))slice_tBtX);
+                thread_fct_bituint(X, A, B, K, Mc, Mp, N, num_thrd, (void (*))slice_tBtX);
         } else {
 #endif
                 // uni-threaded or windows version
@@ -98,7 +98,7 @@ void BX(double *A, bituint * X, double *B, int K, int Mp, int Mc, int N,
 #ifndef WIN32
         // multi-threaded non windows version
         if (num_thrd > 1) {
-                thread_fct_bituint(X, A, B, K, Mc, Mp, N, num_thrd, (void (*)(void *))slice_BX);
+                thread_fct_bituint(X, A, B, K, Mc, Mp, N, num_thrd, (void (*))slice_BX);
         } else {
 #endif
                 // uni-threaded or windows version
