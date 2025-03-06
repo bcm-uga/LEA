@@ -32,7 +32,8 @@
 // thread_fct_bituint
 
 void thread_fct_bituint(bituint * X, double *A, double *B, int K, int Mc,
-                        int Mp, int N, int num_thrd, void (*fct) (Multithreading_bituint))
+                        int Mp, int N, int num_thrd, void (*fct) (void *))
+                            //Multithreading_bituint)
 {
         pthread_t *thread;      // pointer to a group of threads
         int i;
@@ -42,12 +43,10 @@ void thread_fct_bituint(bituint * X, double *A, double *B, int K, int Mc,
             (Multithreading_bituint *) malloc(num_thrd *
                                               sizeof(Multithreading_bituint));
 
-        /* this for loop not entered if threadd number is specified as 1 */
+        /* this for loop not entered if thread number is specified as 1 */
         for (i = 1; i < num_thrd; i++) {
                 Ma[i] =
-                    (Multithreading_bituint) malloc(1 *
-                                                    sizeof
-                                                    (multithreading_bituint));
+                    (Multithreading_bituint) malloc(sizeof(multithreading_bituint));
                 Ma[i]->X = X;
                 Ma[i]->A = A;
                 Ma[i]->B = B;

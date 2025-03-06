@@ -49,7 +49,7 @@ typedef struct _multithreading_bituint {
  * @param fct	the specific slice function
  */
 void thread_fct_bituint(bituint * X, double *A, double *B, int K, int Mc,
-                        int Mp, int N, int num_thrd, void (*fct) ());
+                        int Mp, int N, int num_thrd, void (*fct)(void *));
 
 #endif
 
