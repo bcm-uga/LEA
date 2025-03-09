@@ -48,7 +48,7 @@ typedef struct _multithreading_matrix {
  * @param fct	the specific slice function
  */
 void thread_fct_matrix(double *A, double *B, double *C, int K, int M,
-                       int N, double alpha, int num_thrd, void (*fct) ());
+                       int N, double alpha, int num_thrd, void (*fct)(void *));
 
 #endif
 

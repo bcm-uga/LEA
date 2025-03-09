@@ -32,7 +32,8 @@
 // thread_fct_snmf
 
 void thread_fct_snmf(bituint *R, double *out, double *Q, double *F, 
-		int nc, int K, int M, int Mp, int N, int num_thrd, void (*fct) (Matrix_snmf))
+		int nc, int K, int M, int Mp, int N, int num_thrd,   void (*fct)(void *) )
+		// void (*fct) (Matrix_snmf))
 {
 	pthread_t *thread;	// pointer to a group of threads
 	int i;

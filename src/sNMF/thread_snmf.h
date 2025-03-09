@@ -49,7 +49,7 @@ typedef struct _matrix_snmf {
  * @param fct	the specific slice function
  */
 void thread_fct_snmf(bituint *R, double *out, double *Q, double *F,
-                int nc, int K, int M, int Mp, int N, int num_thrd, void (*fct) ());
+                int nc, int K, int M, int Mp, int N, int num_thrd, void (*fct)(void *));
 
 #endif
 

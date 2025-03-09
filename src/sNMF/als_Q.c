@@ -119,7 +119,7 @@ void update_Q(double *Q, double *F, bituint *X, int N, int M, int nc, int Mp,
 	zeros(temp3,K*N);
 
 	if (num_thrd > 1) {
-		thread_fct_snmf(X, temp3, NULL, F, nc, K, M, Mp, N, num_thrd, slice_F_TX);
+		thread_fct_snmf(X, temp3, NULL, F, nc, K, M, Mp, N, num_thrd,  (void (*)(void *))slice_F_TX);
 	} else {
 		for (jd = 0; jd<Md; jd++) {
 			for (i = 0; i < N; i++) {

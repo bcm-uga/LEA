@@ -33,7 +33,8 @@
 void thread_fct_lfmm(float *R, double *A, double *B, double *C, double *m,
                      double *inv_cov, double *L, int J, int K, int N, int M,
                      double *alpha, double alpha_R, int num_thrd, int mode,
-                     void (*fct) (Multithreading_lfmm))
+                     void (*fct)(void *) ) 
+                     //void (*fct) (Multithreading_lfmm))
 {
         pthread_t *thread;      // pointer to a group of threads
         int i;
@@ -46,8 +47,7 @@ void thread_fct_lfmm(float *R, double *A, double *B, double *C, double *m,
         /* this for loop not entered if threadd number is specified as 1 */
         for (i = 1; i < num_thrd; i++) {
                 Ma[i] =
-                    (Multithreading_lfmm) malloc(1 *
-                                                 sizeof(multithreading_lfmm));
+                    (Multithreading_lfmm) malloc(sizeof(multithreading_lfmm));
                 Ma[i]->R = R;
                 Ma[i]->A = A;
                 Ma[i]->B = B;

@@ -31,7 +31,8 @@
 // thread_fct_matrix
 
 void thread_fct_matrix(double *A, double *B, double *C, int K, int M, int N,
-                       double alpha, int num_thrd, void (*fct) (Multithreading_matrix))
+                       double alpha, int num_thrd, void (*fct)(void *) )
+  //void (*fct) (Multithreading_matrix))
 {
         pthread_t *thread;      // pointer to a group of threads
         int i;
@@ -44,9 +45,7 @@ void thread_fct_matrix(double *A, double *B, double *C, int K, int M, int N,
         /* this for loop not entered if threadd number is specified as 1 */
         for (i = 1; i < num_thrd; i++) {
                 Ma[i] =
-                    (Multithreading_matrix) malloc(1 *
-                                                   sizeof
-                                                   (multithreading_matrix));
+                    (Multithreading_matrix) malloc(sizeof(multithreading_matrix));
                 Ma[i]->A = A;
                 Ma[i]->B = B;
                 Ma[i]->C = C;

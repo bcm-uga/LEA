@@ -58,7 +58,7 @@ void rand_matrix(double *A, double *m_A, double *inv_cov_A, double alpha_R,
         if (num_thrd > 1) {
                 thread_fct_lfmm(NULL, A, NULL, NULL, m_A, inv_cov_A, L,
                                 0, K, N, 0, NULL, alpha_R, num_thrd, 0,
-                                slice_rand);
+                                (void (*)(void *))slice_rand);
                 // uni-threaded or windows version
         } else {
 #endif
@@ -107,7 +107,7 @@ void create_inv_cov(double *inv_cov, double *alpha, double alpha_R,
         if (num_thrd > 1) {
                 thread_fct_lfmm(NULL, A, NULL, NULL, NULL, tmp2, NULL,
                                 0, K, 0, M, alpha, alpha_R, num_thrd, 0,
-                                slice_inv_cov);
+                                (void (*)(void *))slice_inv_cov);
                 // uni-threaded or windows version
         } else {
 #endif
@@ -158,7 +158,7 @@ void create_m(double *A, float *R, double *B, double *C, double *m,
         // multi-threaded non windows version
         if (num_thrd >= 1) {
                 thread_fct_lfmm(R, A, B, C, m, NULL, NULL,
-                                J, K, N, M, NULL, 0, num_thrd, mode, slice_m);
+                                J, K, N, M, NULL, 0, num_thrd, mode, (void (*)(void *))slice_m);
         } else {
 #endif
                 // uni-threaded or windows version
