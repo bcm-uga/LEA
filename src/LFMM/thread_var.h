@@ -52,7 +52,7 @@ typedef struct _multithreading_lfmm_var {
  * @param res2	the second res
  */
 void thrd_var(LFMM_param param, LFMM_GS_param GS_param,
-              void (*fct) (), double *res, double *res2);
+              void (*fct)(void *), double *res, double *res2);
 
 /**
  * compute a slice of the mean

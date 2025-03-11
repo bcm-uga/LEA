@@ -32,7 +32,8 @@
 // thrd_var
 
 void thrd_var(LFMM_param param, LFMM_GS_param GS_param,
-              void (*fct) (Multithreading_lfmm_var), double *res, double *res2)
+              void (*fct)(void *), double *res, double *res2)
+              //void (*fct) (Multithreading_lfmm_var), double *res, double *res2)
 {
         pthread_t *thread;      // pointer to a group of threads
         int i;
@@ -46,9 +47,8 @@ void thrd_var(LFMM_param param, LFMM_GS_param GS_param,
         /* this for loop not entered if threadd number is specified as 1 */
         for (i = 1; i < param->num_thrd; i++) {
                 Ma[i] =
-                    (Multithreading_lfmm_var) malloc(1 *
-                                                     sizeof
-                                                     (multithreading_lfmm_var));
+                    (Multithreading_lfmm_var) malloc(sizeof
+                                                       (multithreading_lfmm_var));
                 Ma[i]->R = param->dat;
                 Ma[i]->U = param->U;
                 Ma[i]->V = param->V;
@@ -75,8 +75,7 @@ void thrd_var(LFMM_param param, LFMM_GS_param GS_param,
          *          so everybody is busy
          *                   main thread does everything if threadd number is specified as 1*/
         Ma[0] =
-            (Multithreading_lfmm_var) malloc(1 *
-                                             sizeof(multithreading_lfmm_var));
+            (Multithreading_lfmm_var) malloc(sizeof(multithreading_lfmm_var));
         Ma[0]->R = param->dat;
         Ma[0]->U = param->U;
         Ma[0]->V = param->V;

@@ -523,12 +523,12 @@ double var_data(LFMM_param param, LFMM_GS_param GS_param)
         int K = param->K;
         int D = param->mD;
         /*
-           thrd_var(R,U,V,C,beta,K,D,M,N,num_thrd,slice_mean,0,&mean,0);
+           thrd_var(R,U,V,C,beta,K,D,M,N,num_thrd,(void (*)(void *))slice_mean,0,&mean,0);
            mean /= N*M;
          */
 #ifndef WIN32
         if (param->num_thrd > 1) {
-                thrd_var(param, GS_param, slice_var, &mean, &mean2);
+                thrd_var(param, GS_param, (void (*)(void *))slice_var, &mean, &mean2);
         } else {
 #endif
                 mean = 0.0;
@@ -573,7 +573,7 @@ double var_data_inputation(float *R, int *I, double *U, double *V, double *C,
 
 # ifndef WIN32
 	if (num_thrd > 1) {
-		thrd_var(R, U, V, C, beta, K, D, M, N, num_thrd, slice_var, 0, &mean,
+		thrd_var(R, U, V, C, beta, K, D, M, N, num_thrd, (void (*)(void *))slice_var, 0, &mean,
 				&mean2);
 	} else {
 # endif
