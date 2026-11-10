@@ -18,6 +18,9 @@
 
 #include <stdint.h>
 
+/* Includes the terminating NUL; SNP names may contain at most 511 bytes. */
+#define ANCESTRYMAP_SNP_NAME_CAPACITY 512
+
 /**
  * @brief count the number of individuals in an ancestrymap file.
  * 
@@ -56,7 +59,7 @@ void read_ancestrymap(char *input_file, int N, int M, int *data);
  *
  * @param szbuff	line to read (previously obtain with fgets)
  * @param allele	variable to read allele
- * @param name		name of the SNP
+ * @param name		name of the SNP (buffer of ANCESTRYMAP_SNP_NAME_CAPACITY bytes)
  * @param i		number of the individual
  * @param j		number of the SNP
  * @param input		input file
