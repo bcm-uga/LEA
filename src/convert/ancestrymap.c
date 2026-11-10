@@ -30,6 +30,18 @@
 #include "../io/read.h"
 #include "register_convert.h"
 
+/* Validate before either SNP-name copy. Lengths are bytes, excluding NUL. */
+static void check_snp_name(const char *token, const char *input, int i, int j)
+{
+        if (!token)
+                error("Invalid ANCESTRYMAP record in %s at individual %d, SNP %d: "
+                      "missing SNP name.", input, i, j);
+        if (strlen(token) >= ANCESTRYMAP_SNP_NAME_CAPACITY)
+                error("SNP name too long in %s at individual %d, SNP %d: "
+                      "maximum is %d bytes.", input, i, j,
+                      ANCESTRYMAP_SNP_NAME_CAPACITY - 1);
+}
+
 // ancestrymap2geno
 
 void ancestrymap2geno(char *input_file, char *output_file, int *N, int *M)
@@ -43,8 +55,8 @@ void ancestrymap2geno(char *input_file, char *output_file, int *N, int *M)
         nb = nb_lines(input_file, 1000);
         tmp = (double)nb / (double)(*N);
         if (tmp != floor(tmp)) {
-                Rprintf("Error: incorrect number of lines in %s.\n", input_file);
-                error(NULL);
+                error("Invalid ANCESTRYMAP file %s: incorrect number of lines "
+                      "for %d individuals.", input_file, *N);
         }
         *M = (int)tmp;
 
@@ -74,8 +86,8 @@ void ancestrymap2lfmm(char *input_file, char *output_file, int *N, int *M)
         nb = nb_lines(input_file, 1000);
         tmp = (double)nb / (double)(*N);
         if (tmp != floor(tmp)) {
-                Rprintf("Error: incorrect number of lines in %s.\n", input_file);
-                error(NULL);
+                error("Invalid ANCESTRYMAP file %s: incorrect number of lines "
+                      "for %d individuals.", input_file, *N);
         }
         *M = (int)tmp;
 
@@ -98,8 +110,8 @@ void read_ancestrymap(char *input_file, int N, int M, int *data)
 {
         FILE *File = NULL;
         int i, j, allele;
-        char tmp[512] = "";
-        char ref[512] = "";
+        char tmp[ANCESTRYMAP_SNP_NAME_CAPACITY] = "";
+        char ref[ANCESTRYMAP_SNP_NAME_CAPACITY] = "";
         int max_char_per_line = 1000;
         char szbuff[max_char_per_line];
         int warning = 0;
@@ -126,22 +138,38 @@ void read_ancestrymap(char *input_file, int N, int M, int *data)
                 // new SNP
                 if (strcmp(ref, tmp) != 0) {
                         // test if the number individual for the line is ok
-                        test_column(input_file, File, i, j + 1, N, NULL);
+                        if (i != N) {
+                                fclose(File);
+                                error("Invalid ANCESTRYMAP file %s at SNP %d: "
+                                      "%d individuals instead of %d.",
+                                      input_file, j + 1, i, N);
+                        }
                         // new line
                         i = 0;
                         j++;
                         // save new SNP name
                         strcpy(ref, tmp);
                 }
+                // Reject inconsistent groups before indexing the data matrix.
+                if (i >= N || j >= M) {
+                        fclose(File);
+                        error("Invalid ANCESTRYMAP group sizes in %s at "
+                              "individual %d, SNP %d.", input_file, i + 1, j + 1);
+                }
                 // write genotype
                 data[i * M + j] = allele;
 
                 i++;
         }
-        test_column(input_file, File, i, j + 1, N, NULL);
-
-        // test the number of lines
-        test_line(input_file, File, j + 1, M);
+        if (ferror(File)) {
+                fclose(File);
+                error("Error reading ANCESTRYMAP file %s.", input_file);
+        }
+        if (i != N || j + 1 != M || !feof(File)) {
+                fclose(File);
+                error("Invalid ANCESTRYMAP file %s: inconsistent number of "
+                      "individuals or loci.", input_file);
+        }
 
         fclose(File);
 }
@@ -153,38 +181,21 @@ void read_line_ancestrymap(char *szbuff, int *allele, char *name, int i, int j,
 {
         char *token;
 
-        // read first column
+        // read and validate the SNP name before copying into the caller's buffer
         token = strtok(szbuff, SEP);
-        if (token) {
-                // save SNP name
-                strcpy(name, token);
-                // read second column
-                token = strtok(NULL, SEP);
-                if (token) {
-                        // read the third column
-                        token = strtok(NULL, SEP);
-                        if (token) {
-                                // save the genotype
-                                *allele = (int)atoi(token);
-                        } else {
-                                // only 2 columns
-                                Rprintf
-                                    ("Error while reading %s file at individual %d,"
-                                     " SNP %d.\n\n", input, i, j);
-                                error(NULL);
-                        }
-                } else {
-                        // only 1 column
-                        Rprintf("Error while reading %s file at individual %d,"
-                               " SNP %d.\n\n", input, i, j);
-                        error(NULL);
-                }
-        } else {
-                // no column
-                Rprintf("Error while reading %s file at individual %d,"
-                       " SNP %d.\n\n", input, i, j);
-                error(NULL);
-        }
+        check_snp_name(token, input, i, j);
+        strcpy(name, token);
+
+        // The individual identifier and genotype columns must both exist.
+        token = strtok(NULL, SEP);
+        if (!token)
+                error("Invalid ANCESTRYMAP record in %s at individual %d, SNP %d: "
+                      "missing individual identifier and genotype.", input, i, j);
+        token = strtok(NULL, SEP);
+        if (!token)
+                error("Invalid ANCESTRYMAP record in %s at individual %d, SNP %d: "
+                      "missing genotype.", input, i, j);
+        *allele = (int)atoi(token);
 
         // if not 0, 1, 2, or 9
         if (!(*warning) && *allele != 9 && *allele != 1 && *allele != 2
@@ -203,30 +214,29 @@ int nb_ind_ancestrymap(char *input_file)
 {
         FILE *File = NULL;
         int max_char_per_line = 1000;
-        int nb = 0, diff = 0;
+        int nb = 0;
         char szbuff[max_char_per_line];
         char *token;
-        char tmp[512] = "";
+        char tmp[ANCESTRYMAP_SNP_NAME_CAPACITY] = "";
 
-        // open input file
         File = fopen_read(input_file);
 
-        // first line
-        token = fgets(szbuff, max_char_per_line, File);
-        token = strtok(szbuff, SEP);
-        strcpy(tmp, token);
-
-        // while still the same SNP, count
-        while (!feof(File) && !diff) {
-                token = fgets(szbuff, max_char_per_line, File);
+        // Count the first locus, using only successfully read records.
+        while (fgets(szbuff, max_char_per_line, File)) {
                 token = strtok(szbuff, SEP);
-
-                // compare the current name with the first name
-                diff = strcmp(tmp, token) != 0;
+                check_snp_name(token, input_file, nb + 1, 1);
+                if (nb == 0)
+                        strcpy(tmp, token);
+                else if (strcmp(tmp, token) != 0)
+                        break;
                 nb++;
         }
-
-        // close file
+        if (ferror(File)) {
+                fclose(File);
+                error("Error reading ANCESTRYMAP file %s.", input_file);
+        }
         fclose(File);
+        if (nb == 0)
+                error("Empty ANCESTRYMAP file %s: no records.", input_file);
         return nb;
 }
