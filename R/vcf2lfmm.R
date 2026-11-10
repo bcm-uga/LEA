@@ -24,6 +24,9 @@ vcf2lfmm <- function(    input.file,
 
     # conversion
     tmp.file = vcf2geno(input.file);
+    # An empty GENO file has no loci; geno2lfmm cannot process it safely.
+    if (file.info(tmp.file)$size == 0)
+        stop("VCF conversion produced no retained loci; cannot create LFMM output.")
     output.file = geno2lfmm(tmp.file);
 
     # create output 

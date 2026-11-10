@@ -15,271 +15,447 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <R.h> 
-
+#include <R.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
-#include "../io/io_tools.h"
-#include "../io/io_error.h"
-#include "../io/read.h"
-#include "geno.h"
+#include <stdarg.h>
+#include <stdint.h>
+#include <limits.h>
 #include "vcf2geno.h"
 
-// read_lines
+/* All storage and streams belong to this context. Helpers return errors rather
+ * than jumping into R, so cleanup always precedes the R error. Field pointers
+ * borrow the complete line and are used only until the next read. */
+typedef struct {
+        const char *input_name;
+        FILE *input, *geno, *snp, *removed;
+        char *line;
+        size_t line_capacity, line_number;
+        char **fields, **keys;
+        size_t field_capacity, field_count, key_capacity;
+        int *allele;
+        char message[1024];
+} vcf_context;
+
+static int vcf_fail(vcf_context *ctx, const char *format, ...)
+{
+        char detail[512];
+        va_list args;
+        va_start(args, format);
+        vsnprintf(detail, sizeof(detail), format, args);
+        va_end(args);
+        snprintf(ctx->message, sizeof(ctx->message),
+                 "VCF error at line %zu: %s (file: %.400s)",
+                 ctx->line_number, detail, ctx->input_name);
+        return 0;
+}
+
+static void *vcf_grow(vcf_context *ctx, void *old, size_t *capacity,
+                      size_t needed, size_t width)
+{
+        size_t next;
+        void *replacement;
+        if (needed <= *capacity)
+                return old;
+        if (needed > SIZE_MAX / width) {
+                vcf_fail(ctx, "Buffer size exceeds allocation limits.");
+                return NULL;
+        }
+        next = *capacity ? *capacity : 16;
+        while (next < needed) {
+                if (next > SIZE_MAX / 2) {
+                        next = needed;
+                        break;
+                }
+                next *= 2;
+        }
+        if (next > SIZE_MAX / width)
+                next = needed;
+        replacement = realloc(old, next * width);
+        if (!replacement) {
+                vcf_fail(ctx, "Unable to allocate a VCF buffer.");
+                return NULL;
+        }
+        *capacity = next;
+        return replacement;
+}
+
+/* 1 = a complete physical line, 0 = clean EOF, -1 = error. Use int for EOF,
+ * binary input plus explicit CRLF handling, and no POSIX-only getline API. */
+static int vcf_read_line(vcf_context *ctx)
+{
+        size_t length = 0;
+        int byte = fgetc(ctx->input);
+        if (byte == EOF) {
+                if (ferror(ctx->input)) {
+                        vcf_fail(ctx, "Unable to read input.");
+                        return -1;
+                }
+                return 0;
+        }
+        if (ctx->line_number == SIZE_MAX) {
+                vcf_fail(ctx, "Too many physical lines.");
+                return -1;
+        }
+        ctx->line_number++;
+        while (byte != EOF && byte != '\n') {
+                char *replacement;
+                if (byte == 0) {
+                        vcf_fail(ctx, "Embedded NUL in input.");
+                        return -1;
+                }
+                if ((byte < 32 && byte != '\t' && byte != '\r') || byte == 127 ||
+                    (length && ctx->line[length - 1] == '\r')) {
+                        vcf_fail(ctx, "Invalid control byte in input.");
+                        return -1;
+                }
+                if (length > SIZE_MAX - 2) {
+                        vcf_fail(ctx, "Physical line exceeds allocation limits.");
+                        return -1;
+                }
+                replacement = vcf_grow(ctx, ctx->line, &ctx->line_capacity,
+                                       length + 2, sizeof(char));
+                if (!replacement)
+                        return -1;
+                ctx->line = replacement;
+                ctx->line[length++] = (char)byte;
+                byte = fgetc(ctx->input);
+        }
+        if (ferror(ctx->input)) {
+                vcf_fail(ctx, "Unable to read input.");
+                return -1;
+        }
+        if (!ctx->line) {
+                ctx->line = vcf_grow(ctx, NULL, &ctx->line_capacity, 1, sizeof(char));
+                if (!ctx->line)
+                        return -1;
+        }
+        if (length && ctx->line[length - 1] == '\r')
+                length--;
+        ctx->line[length] = '\0';
+        return 1;
+}
+
+/* Split spaces within each tab-delimited segment for historical LEA inputs,
+ * but never collapse an empty tab segment into the next field. */
+static int vcf_split(vcf_context *ctx)
+{
+        char *segment = ctx->line;
+        int has_tabs = strchr(segment, '\t') != NULL;
+        ctx->field_count = 0;
+        for (;;) {
+                char *end = strchr(segment, '\t');
+                char *cursor = segment;
+                size_t before = ctx->field_count;
+                if (end)
+                        *end = '\0';
+                while (*cursor) {
+                        char *field;
+                        char **replacement;
+                        while (*cursor == ' ')
+                                cursor++;
+                        if (!*cursor)
+                                break;
+                        field = cursor;
+                        while (*cursor && *cursor != ' ')
+                                cursor++;
+                        if (*cursor)
+                                *cursor++ = '\0';
+                        if (ctx->field_count == SIZE_MAX)
+                                return vcf_fail(ctx, "Too many fields.");
+                        replacement = vcf_grow(ctx, ctx->fields, &ctx->field_capacity,
+                                               ctx->field_count + 1, sizeof(char *));
+                        if (!replacement)
+                                return 0;
+                        ctx->fields = replacement;
+                        ctx->fields[ctx->field_count++] = field;
+                }
+                if (has_tabs && before == ctx->field_count)
+                        return vcf_fail(ctx, "Empty tab-separated field.");
+                if (!end)
+                        break;
+                segment = end + 1;
+        }
+        return 1;
+}
+
+static int compare_strings(const void *left, const void *right)
+{
+        return strcmp(*(char *const *)left, *(char *const *)right);
+}
+
+static int vcf_read_header(vcf_context *ctx, int *samples)
+{
+        static const char *const names[9] = {
+                "#CHROM", "POS", "ID", "REF", "ALT", "QUAL", "FILTER", "INFO", "FORMAT"
+        };
+        int status;
+        while ((status = vcf_read_line(ctx)) == 1) {
+                if (!strncmp(ctx->line, "##", 2))
+                        continue;
+                if (!vcf_split(ctx))
+                        return 0;
+                if (ctx->field_count < 10)
+                        return vcf_fail(ctx, "Expected #CHROM header with FORMAT and at least one sample.");
+                for (size_t i = 0; i < 9; i++)
+                        if (strcmp(ctx->fields[i], names[i]))
+                                return vcf_fail(ctx, "Invalid VCF header column %zu; expected %s.", i + 1, names[i]);
+                if (ctx->field_count - 9 > INT_MAX)
+                        return vcf_fail(ctx, "Sample count exceeds integer limits.");
+                /* Header sample pointers are not needed after this count. */
+                qsort(ctx->fields + 9, ctx->field_count - 9, sizeof(char *), compare_strings);
+                for (size_t i = 10; i < ctx->field_count; i++)
+                        if (!strcmp(ctx->fields[i - 1], ctx->fields[i]))
+                                return vcf_fail(ctx, "Duplicate sample identifier in header.");
+                *samples = (int)(ctx->field_count - 9);
+                return 1;
+        }
+        if (status < 0)
+                return 0;
+        return vcf_fail(ctx, "Missing #CHROM header (empty or incomplete VCF input).");
+}
+
+static int key_initial(unsigned char c)
+{
+        return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_';
+}
+
+/* Temporarily split FORMAT for grammar/duplicate validation, then restore its
+ * original bytes before sidecar output. key_count also bounds sample suffixes. */
+static int vcf_format(vcf_context *ctx, size_t *key_count)
+{
+        char *format = ctx->fields[8], *cursor = format;
+        size_t length = strlen(format);
+        *key_count = 0;
+        if (strcspn(format, ":") != 2 || format[0] != 'G' || format[1] != 'T')
+                return vcf_fail(ctx, "Unsupported FORMAT: GT must be the first field.");
+        for (;;) {
+                char *end = strchr(cursor, ':');
+                char **replacement;
+                if (end)
+                        *end = '\0';
+                if (!key_initial((unsigned char)*cursor))
+                        return vcf_fail(ctx, "Empty or malformed FORMAT key.");
+                for (char *p = cursor + 1; *p; p++)
+                        if (!key_initial((unsigned char)*p) && !(*p >= '0' && *p <= '9') && *p != '.')
+                                return vcf_fail(ctx, "Malformed FORMAT key.");
+                if (*key_count == SIZE_MAX)
+                        return vcf_fail(ctx, "Too many FORMAT keys.");
+                replacement = vcf_grow(ctx, ctx->keys, &ctx->key_capacity,
+                                       *key_count + 1, sizeof(char *));
+                if (!replacement)
+                        return 0;
+                ctx->keys = replacement;
+                ctx->keys[(*key_count)++] = cursor;
+                if (!end)
+                        break;
+                cursor = end + 1;
+        }
+        qsort(ctx->keys, *key_count, sizeof(char *), compare_strings);
+        for (size_t i = 1; i < *key_count; i++)
+                if (!strcmp(ctx->keys[i - 1], ctx->keys[i]))
+                        return vcf_fail(ctx, "Duplicate FORMAT key.");
+        for (size_t i = 0; i < length; i++)
+                if (!format[i])
+                        format[i] = ':';
+        return 1;
+}
+
+static int vcf_allele_char(char c)
+{
+        return c == '0' || c == '1' || c == '.';
+}
+
+static int vcf_decode(vcf_context *ctx, int samples, size_t key_count)
+{
+        for (size_t i = 0; i < (size_t)samples; i++) {
+                const char *sample;
+                size_t length, values = 1;
+                int allele;
+                if (i + 9 >= ctx->field_count)
+                        return vcf_fail(ctx, "Missing sample %zu.", i + 1);
+                sample = ctx->fields[i + 9];
+                length = strcspn(sample, ":");
+                if (length == 1 && vcf_allele_char(sample[0]))
+                        allele = sample[0] == '.' ? 9 : sample[0] - '0';
+                else if (length == 3 && vcf_allele_char(sample[0]) &&
+                         (sample[1] == '/' || sample[1] == '|') && vcf_allele_char(sample[2]))
+                        allele = (sample[0] == '.' || sample[2] == '.') ? 9 :
+                                 (sample[0] - '0') + (sample[2] - '0');
+                else
+                        return vcf_fail(ctx, "Unsupported or malformed haploid/diploid GT at sample %zu.", i + 1);
+                sample += length;
+                while (*sample) {
+                        sample++; /* colon */
+                        length = strcspn(sample, ":");
+                        if (!length)
+                                return vcf_fail(ctx, "Empty FORMAT value at sample %zu.", i + 1);
+                        if (values == key_count)
+                                return vcf_fail(ctx, "Too many FORMAT values at sample %zu.", i + 1);
+                        values++;
+                        sample += length;
+                }
+                ctx->allele[i] = allele;
+        }
+        return 1;
+}
+
+static int vcf_write_info(vcf_context *ctx, FILE *file, int removed)
+{
+        for (size_t i = 0; i < 9; i++)
+                if (fprintf(file, "%s ", ctx->fields[i]) < 0)
+                        return vcf_fail(ctx, "Unable to write variant information.");
+        if ((removed ? fputs("REMOVED\n", file) : fputc('\n', file)) == EOF)
+                return vcf_fail(ctx, "Unable to write variant information.");
+        return 1;
+}
+
+static void vcf_close(vcf_context *ctx, FILE **stream, const char *role)
+{
+        if (*stream) {
+                int result = fclose(*stream);
+                *stream = NULL;
+                if (result == EOF && !ctx->message[0])
+                        vcf_fail(ctx, "Unable to close %s.", role);
+        }
+}
+
+static void vcf_cleanup(vcf_context *ctx)
+{
+        vcf_close(ctx, &ctx->input, "input");
+        vcf_close(ctx, &ctx->geno, "GENO output");
+        vcf_close(ctx, &ctx->snp, "SNP information output");
+        vcf_close(ctx, &ctx->removed, "removed-variant output");
+        free(ctx->allele);
+        free(ctx->keys);
+        free(ctx->fields);
+        free(ctx->line);
+}
 
 int nb_cols_vcf(char *file)
 {
-	char tok;
-	FILE *File = fopen_read(file);
-	int max = 1, cols = 0;
-	int N = 0;
-        char *szbuff;
-        char *token;
-
-
-	tok = fgetc(File);
-	while (!feof(File) && tok == '#') {
-		// count number of elements
-		cols = 1;
-		while (tok != '\n' && tok != EOF) {
-			tok = fgetc(File);
-			cols++;
-		}
-		// save the max
-		if (cols > max)
-			max = cols;
-		if (!feof(File))
-			tok = fgetc(File);
-	}
-	fclose(File);
-	
-        File = fopen_read(file);
-        /*szbuff = (char *)Calloc(2 * max * sizeof(char), char);*/
-        szbuff = (char *) calloc(2 * max , sizeof(char));
-        token = fgets(szbuff, 2 * max, File);
-
-	// skip comment lines
-        while (szbuff[1] == '#')
-        	token = fgets(szbuff,2 * max, File);
-
-	// count the number of elements
-	token = strtok(szbuff, SEP);
-	if (!strcmp(token, "#CHROM")) {
-		while (token) {
-			N++;
-			token = strtok(NULL, SEP);
-		}
-	} else {
-		Rprintf("Error: It seems that the line with individual informations is missing.\n");
-		error(NULL);
-	}
-
-	// close and free
-	fclose(File);
-	free(szbuff);
-
-	// remove the 9 information elements
-	return N - 9;
+        vcf_context ctx = {0};
+        int samples = 0;
+        ctx.input_name = file ? file : "<null>";
+        ctx.input = file ? fopen(file, "rb") : NULL;
+        if (!ctx.input)
+                vcf_fail(&ctx, "Unable to open VCF input.");
+        else
+                vcf_read_header(&ctx, &samples);
+        vcf_cleanup(&ctx);
+        if (ctx.message[0])
+                error("%s", ctx.message);
+        return samples;
 }
 
-// vcf2geno
-
-void vcf2geno(char *input_file, char *output_file, int *N, int *M, 
-		char *snp_file, char *removed_file, int *removed)
+/* The wrapper owns its paths. Return diagnostics only after releasing every
+ * parser resource so the wrapper can free its own allocations before R errors. */
+int vcf2geno_checked(char *input_file, char *output_file, int *N, int *M,
+                     char *snp_file, char *removed_file, int *removed,
+                     char *message, size_t message_size)
 {
-	// temporary variables
-	int i, j, jp, jt;
-  char **infos = (char **) calloc(9, sizeof(char *));
-	/*char **infos = (char **)Calloc(9 * sizeof(char *), char *);*/
-
-	// file management
-	FILE *input_File=NULL;
-	FILE *snp_File = NULL;
-	FILE *removed_File=NULL;
-	FILE *output_File=NULL;
-	int max_char_per_line;
-	char *szbuff, *token = NULL;
-
-	// register output
-	int *allele;
-
-	// read comments lines and first lines
-	*N = nb_cols_vcf(input_file);
-	if ((*N) <= 0) {
-		Rprintf("Error: It seems that %s (vcf file) contains no genotype"
-			" information.\n",input_file); 
-		error(NULL);
-	}
-
-	
-	// init tmp mem
-	for (i = 0; i < 9; i++)
-		infos[i] = (char *) calloc(512, sizeof(char));
-	max_char_per_line = 1000 * (*N) + 20;
-	/*szbuff = (char *)Calloc(max_char_per_line * sizeof(char), char);*/
-	szbuff = (char *) calloc(max_char_per_line, sizeof(char));
-	/*allele = (int *)Calloc(*N * sizeof(int), int);*/
-	allele = (int *) calloc(*N, sizeof(int));
-
-	// open files
-	input_File = fopen_read(input_file);
-	snp_File = fopen_write(snp_file);
-	removed_File = fopen_write(removed_file);
-	output_File = fopen_write(output_file);
-
-	j = 0;
-	jp = 0;
-	jt = 0;
-
-	// for each line
-	while (fgets(szbuff, max_char_per_line, input_File)) {
-		// if not a comment line
-		if (szbuff[0] != '#') {
-
-			// read CNV informations
-			read_cnv_info(token, infos, szbuff, jt + 1);
-
-			// if not a SNP.
-			if (strlen(infos[3]) > 1 || strlen(infos[4]) > 1) {
-				// print it in removed lines info file as REMOVED
-				write_snp_info (removed_File, infos, 1);
-				jp++;
-
-			// if it is a SNP
-			} else {
-				// print it in SNP info file
-				write_snp_info (snp_File, infos, 0);
-
-				// read line vcf
-				fill_line_vcf(token, allele, j, *N,
-                  input_file, input_File);
-
-				// print geno line
-				write_geno_line(output_File, allele, *N);
-				j++;
-			}
-		}
-		// next line
-		jt++;
-	}
-	*removed = jp;
-	*M = j;
-
-	// close files
-	fclose(input_File);
-	fclose(snp_File);
-	fclose(removed_File);
-	fclose(output_File);
-
-	// free memory
-	for (i = 0; i < 9; i++)
-	free(infos[i]);
-	free(infos);
-	free(szbuff);
-	free(allele);
+        vcf_context ctx = {0};
+        int samples = 0, kept = 0, excluded = 0, status;
+        ctx.input_name = input_file ? input_file : "<null>";
+        if (!input_file || !output_file || !snp_file || !removed_file || !N || !M || !removed) {
+                vcf_fail(&ctx, "Missing conversion argument.");
+                goto cleanup;
+        }
+        ctx.input = fopen(input_file, "rb");
+        if (!ctx.input) {
+                vcf_fail(&ctx, "Unable to open VCF input.");
+                goto cleanup;
+        }
+        if (!vcf_read_header(&ctx, &samples))
+                goto cleanup;
+        if ((size_t)samples > SIZE_MAX / sizeof(int)) {
+                vcf_fail(&ctx, "Sample array exceeds allocation limits.");
+                goto cleanup;
+        }
+        ctx.allele = calloc((size_t)samples, sizeof(int));
+        if (!ctx.allele) {
+                vcf_fail(&ctx, "Unable to allocate genotype array.");
+                goto cleanup;
+        }
+        ctx.snp = fopen(snp_file, "w");
+        if (!ctx.snp) {
+                vcf_fail(&ctx, "Unable to open SNP information output: %.300s", snp_file);
+                goto cleanup;
+        }
+        ctx.removed = fopen(removed_file, "w");
+        if (!ctx.removed) {
+                vcf_fail(&ctx, "Unable to open removed-variant output: %.300s", removed_file);
+                goto cleanup;
+        }
+        ctx.geno = fopen(output_file, "w");
+        if (!ctx.geno) {
+                vcf_fail(&ctx, "Unable to open GENO output: %.300s", output_file);
+                goto cleanup;
+        }
+        while ((status = vcf_read_line(&ctx)) == 1) {
+                int is_removed;
+                size_t key_count;
+                if (ctx.line[0] == '#') {
+                        vcf_fail(&ctx, "Unexpected header after #CHROM.");
+                        goto cleanup;
+                }
+                if (!vcf_split(&ctx))
+                        goto cleanup;
+                if (ctx.field_count < 9 || ctx.field_count - 9 != (size_t)samples) {
+                        vcf_fail(&ctx, "Expected nine fixed fields and %d samples; observed %zu fields.",
+                                 samples, ctx.field_count);
+                        goto cleanup;
+                }
+                is_removed = strlen(ctx.fields[3]) > 1 || strlen(ctx.fields[4]) > 1;
+                if (is_removed) {
+                        if (excluded == INT_MAX) {
+                                vcf_fail(&ctx, "Removed-variant count exceeds integer limits.");
+                                goto cleanup;
+                        }
+                        if (!vcf_write_info(&ctx, ctx.removed, 1))
+                                goto cleanup;
+                        excluded++;
+                } else {
+                        if (kept == INT_MAX) {
+                                vcf_fail(&ctx, "Locus count exceeds integer limits.");
+                                goto cleanup;
+                        }
+                        if (!vcf_format(&ctx, &key_count) || !vcf_decode(&ctx, samples, key_count))
+                                goto cleanup;
+                        if (!vcf_write_info(&ctx, ctx.snp, 0))
+                                goto cleanup;
+                        for (int i = 0; i < samples; i++)
+                                if (fputc('0' + ctx.allele[i], ctx.geno) == EOF) {
+                                        vcf_fail(&ctx, "Unable to write GENO output.");
+                                        goto cleanup;
+                                }
+                        if (fputc('\n', ctx.geno) == EOF) {
+                                vcf_fail(&ctx, "Unable to write GENO output.");
+                                goto cleanup;
+                        }
+                        kept++;
+                }
+        }
+        if (status < 0)
+                goto cleanup;
+cleanup:
+        vcf_cleanup(&ctx);
+        if (message && message_size)
+                snprintf(message, message_size, "%s", ctx.message);
+        if (ctx.message[0])
+                return 0;
+        *N = samples;
+        *M = kept;
+        *removed = excluded;
+        return 1;
 }
 
-// fill_line_vcf
-
-void fill_line_vcf(char *token, int *allele, int j, int N, char *input_file, FILE *input_File)
+void vcf2geno(char *input_file, char *output_file, int *N, int *M,
+              char *snp_file, char *removed_file, int *removed)
 {
-
-	int i = 0;
-
-	// for each otoken
-	token = strtok(NULL, SEP);
-	while (token)	{
-	  
-		// if length 1
-		if (strlen(token) == 1) {
-			// and just a dot
-			if (token[0] == '.')
-				allele[i] = 9;
-            //For haploids : if it's a 0 or a 1
-            else if (token[0] == '0' || token[0] == '1') {
-                allele[i] = (int)token[0] - (int)'0';
-            }
-            else {
-                Rprintf("Error: SNP %d, individual %d, not 0/1.\n",j + 1, i + 1);
-                error(NULL);
-            }
-			// if just a dot and a EOL
-		} else if (strlen(token) == 2 && token[0] == '.' && token[1] == '\n') {
-			allele[i] = 9;
-			// if not [01]/[01]
-            //For haploids : if it's a 0 or a 1 and a EOL
-		} else if (strlen(token) == 2 && (token[0] == '0' || token[0] == '1') && token[1] == '\n') {
-            allele[i] = (int)token[0] - (int)'0';
-        } else if (token[1] == ':') {
-            if(token[0] == '0' || token[0] == '1')
-            allele[i] = (int)token[0] - (int)'0';
-            else if(token[0] == '.')
-            allele[i] = 9;
-            else{
-                Rprintf("Error: SNP %d, individual %d, not a SNP.\n",j + 1, i + 1);
-                error(NULL);
-            }
-        } else {
-			// if error
-			if ((token[0] != '0' && token[0] != '1' && token[0] != '.') 
-					|| (token[2] != '0' && token[2] != '1' && 
-						token[2] != '.')) {
-				Rprintf("Error: SNP %d, individual %d, not a 0/1: '%c','%c'.\n",j + 1,i + 1,
-					token[0],token[2]);
-				error(NULL);
-			}
-			// if missing data
-			if (token[0] == '.' || token[2] == '.') 
-				allele[i] = 9;
-			// else everything is fine
-			else { 
-				allele[i] = (int)token[0] - (int)'0' + (int)token[2] - (int)'0';
-			}
-		}
-		// next token
-		token = strtok(NULL, SEP);
-		i++;
-
-	}
-
-	// if not the correct number of columns
-	test_column(input_file, input_File, i, j + 1, N, token);
-}
-
-// read_cnv_info
-
-void read_cnv_info(char *token, char **infos, char *szbuff, int j)
-{
-	int ip;
-	token = strtok(szbuff, SEP);
-	if (!token) {
-		Rprintf("Error while reading SNPs informations at line %d.\n", j);
-		error(NULL); 
-	}
-
-	strcpy(infos[0],token);
-	for (ip = 1; ip < 9; ip++) { 
-		token = strtok(NULL, SEP);
-		if (!token) {
-			Rprintf("Error while reading SNPs informations at line %d.\n",j); 
-			error(NULL);
-		}
-		strcpy(infos[ip], token);
-	}
-}
-
-// write_snp_info
-
-void write_snp_info (FILE *output_File, char **infos, int removed)
-{
-	int ip;
-	for (ip = 0; ip < 9; ip++)
-		fprintf(output_File, "%s ", infos[ip]);
-
-	if (removed)
-		fprintf(output_File, "REMOVED\n");
-	else 
-		fprintf(output_File, "\n");
+        char message[1024];
+        if (!vcf2geno_checked(input_file, output_file, N, M, snp_file,
+                              removed_file, removed, message, sizeof(message)))
+                error("%s", message);
 }
