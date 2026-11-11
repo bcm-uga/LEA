@@ -8,8 +8,8 @@
  * and convert to the lfmm and geno formats.
  *
  * It is assumed that the lines of a file in the ancestrymap format
- * are ordered such that line number (i * N + j) contains the (i+1)th
- * locus for (j+1)th individual, where N is the number of individuals,
+ * are ordered such that line number (j * N + i) contains the (j+1)th
+ * locus for (i+1)th individual, where N is the number of individuals,
  * M the number of loci, j in [0,M-1] and i in [0,N-1].
  */
 
@@ -54,7 +54,8 @@ void read_ancestrymap(char *input_file, int N, int M, int *data);
 /**
  * read a line from an ancestrymap file (with elements separated by spaces,tabs)
  *
- * It raises an error if the line does not contain 3 elements.
+ * It raises an error if the line contains fewer than 3 elements.
+ * Additional annotation fields are ignored for compatibility.
  * It raises a warning if the third column (genotype) is not 0,1,2 or 9.
  *
  * @param szbuff	line to read (previously obtain with fgets)

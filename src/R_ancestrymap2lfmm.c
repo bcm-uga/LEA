@@ -16,6 +16,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <R.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -29,6 +30,9 @@
 void R_ancestrymap2lfmm(char **R_input_file, char **R_output_file, int *N,
                         int *M)
 {
+        if (!R_input_file || !*R_input_file || !**R_input_file ||
+            !R_output_file || !*R_output_file || !**R_output_file || !N || !M)
+                error("Invalid ANCESTRYMAP native filename or dimension arguments.");
         ancestrymap2lfmm(*R_input_file, *R_output_file, N, M);
 
         print_convert(*N, *M);
