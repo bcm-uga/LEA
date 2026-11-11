@@ -16,62 +16,54 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <R.h>
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
-#include <math.h>
+#include <stdint.h>
 #include "convert/vcf2geno.h"
-#include "io/io_tools.h"
 #include "convert/register_convert.h"
-
 #include "R_vcf2geno.h"
 
 void R_vcf2geno(char **R_input_file, char **R_output_file, int *N, int *M)
 {
-        int removed;            // number of removed CNVs
-        char snp_bp_file[512];  // snp file
-        char removed_bp_file[512];      // removed snp file
-        char *tmp;
+        int removed, success;
+        const char *output, *dot, *slash;
+        size_t length;
+        char *snp_file, *removed_file;
+        char message[1024];
 
-        tmp = remove_ext(*R_output_file, '.', '/');
-        strcpy(snp_bp_file, tmp);
-        strcat(snp_bp_file, ".vcfsnp");
+        if (!R_input_file || !*R_input_file || !R_output_file || !*R_output_file)
+                error("VCF conversion requires input and output filenames.");
+        output = *R_output_file;
+        dot = strrchr(output, '.');
+        slash = strrchr(output, '/');
+        /* Match remove_ext(output, '.', '/') without an extra owned copy. */
+        length = dot && (!slash || slash < dot) ? (size_t)(dot - output) : strlen(output);
+        if (length > SIZE_MAX - sizeof(".removed"))
+                error("VCF output path exceeds allocation limits.");
+        snp_file = malloc(length + sizeof(".vcfsnp"));
+        removed_file = malloc(length + sizeof(".removed"));
+        if (!snp_file || !removed_file) {
+                free(snp_file);
+                free(removed_file);
+                error("Unable to allocate VCF output paths.");
+        }
+        memcpy(snp_file, output, length);
+        memcpy(snp_file + length, ".vcfsnp", sizeof(".vcfsnp"));
+        memcpy(removed_file, output, length);
+        memcpy(removed_file + length, ".removed", sizeof(".removed"));
 
-        strcpy(removed_bp_file, tmp);
-        strcat(removed_bp_file, ".removed");
-
-        vcf2geno(*R_input_file, *R_output_file, N, M, snp_bp_file,
-                 removed_bp_file, &removed);
-
-        print_convert(*N, *M);
-
-        Rprintf("For SNP info, please check %s.\n\n", snp_bp_file);
-
-        Rprintf("%d line(s) were removed because these are not SNPs.\n",
-                removed);
-        Rprintf("Please, check %s file, for more informations.\n\n",
-                removed_bp_file);
-
-        free(tmp);
-
+        success = vcf2geno_checked(*R_input_file, *R_output_file, N, M,
+                                   snp_file, removed_file, &removed,
+                                   message, sizeof(message));
+        if (success) {
+                print_convert(*N, *M);
+                Rprintf("For SNP info, please check %s.\n\n", snp_file);
+                Rprintf("%d line(s) were removed because these are not SNPs.\n", removed);
+                Rprintf("Please, check %s file, for more informations.\n\n", removed_file);
+        }
+        free(snp_file);
+        free(removed_file);
+        if (!success)
+                error("%s", message);
 }
-
-        /*
-           // parameter initialization
-           char input_file[512];                // input file "without" missing data
-           char output_file[512];                // output file with missing data
-           double e = 0.05;                // output percentage of missing data
-           long long seed = -1;
-           int m = 0;
-
-           print_head_snmf();
-
-           if (R_input_file)
-           strcpy(input_file, *R_input_file);
-           else 
-           print_error_cds("option","-g vcftype_file");
-
-           createDataSet(input_file, m, (long long) seed, percentage, output_file);
-         */
